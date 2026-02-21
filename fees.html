@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fees & Pricing — 3DPS.ca</title>
+<meta name="description" content="Transparent fees for buyers and sellers on 3DPS.ca — Canada's 3D print marketplace." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --orange:#E85D04; --orange2:#F48C06; --orange-pale:#FFF3E8;
+  --dark:#1A1210; --mid:#3D2B1F; --muted:#8C7B74;
+  --cream:#FFF8F1; --white:#FFFFFF;
+  --border:#E8DDD7; --border2:#F0E8E0;
+  --green:#1B6E3C; --green-pale:#EAF6EE;
+  --blue:#1A5DAD; --blue-pale:#EEF4FF;
+  --shadow:0 2px 16px rgba(26,18,16,.09);
+  --shadow-lg:0 8px 40px rgba(26,18,16,.15);
+  --r:12px; --r-sm:8px; --r-lg:20px; --r-pill:999px;
+  --font-display:'Syne',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--cream);color:var(--dark);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font-body);cursor:pointer}
+
+/* ── TOPBAR ── */
+#topbar{background:var(--dark);color:rgba(255,255,255,.7);font-size:12px;text-align:center;padding:8px 24px;letter-spacing:.03em}
+#topbar a{color:var(--orange2)}
+
+/* ── NAVBAR ── */
+nav{background:var(--white);border-bottom:1.5px solid var(--border);position:sticky;top:0;z-index:90;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:16px;height:66px}
+.logo{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--orange);letter-spacing:-.04em;cursor:pointer}
+.logo span{color:var(--dark)}
+.nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.nav-link{font-size:14px;font-weight:500;color:var(--mid);padding:8px 14px;border-radius:var(--r-sm);background:none;border:none;cursor:pointer;transition:background .15s,color .15s}
+.nav-link:hover{background:var(--cream);color:var(--orange)}
+.btn-primary{background:var(--orange);color:#fff;border:none;padding:10px 22px;border-radius:var(--r-pill);font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .15s}
+.btn-primary:hover{background:var(--orange2);transform:translateY(-1px)}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{max-width:1100px;margin:0 auto;padding:20px 24px 0;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.breadcrumb a{color:var(--orange);transition:opacity .15s}
+.breadcrumb a:hover{opacity:.7}
+
+/* ── HERO ── */
+.page-hero{background:linear-gradient(135deg,#1a1210 0%,#2d1a0e 55%,#4a2800 100%);padding:64px 24px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23E85D04' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");opacity:.5}
+.page-hero-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
+.page-hero-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(232,93,4,.18);border:1px solid rgba(232,93,4,.3);border-radius:var(--r-pill);padding:5px 16px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange2);margin-bottom:20px}
+.page-hero h1{font-family:var(--font-display);font-size:clamp(32px,5vw,52px);font-weight:800;color:#fff;line-height:1.08;letter-spacing:-.03em;margin-bottom:16px}
+.page-hero h1 em{color:var(--orange2);font-style:normal}
+.page-hero p{font-size:17px;color:rgba(255,255,255,.65);line-height:1.65;max-width:520px;margin:0 auto}
+
+/* ── TABS ── */
+.tabs-wrap{background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:66px;z-index:80}
+.tabs{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;gap:4px}
+.tab{font-size:14px;font-weight:500;color:var(--muted);padding:14px 18px;border-bottom:2.5px solid transparent;background:none;border-left:none;border-right:none;border-top:none;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s}
+.tab:hover,.tab.active{color:var(--orange);border-bottom-color:var(--orange)}
+
+/* ── CONTENT ── */
+.content{max-width:1100px;margin:0 auto;padding:48px 24px 80px}
+
+/* ── SECTION TITLE ── */
+.s-title{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+.s-title span{color:var(--orange)}
+.s-sub{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6}
+
+/* ── COMPARISON TOGGLE ── */
+.toggle-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:36px}
+.toggle-label{font-size:14px;font-weight:600;color:var(--mid)}
+.toggle{width:48px;height:26px;background:var(--orange);border-radius:var(--r-pill);position:relative;cursor:pointer;border:none;transition:background .2s;flex-shrink:0}
+.toggle-knob{position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle.right .toggle-knob{transform:translateX(22px)}
+.toggle-label.active{color:var(--orange)}
+
+/* ── FEE CARDS ROW ── */
+.fee-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:40px}
+.fee-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:28px 24px;text-align:center;position:relative;transition:border-color .2s,transform .2s,box-shadow .2s}
+.fee-card:hover{border-color:var(--orange);transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.fee-card.highlight{border-color:var(--orange);background:linear-gradient(135deg,#fff8f2,#fff)}
+.fee-card-icon{font-size:40px;margin-bottom:14px}
+.fee-card-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.fee-card-value{font-family:var(--font-display);font-size:42px;font-weight:800;color:var(--dark);line-height:1;margin-bottom:6px}
+.fee-card-value span{font-size:20px;color:var(--muted);font-weight:400}
+.fee-card-desc{font-size:13px;color:var(--muted);line-height:1.6}
+.fee-card-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font-size:11px;font-weight:700;padding:3px 12px;border-radius:var(--r-pill);white-space:nowrap}
+
+/* ── COMPARISON TABLE ── */
+.compare-table{width:100%;border-collapse:collapse;margin-bottom:40px;background:var(--white);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow)}
+.compare-table th{background:var(--dark);color:#fff;font-family:var(--font-display);font-size:13px;font-weight:700;letter-spacing:.04em;padding:16px 20px;text-align:left}
+.compare-table th:not(:first-child){text-align:center}
+.compare-table td{padding:14px 20px;border-bottom:1px solid var(--border2);font-size:14px;color:var(--mid)}
+.compare-table td:not(:first-child){text-align:center;font-weight:600;color:var(--dark)}
+.compare-table tr:last-child td{border-bottom:none}
+.compare-table tr:hover td{background:var(--cream)}
+.compare-table .row-label{color:var(--muted);font-weight:400}
+.compare-table .yes{color:var(--green);font-size:18px}
+.compare-table .no{color:#ccc;font-size:18px}
+.compare-table .highlight-col{background:rgba(232,93,4,.04)}
+.compare-table th.highlight-col{background:var(--orange)}
+
+/* ── EXAMPLE CALC ── */
+.calc-box{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:32px;margin-bottom:40px}
+.calc-box h3{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.calc-input-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.calc-input-group{display:flex;flex-direction:column;gap:6px}
+.calc-input-group label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.calc-input{border:1.5px solid var(--border);border-radius:var(--r-sm);padding:11px 14px;font-size:16px;font-weight:600;outline:none;transition:border-color .15s;font-family:var(--font-display)}
+.calc-input:focus{border-color:var(--orange)}
+.calc-results{background:var(--cream);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:10px}
+.calc-row{display:flex;justify-content:space-between;align-items:center;font-size:14px}
+.calc-row .calc-label{color:var(--muted)}
+.calc-row .calc-val{font-weight:600;color:var(--dark)}
+.calc-divider{height:1px;background:var(--border);margin:4px 0}
+.calc-row.total{font-size:16px}
+.calc-row.total .calc-label{font-weight:700;color:var(--dark)}
+.calc-row.total .calc-val{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--green)}
+.calc-note{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
+
+/* ── FAQ ── */
+.faq-list{display:flex;flex-direction:column;gap:2px;margin-bottom:40px}
+.faq-item{background:var(--white);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden}
+.faq-q{width:100%;text-align:left;padding:18px 20px;background:none;border:none;font-size:15px;font-weight:600;color:var(--dark);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:background .15s}
+.faq-q:hover{background:var(--cream)}
+.faq-chevron{font-size:18px;color:var(--orange);transition:transform .25s;flex-shrink:0}
+.faq-item.open .faq-chevron{transform:rotate(180deg)}
+.faq-a{font-size:14px;color:var(--mid);line-height:1.7;padding:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
+.faq-item.open .faq-a{max-height:300px;padding:0 20px 18px}
+
+/* ── CTA BANNER ── */
+.cta-banner{background:var(--orange);border-radius:var(--r-lg);padding:40px;text-align:center;color:#fff}
+.cta-banner h2{font-family:var(--font-display);font-size:28px;font-weight:800;letter-spacing:-.02em;margin-bottom:10px}
+.cta-banner p{font-size:15px;opacity:.85;margin-bottom:24px;max-width:460px;margin-left:auto;margin-right:auto}
+.btn-white{background:#fff;color:var(--orange);border:none;padding:13px 30px;border-radius:var(--r-pill);font-size:15px;font-weight:700;cursor:pointer;transition:transform .15s,background .15s}
+.btn-white:hover{transform:translateY(-1px);background:#fff8f0}
+
+/* ── BUYER SECTION ── */
+.buyer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:40px}
+.buyer-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:24px;display:flex;gap:16px;align-items:flex-start}
+.buyer-card-icon{font-size:32px;flex-shrink:0}
+.buyer-card-title{font-size:15px;font-weight:700;margin-bottom:5px}
+.buyer-card-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* ── PROMOTED SECTION ── */
+.promoted-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:40px}
+.promoted-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:24px 20px;text-align:center;transition:border-color .2s,transform .2s}
+.promoted-card:hover{border-color:var(--orange2);transform:translateY(-2px)}
+.promoted-card.popular{border-color:var(--orange);position:relative}
+.popular-badge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--orange);color:#fff;font-size:10px;font-weight:700;padding:3px 12px;border-radius:var(--r-pill);white-space:nowrap;letter-spacing:.04em;text-transform:uppercase}
+.promoted-plan{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.promoted-price{font-family:var(--font-display);font-size:32px;font-weight:800;color:var(--dark);line-height:1;margin-bottom:4px}
+.promoted-price span{font-size:14px;font-weight:400;color:var(--muted)}
+.promoted-desc{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.5}
+.promoted-features{list-style:none;display:flex;flex-direction:column;gap:6px;text-align:left;font-size:12px;color:var(--mid)}
+.promoted-features li::before{content:'✓ ';color:var(--green);font-weight:700}
+
+/* ── PAGE TABS CONTENT ── */
+.tab-content{display:none}
+.tab-content.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── FOOTER ── */
+footer{background:var(--dark);padding:40px 24px 24px}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--orange);letter-spacing:-.04em}
+.footer-logo span{color:rgba(255,255,255,.35)}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.4);transition:color .15s;cursor:pointer}
+.footer-links a:hover{color:var(--orange2)}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.25);width:100%;text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.07)}
+
+@media(max-width:600px){
+  .calc-input-row{grid-template-columns:1fr}
+  .fee-cards{grid-template-columns:1fr 1fr}
+  .page-hero h1{font-size:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div id="topbar">
+  🇨🇦 Canada's #1 marketplace for 3D printed goods — <a href="index.html">Back to shopping</a>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">3DPS<span>.ca</span></a>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-link">← Back to Marketplace</a>
+      <button class="btn-primary" onclick="window.location.href='index.html'">Start Selling</button>
+    </div>
+  </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="index.html">Home</a> <span>›</span> <span>Fees & Pricing</span>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="page-hero-pill">💳 Transparent Pricing</div>
+    <h1>Simple, <em>Honest</em> Fees.<br/>No Surprises.</h1>
+    <p>We only make money when you do. No monthly fees, no hidden charges — just a small fee on completed sales to keep 3DPS.ca running.</p>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('sellers',this)">For Sellers</button>
+    <button class="tab" onclick="switchTab('buyers',this)">For Buyers</button>
+    <button class="tab" onclick="switchTab('promoted',this)">Promoted Listings</button>
+    <button class="tab" onclick="switchTab('compare',this)">vs. Other Platforms</button>
+    <button class="tab" onclick="switchTab('faq',this)">FAQ</button>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ══ SELLERS TAB ══ -->
+  <div id="tab-sellers" class="tab-content active">
+    <div class="s-title">Seller <span>Fees</span></div>
+    <p class="s-sub">Everything you need to know about what it costs to sell on 3DPS.ca. We keep it simple — two fees, no surprises.</p>
+
+    <div class="fee-cards">
+      <div class="fee-card">
+        <div class="fee-card-icon">📋</div>
+        <div class="fee-card-label">Listing Fee</div>
+        <div class="fee-card-value">$0<span>.20</span></div>
+        <div class="fee-card-desc">Charged once when you publish a listing. Renews every 4 months if unsold. Covers hosting, search indexing, and visibility.</div>
+      </div>
+      <div class="fee-card highlight">
+        <div class="fee-card-badge">Only when you sell</div>
+        <div class="fee-card-icon">💳</div>
+        <div class="fee-card-label">Transaction Fee</div>
+        <div class="fee-card-value">6.5<span>%</span></div>
+        <div class="fee-card-desc">Applied to the item price when a sale completes. Includes payment processing, buyer protection, and platform support.</div>
+      </div>
+      <div class="fee-card">
+        <div class="fee-card-icon">📅</div>
+        <div class="fee-card-label">Monthly Fee</div>
+        <div class="fee-card-value">$0</div>
+        <div class="fee-card-desc">No subscription. No monthly charges. List as many items as you want and only pay when something sells.</div>
+      </div>
+      <div class="fee-card">
+        <div class="fee-card-icon">🚚</div>
+        <div class="fee-card-label">Shipping Fee</div>
+        <div class="fee-card-value">$0</div>
+        <div class="fee-card-desc">You set your own shipping rates. We don't take a cut of shipping charges. Offer free local pickup at no cost to you.</div>
+      </div>
+    </div>
+
+    <!-- CALCULATOR -->
+    <div class="calc-box">
+      <h3>🧮 Calculate Your Earnings</h3>
+      <div class="calc-input-row">
+        <div class="calc-input-group">
+          <label>Item Sale Price ($CAD)</label>
+          <input class="calc-input" type="number" id="calc-price" value="50" min="1" oninput="calcEarnings()" />
+        </div>
+        <div class="calc-input-group">
+          <label>Shipping Charged to Buyer ($)</label>
+          <input class="calc-input" type="number" id="calc-shipping" value="10" min="0" oninput="calcEarnings()" />
+        </div>
+      </div>
+      <div class="calc-results">
+        <div class="calc-row">
+          <span class="calc-label">Item price</span>
+          <span class="calc-val" id="r-price">$50.00</span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">Listing fee</span>
+          <span class="calc-val" style="color:var(--red)" id="r-listing">−$0.20</span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">Transaction fee (6.5%)</span>
+          <span class="calc-val" style="color:var(--red)" id="r-txn">−$3.25</span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-label">Shipping (you keep it all)</span>
+          <span class="calc-val" style="color:var(--green)" id="r-ship">+$10.00</span>
+        </div>
+        <div class="calc-divider"></div>
+        <div class="calc-row total">
+          <span class="calc-label">You receive</span>
+          <span class="calc-val" id="r-total">$56.55</span>
+        </div>
+        <div class="calc-note" id="r-note">That's 92.9% of your item price — keeping $56.55 of a $60.00 transaction.</div>
+      </div>
+    </div>
+
+    <!-- HOW PAYMENT WORKS -->
+    <div class="s-title" style="margin-top:40px">How <span>Payment</span> Works</div>
+    <p class="s-sub">Funds are held securely and released to you once the buyer confirms receipt — or automatically after 5 days.</p>
+
+    <div class="buyer-grid">
+      <div class="buyer-card">
+        <div class="buyer-card-icon">🛒</div>
+        <div>
+          <div class="buyer-card-title">Buyer pays at checkout</div>
+          <div class="buyer-card-desc">Full payment is collected securely from the buyer via credit card or PayPal when they place the order.</div>
+        </div>
+      </div>
+      <div class="buyer-card">
+        <div class="buyer-card-icon">🔒</div>
+        <div>
+          <div class="buyer-card-title">Funds held in escrow</div>
+          <div class="buyer-card-desc">Payment is held safely by 3DPS.ca while you fulfill the order. This protects both you and the buyer.</div>
+        </div>
+      </div>
+      <div class="buyer-card">
+        <div class="buyer-card-icon">✅</div>
+        <div>
+          <div class="buyer-card-title">Released to you</div>
+          <div class="buyer-card-desc">Funds are released to your account once buyer confirms receipt, or automatically 5 days after delivery confirmation.</div>
+        </div>
+      </div>
+      <div class="buyer-card">
+        <div class="buyer-card-icon">💸</div>
+        <div>
+          <div class="buyer-card-title">Weekly payouts</div>
+          <div class="buyer-card-desc">Earnings are paid out weekly via Interac e-Transfer or direct deposit to your Canadian bank account.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ BUYERS TAB ══ -->
+  <div id="tab-buyers" class="tab-content">
+    <div class="s-title">What <span>Buyers</span> Pay</div>
+    <p class="s-sub">Shopping on 3DPS.ca is free. You only pay the item price, shipping, and applicable taxes. No hidden platform charges for buyers.</p>
+
+    <div class="fee-cards">
+      <div class="fee-card">
+        <div class="fee-card-icon">🛍️</div>
+        <div class="fee-card-label">Buyer Platform Fee</div>
+        <div class="fee-card-value">$0</div>
+        <div class="fee-card-desc">We never charge buyers a platform fee. You pay exactly what you see — item price plus shipping.</div>
+      </div>
+      <div class="fee-card">
+        <div class="fee-card-icon">🚚</div>
+        <div class="fee-card-label">Shipping</div>
+        <div class="fee-card-value" style="font-size:28px">Varies</div>
+        <div class="fee-card-desc">Set by each seller. Many local sellers offer free pickup. Shipping rates are shown clearly before checkout.</div>
+      </div>
+      <div class="fee-card">
+        <div class="fee-card-icon">🧾</div>
+        <div class="fee-card-label">Taxes (HST/GST)</div>
+        <div class="fee-card-value" style="font-size:28px">Where applicable</div>
+        <div class="fee-card-desc">Canadian taxes are calculated and collected at checkout based on your province. Collected and remitted on your behalf.</div>
+      </div>
+      <div class="fee-card highlight">
+        <div class="fee-card-icon">🛡️</div>
+        <div class="fee-card-label">Buyer Protection</div>
+        <div class="fee-card-value" style="font-size:28px">Free</div>
+        <div class="fee-card-desc">Every purchase is covered by our Buyer Protection policy. If it's not as described, we'll make it right.</div>
+      </div>
+    </div>
+
+    <div class="s-title" style="margin-top:40px">What <span>Buyer Protection</span> Covers</div>
+    <p class="s-sub">Shop with confidence — every order on 3DPS.ca is backed by our protection policy.</p>
+
+    <div class="buyer-grid">
+      <div class="buyer-card">
+        <div class="buyer-card-icon">📦</div>
+        <div>
+          <div class="buyer-card-title">Item not received</div>
+          <div class="buyer-card-desc">If your order never arrives and tracking shows no delivery, you'll receive a full refund.</div>
+        </div>
+      </div>
+      <div class="buyer-card">
+        <div class="buyer-card-icon">❌</div>
+        <div>
+          <div class="buyer-card-title">Not as described</div>
+          <div class="buyer-card-desc">If the item is significantly different from what was listed, you're eligible for a return and refund.</div>
+        </div>
+      </div>
+      <div class="buyer-card">
+        <div class="buyer-card-icon">💬</div>
+        <div>
+          <div class="buyer-card-title">Dispute resolution</div>
+          <div class="buyer-card-desc">Our team mediates disputes between buyers and sellers fairly, with a 3-business-day response time.</div>
+        </div>
+      </div>
+      <div class="buyer-card">
+        <div class="buyer-card-icon">⏱️</div>
+        <div>
+          <div class="buyer-card-title">180-day window</div>
+          <div class="buyer-card-desc">You have 180 days from the estimated delivery date to open a case if something goes wrong.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PROMOTED TAB ══ -->
+  <div id="tab-promoted" class="tab-content">
+    <div class="s-title">Promoted <span>Listings</span></div>
+    <p class="s-sub">Get your items in front of more buyers. Featured listings appear at the top of search results, category pages, and the homepage — giving you up to 5× more visibility.</p>
+
+    <div class="promoted-grid">
+      <div class="promoted-card">
+        <div class="promoted-plan">Starter</div>
+        <div class="promoted-price">$1<span>.99/wk</span></div>
+        <div class="promoted-desc">per listing</div>
+        <ul class="promoted-features">
+          <li>Category page boost</li>
+          <li>Search ranking boost</li>
+          <li>Basic analytics</li>
+        </ul>
+      </div>
+      <div class="promoted-card popular">
+        <div class="popular-badge">⭐ Most Popular</div>
+        <div class="promoted-plan">Growth</div>
+        <div class="promoted-price">$2<span>.99/wk</span></div>
+        <div class="promoted-desc">per listing</div>
+        <ul class="promoted-features">
+          <li>Homepage feature rotation</li>
+          <li>Category page priority</li>
+          <li>Search top placement</li>
+          <li>Full analytics dashboard</li>
+        </ul>
+      </div>
+      <div class="promoted-card">
+        <div class="promoted-plan">Pro</div>
+        <div class="promoted-price">$5<span>.99/wk</span></div>
+        <div class="promoted-desc">per listing</div>
+        <ul class="promoted-features">
+          <li>Guaranteed homepage slot</li>
+          <li>#1 category placement</li>
+          <li>Email newsletter feature</li>
+          <li>Advanced analytics</li>
+          <li>Priority seller support</li>
+        </ul>
+      </div>
+      <div class="promoted-card">
+        <div class="promoted-plan">Shop Spotlight</div>
+        <div class="promoted-price">$9<span>.99/wk</span></div>
+        <div class="promoted-desc">entire shop</div>
+        <ul class="promoted-features">
+          <li>All listings boosted</li>
+          <li>"Featured Maker" badge</li>
+          <li>Dedicated shop feature</li>
+          <li>Social media shoutout</li>
+          <li>Priority support</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="background:var(--green-pale);border:1px solid #b2ddc0;border-radius:var(--r);padding:20px 24px;font-size:14px;color:var(--mid);line-height:1.7">
+      <strong style="color:var(--green)">💡 Pro tip:</strong> Promoted listings are entirely optional. Many sellers do great without them — especially local sellers who rely on pickup orders. Promoted listings work best when you have great photos, competitive pricing, and strong reviews.
+    </div>
+  </div>
+
+  <!-- ══ COMPARE TAB ══ -->
+  <div id="tab-compare" class="tab-content">
+    <div class="s-title">How We Compare to <span>Other Platforms</span></div>
+    <p class="s-sub">See how 3DPS.ca stacks up against general marketplaces. We're built specifically for 3D printing — and our fees reflect that.</p>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="highlight-col">3DPS.ca</th>
+          <th>Etsy</th>
+          <th>Amazon</th>
+          <th>eBay</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">Monthly fee</td>
+          <td class="highlight-col"><strong style="color:var(--green)">$0</strong></td>
+          <td>$0 or $10/mo</td>
+          <td>$0 or $39.99/mo</td>
+          <td>$0</td>
+        </tr>
+        <tr>
+          <td class="row-label">Listing fee</td>
+          <td class="highlight-col"><strong>$0.20</strong></td>
+          <td>$0.20</td>
+          <td>$0.99/item</td>
+          <td>Free up to 250/mo</td>
+        </tr>
+        <tr>
+          <td class="row-label">Transaction fee</td>
+          <td class="highlight-col"><strong style="color:var(--green)">6.5%</strong></td>
+          <td>6.5%</td>
+          <td>8–15%</td>
+          <td>13.25%</td>
+        </tr>
+        <tr>
+          <td class="row-label">Payment processing</td>
+          <td class="highlight-col"><strong>Included</strong></td>
+          <td>3% + $0.25</td>
+          <td>Included</td>
+          <td>2.9% + $0.30</td>
+        </tr>
+        <tr>
+          <td class="row-label">3D print focused</td>
+          <td class="highlight-col"><span class="yes">✓</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">Local pickup support</td>
+          <td class="highlight-col"><span class="yes">✓</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td>Partial</td>
+        </tr>
+        <tr>
+          <td class="row-label">Custom order messaging</td>
+          <td class="highlight-col"><span class="yes">✓</span></td>
+          <td>Basic</td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+        </tr>
+        <tr>
+          <td class="row-label">Canadian focus</td>
+          <td class="highlight-col"><span class="yes">✓</span></td>
+          <td>Partial</td>
+          <td>Partial</td>
+          <td>Partial</td>
+        </tr>
+        <tr>
+          <td class="row-label">Interac e-Transfer payouts</td>
+          <td class="highlight-col"><span class="yes">✓</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+          <td><span class="no">✗</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="background:var(--orange-pale);border:1.5px solid #ffd0a8;border-radius:var(--r);padding:20px 24px;font-size:14px;color:var(--mid);line-height:1.7">
+      <strong style="color:var(--orange)">📌 Note:</strong> Fee structures for other platforms are approximate and subject to change. Amazon and eBay fees vary significantly by category. 3DPS.ca fees shown are for standard listings without promotions.
+    </div>
+  </div>
+
+  <!-- ══ FAQ TAB ══ -->
+  <div id="tab-faq" class="tab-content">
+    <div class="s-title">Frequently Asked <span>Questions</span></div>
+    <p class="s-sub">Everything you need to know about fees, payments, and policies on 3DPS.ca.</p>
+
+    <div class="faq-list">
+      {[
+        ["When is the listing fee charged?","The $0.20 listing fee is charged when you publish a new listing. If an item sells, the listing fee is not refunded — it's a one-time publication fee. Listings renew every 4 months at $0.20 if the item hasn't sold."],
+        ["What exactly does the 6.5% transaction fee cover?","The 6.5% fee covers: payment processing infrastructure, fraud detection, buyer protection insurance, platform hosting, seller dashboard, messaging system, and customer support. We keep the platform running so you don't have to worry about it."],
+        ["Do I pay tax on my sales?","If you're a registered business or earning above Canada's small supplier threshold ($30,000/year in taxable sales), you may need to collect and remit GST/HST. We recommend consulting a Canadian accountant. 3DPS.ca collects and remits taxes on behalf of buyers in applicable provinces."],
+        ["How quickly do I get paid?","Earnings are released to your 3DPS.ca balance once the buyer confirms receipt, or automatically 5 days after tracking shows delivery. Payouts to your bank account process weekly every Monday via Interac e-Transfer or direct deposit."],
+        ["What if a buyer requests a refund?","If a buyer opens a dispute, our team reviews the case fairly. If the refund is legitimate, it's deducted from your balance. The 6.5% transaction fee is refunded to you on valid refunds. Listing fees are non-refundable."],
+        ["Are there fees for custom orders?","Custom orders go through the same fee structure — $0.20 listing fee if you create a listing for it, plus 6.5% when the sale completes. Many custom orders are handled through messaging and a private listing, which works the same way."],
+        ["Can I offer free local pickup?","Absolutely — and we encourage it! Local pickup is free to offer. No transaction fees on the shipping portion since there isn't one. The 6.5% still applies to the item price."],
+        ["Is there a minimum or maximum sale price?","Minimum item price is $1.00. There's no maximum. For orders over $500, we recommend the buyer and seller agree on terms in writing via the messaging system before proceeding."],
+      ].map(([q, a], i) => `
+        <div class="faq-item" id="faq-${i}">
+          <button class="faq-q" onclick="toggleFaq(${i})">
+            <span>${q}</span>
+            <span class="faq-chevron">⌄</span>
+          </button>
+          <div class="faq-a">${a}</div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div style="text-align:center;padding:32px;background:var(--white);border:1px solid var(--border);border-radius:var(--r)">
+      <div style="font-size:32px;margin-bottom:10px">💬</div>
+      <div style="font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:8px">Still have questions?</div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px">Our support team typically responds within a few hours during business days.</p>
+      <button class="btn-primary">Contact Support</button>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-banner" style="margin-top:48px">
+    <h2>Ready to Start Selling? 🚀</h2>
+    <p>Open your shop in minutes. Free to list — we only earn when you do.</p>
+    <button class="btn-white" onclick="window.location.href='index.html'">Open Your Shop — Free</button>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">3DPS<span>.ca</span></div>
+    <div class="footer-links">
+      <a href="index.html">Marketplace</a>
+      <a href="fees.html">Fees & Pricing</a>
+      <a href="index.html">Seller Dashboard</a>
+      <a href="index.html">Help Centre</a>
+      <a href="index.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-inner">
+    <div class="footer-copy">© 2025 3DPS.ca Inc. All rights reserved. · 🇨🇦 Made in Canada · <a href="#" style="color:rgba(255,255,255,.3)">Privacy</a> · <a href="#" style="color:rgba(255,255,255,.3)">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+// ── TAB SWITCHING ──
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── FAQ TOGGLE ──
+function toggleFaq(i) {
+  const item = document.getElementById('faq-' + i);
+  item.classList.toggle('open');
+}
+
+// ── EARNINGS CALCULATOR ──
+function calcEarnings() {
+  const price = parseFloat(document.getElementById('calc-price').value) || 0;
+  const shipping = parseFloat(document.getElementById('calc-shipping').value) || 0;
+  const listing = 0.20;
+  const txn = price * 0.065;
+  const youGet = price - listing - txn + shipping;
+  const pct = price > 0 ? ((price - listing - txn) / price * 100).toFixed(1) : 0;
+
+  document.getElementById('r-price').textContent = '$' + price.toFixed(2);
+  document.getElementById('r-listing').textContent = '−$' + listing.toFixed(2);
+  document.getElementById('r-txn').textContent = '−$' + txn.toFixed(2);
+  document.getElementById('r-ship').textContent = '+$' + shipping.toFixed(2);
+  document.getElementById('r-total').textContent = '$' + youGet.toFixed(2);
+  document.getElementById('r-note').textContent =
+    `That's ${pct}% of your item price — keeping $${youGet.toFixed(2)} of a $${(price + shipping).toFixed(2)} transaction.`;
+}
+
+// Init calculator
+calcEarnings();
+</script>
+</body>
+</html>
