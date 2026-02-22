@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Open a Shop — 3DPS.ca</title>
+<meta name="description" content="Start selling your 3D printed items on 3DPS.ca — Canada's 3D print marketplace. Free to open, easy to set up." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --orange:#0A7A4B; --orange2:#12A868; --orange-pale:#E8F7F1;
+  --dark:#0A1A12; --mid:#1A3D2B; --muted:#6B8C7A;
+  --cream:#F0FAF5; --white:#FFFFFF;
+  --border:#C8E8D8; --border2:#D8F0E4;
+  --green:#0A7A4B; --green-pale:#E8F7F1;
+  --red:#C0392B; --blue:#1A5DAD;
+  --shadow:0 2px 16px rgba(10,26,18,.09);
+  --shadow-lg:0 8px 40px rgba(10,26,18,.15);
+  --r:12px; --r-sm:8px; --r-lg:20px; --r-pill:999px;
+  --font-display:'Outfit',sans-serif;
+  --font-body:'Plus Jakarta Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--cream);color:var(--dark);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font-body);cursor:pointer}
+
+#topbar{background:#051a0e;color:rgba(255,255,255,.7);font-size:12px;text-align:center;padding:8px 24px;letter-spacing:.03em}
+#topbar a{color:var(--orange2)}
+
+nav{background:var(--white);border-bottom:1.5px solid var(--border);position:sticky;top:0;z-index:90;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:16px;height:66px}
+.logo{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--orange);letter-spacing:-.04em;cursor:pointer}
+.logo span{color:var(--dark)}
+.nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.nav-link{font-size:14px;font-weight:500;color:var(--mid);padding:8px 14px;border-radius:var(--r-sm);background:none;border:none;cursor:pointer;transition:background .15s,color .15s}
+.nav-link:hover{background:var(--cream);color:var(--orange)}
+.btn-primary{background:var(--orange);color:#fff;border:none;padding:10px 22px;border-radius:var(--r-pill);font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .15s}
+.btn-primary:hover{background:var(--orange2);transform:translateY(-1px)}
+
+.breadcrumb{max-width:1100px;margin:0 auto;padding:20px 24px 0;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.breadcrumb a{color:var(--orange)}
+
+/* HERO */
+.page-hero{background:linear-gradient(135deg,#051a0e 0%,#0a2e1a 55%,#0d4a28 100%);padding:72px 24px;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230A7A4B' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");opacity:.5}
+.hero-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.hero-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(10,122,75,.25);border:1px solid rgba(18,168,104,.35);border-radius:var(--r-pill);padding:5px 16px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange2);margin-bottom:20px}
+.hero-h1{font-family:var(--font-display);font-size:clamp(32px,4vw,52px);font-weight:800;color:#fff;line-height:1.08;letter-spacing:-.02em;margin-bottom:16px}
+.hero-h1 em{color:var(--orange2);font-style:normal}
+.hero-sub{font-size:16px;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:28px}
+.hero-perks{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
+.hero-perk{display:flex;align-items:center;gap:10px;font-size:14px;color:rgba(255,255,255,.8)}
+.hero-perk-icon{width:28px;height:28px;background:rgba(18,168,104,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.btn-hero{background:var(--orange2);color:#fff;border:none;padding:14px 32px;border-radius:var(--r-pill);font-size:16px;font-weight:700;cursor:pointer;transition:background .15s,transform .15s;font-family:var(--font-display)}
+.btn-hero:hover{background:#0fba72;transform:translateY(-1px)}
+.btn-hero-outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.4);padding:14px 32px;border-radius:var(--r-pill);font-size:16px;font-weight:600;cursor:pointer;transition:border-color .15s;font-family:var(--font-display)}
+.btn-hero-outline:hover{border-color:#fff}
+.hero-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-lg);padding:28px;backdrop-filter:blur(10px)}
+.hero-card-title{font-family:var(--font-display);font-size:16px;font-weight:700;color:#fff;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.earnings-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px}
+.earnings-row:last-child{border-bottom:none}
+.earnings-label{color:rgba(255,255,255,.55)}
+.earnings-val{font-family:var(--font-display);font-weight:700;color:var(--orange2)}
+.earnings-total{margin-top:12px;padding:12px;background:rgba(18,168,104,.15);border-radius:var(--r-sm);text-align:center}
+.earnings-total-val{font-family:var(--font-display);font-size:28px;font-weight:800;color:var(--orange2)}
+.earnings-total-label{font-size:11px;color:rgba(255,255,255,.5);margin-top:2px}
+
+/* STEPS */
+.section{padding:64px 24px}
+.section-inner{max-width:1100px;margin:0 auto}
+.s-title{font-family:var(--font-display);font-size:28px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.s-title span{color:var(--orange)}
+.s-sub{font-size:15px;color:var(--muted);margin-bottom:40px;line-height:1.65;max-width:600px}
+
+.steps-timeline{display:flex;flex-direction:column;gap:0}
+.step{display:grid;grid-template-columns:80px 1fr;gap:24px;position:relative}
+.step:not(:last-child)::after{content:'';position:absolute;left:39px;top:70px;bottom:-20px;width:2px;background:linear-gradient(to bottom,var(--orange),transparent);opacity:.3}
+.step-num-wrap{display:flex;flex-direction:column;align-items:center;gap:0}
+.step-num{width:54px;height:54px;background:var(--orange);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 4px 16px rgba(10,122,75,.35)}
+.step-body{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px 32px;margin-bottom:24px;transition:border-color .2s,box-shadow .2s}
+.step-body:hover{border-color:var(--orange);box-shadow:var(--shadow)}
+.step-tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+.step-title{font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:10px;letter-spacing:-.01em}
+.step-desc{font-size:14px;color:var(--mid);line-height:1.7;margin-bottom:16px}
+.step-tips{display:flex;flex-direction:column;gap:6px}
+.step-tip{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--muted)}
+.step-tip::before{content:'→';color:var(--orange);font-weight:700;flex-shrink:0;margin-top:1px}
+.step-img{font-size:48px;margin-bottom:12px}
+
+/* REQUIREMENTS */
+.req-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:40px}
+.req-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:24px;transition:border-color .2s,transform .2s}
+.req-card:hover{border-color:var(--orange);transform:translateY(-2px)}
+.req-icon{font-size:32px;margin-bottom:12px}
+.req-title{font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:6px}
+.req-desc{font-size:13px;color:var(--muted);line-height:1.6}
+.req-required{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:2px 8px;border-radius:var(--r-pill);margin-top:8px}
+.req-must{background:#fee;color:var(--red)}
+.req-nice{background:var(--green-pale);color:var(--green)}
+
+/* SELLER TYPES */
+.seller-types{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:40px}
+.seller-type{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:28px;transition:border-color .2s,box-shadow .2s}
+.seller-type:hover{border-color:var(--orange);box-shadow:var(--shadow)}
+.seller-type-icon{font-size:40px;margin-bottom:14px}
+.seller-type-title{font-family:var(--font-display);font-size:18px;font-weight:700;margin-bottom:8px}
+.seller-type-desc{font-size:13px;color:var(--muted);line-height:1.65;margin-bottom:14px}
+.seller-type-tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{background:var(--green-pale);color:var(--green);border:1px solid #b2ddc0;border-radius:var(--r-pill);padding:3px 10px;font-size:11px;font-weight:600}
+
+/* FAQ */
+.faq-list{display:flex;flex-direction:column;gap:2px;margin-bottom:40px}
+.faq-item{background:var(--white);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden}
+.faq-q{width:100%;text-align:left;padding:18px 20px;background:none;border:none;font-size:15px;font-weight:600;color:var(--dark);cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;transition:background .15s;font-family:var(--font-body)}
+.faq-q:hover{background:var(--cream)}
+.faq-chevron{font-size:18px;color:var(--orange);transition:transform .25s;flex-shrink:0}
+.faq-item.open .faq-chevron{transform:rotate(180deg)}
+.faq-a{font-size:14px;color:var(--mid);line-height:1.7;padding:0 20px;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
+.faq-item.open .faq-a{max-height:300px;padding:0 20px 18px}
+
+/* CTA */
+.cta-section{background:#051a0e;padding:72px 24px;text-align:center}
+.cta-inner{max-width:600px;margin:0 auto}
+.cta-title{font-family:var(--font-display);font-size:clamp(28px,4vw,42px);font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:14px}
+.cta-title em{color:var(--orange2);font-style:normal}
+.cta-sub{font-size:16px;color:rgba(255,255,255,.6);margin-bottom:32px;line-height:1.65}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:#051a0e;padding:40px 24px 24px}
+.footer-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--orange);letter-spacing:-.04em}
+.footer-logo span{color:rgba(255,255,255,.35)}
+.footer-links{display:flex;gap:20px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.4);transition:color .15s}
+.footer-links a:hover{color:var(--orange2)}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.25);width:100%;text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.07)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.page-hero,.section,.cta-section{animation:fadeIn .3s ease}
+
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr}
+  .hero-card{display:none}
+  .step{grid-template-columns:60px 1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">🇨🇦 Canada's #1 marketplace for 3D printed goods — <a href="index.html">Back to shopping</a></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">3DPS<span>.ca</span></a>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-link">← Back to Marketplace</a>
+      <a href="fees.html" class="nav-link">Fees & Pricing</a>
+      <button class="btn-primary" onclick="document.getElementById('signup-modal').style.display='flex'">Open Your Shop</button>
+    </div>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a> <span>›</span> <span>Open a Shop</span>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-pill">🏪 Become a Seller</div>
+      <h1 class="hero-h1">Turn Your Printer<br/>Into <em>Real Income</em></h1>
+      <p class="hero-sub">Join 340+ Canadian makers already earning on 3DPS.ca. Set up your shop in under 10 minutes — free to start, no monthly fees.</p>
+      <div class="hero-perks">
+        <div class="hero-perk"><div class="hero-perk-icon">✅</div> Free to open — no credit card required</div>
+        <div class="hero-perk"><div class="hero-perk-icon">💳</div> Only pay 6.5% when you make a sale</div>
+        <div class="hero-perk"><div class="hero-perk-icon">📍</div> Reach local buyers + all of Canada</div>
+        <div class="hero-perk"><div class="hero-perk-icon">💬</div> Built-in messaging for custom orders</div>
+        <div class="hero-perk"><div class="hero-perk-icon">💸</div> Weekly payouts via Interac e-Transfer</div>
+      </div>
+      <div class="hero-ctas">
+        <button class="btn-hero" onclick="document.getElementById('signup-modal').style.display='flex'">Open Your Shop — Free →</button>
+        <a href="fees.html" class="btn-hero-outline">View Fees</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-title">💰 Example Monthly Earnings</div>
+      <div class="earnings-row"><span class="earnings-label">10 planters @ $28</span><span class="earnings-val">$280</span></div>
+      <div class="earnings-row"><span class="earnings-label">5 miniatures @ $52</span><span class="earnings-val">$260</span></div>
+      <div class="earnings-row"><span class="earnings-label">8 custom orders @ $45</span><span class="earnings-val">$360</span></div>
+      <div class="earnings-row"><span class="earnings-label">Platform fees (6.5%)</span><span class="earnings-val" style="color:rgba(255,255,255,.4)">−$58.50</span></div>
+      <div class="earnings-total">
+        <div class="earnings-total-val">$841.50</div>
+        <div class="earnings-total-label">Estimated monthly take-home</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STEPS -->
+<section class="section">
+  <div class="section-inner">
+    <div class="s-title">How to <span>Open Your Shop</span></div>
+    <p class="s-sub">Follow these steps to get your shop live and start selling. Most sellers are up and running within an hour.</p>
+
+    <div class="steps-timeline">
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-num">1</div></div>
+        <div class="step-body">
+          <div class="step-tag">Step 1 · 2 minutes</div>
+          <div class="step-img">👤</div>
+          <div class="step-title">Create Your Account</div>
+          <div class="step-desc">Sign up with your email address and choose "I'm a Seller / Maker" when prompted. You'll need to provide your name, city, and a password.</div>
+          <div class="step-tips">
+            <div class="step-tip">Use a real email — order notifications and payouts go here</div>
+            <div class="step-tip">Your city is used to match you with local buyers first</div>
+            <div class="step-tip">You can sell as an individual or a business</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-num">2</div></div>
+        <div class="step-body">
+          <div class="step-tag">Step 2 · 5 minutes</div>
+          <div class="step-img">🏪</div>
+          <div class="step-title">Set Up Your Shop</div>
+          <div class="step-desc">Choose a shop name, write a short bio, and upload a profile photo or logo. This is what buyers see when they visit your shop page.</div>
+          <div class="step-tips">
+            <div class="step-tip">Pick a memorable shop name — it appears on every listing</div>
+            <div class="step-tip">Mention your printer type and materials in your bio</div>
+            <div class="step-tip">Shops with photos get 3× more visits than those without</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-num">3</div></div>
+        <div class="step-body">
+          <div class="step-tag">Step 3 · 10 minutes per listing</div>
+          <div class="step-img">📋</div>
+          <div class="step-title">Add Your First Listing</div>
+          <div class="step-desc">Create a listing for each item you want to sell. Add photos, a title, description, price, material info, and turnaround time. Each listing costs $0.20.</div>
+          <div class="step-tips">
+            <div class="step-tip">Use natural light photos — no filters needed, just clear and sharp</div>
+            <div class="step-tip">Write titles that describe what the item IS, not just what it looks like</div>
+            <div class="step-tip">Include material, dimensions, and color options in your description</div>
+            <div class="step-tip">Competitive pricing tip: search similar items first</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-num">4</div></div>
+        <div class="step-body">
+          <div class="step-tag">Step 4 · 5 minutes</div>
+          <div class="step-img">🚚</div>
+          <div class="step-title">Set Shipping & Pickup Options</div>
+          <div class="step-desc">Configure how buyers receive their orders. Offer local pickup (free for you!), flat-rate shipping, or calculated shipping based on weight and distance.</div>
+          <div class="step-tips">
+            <div class="step-tip">Local pickup is a huge advantage — enable it to attract nearby buyers</div>
+            <div class="step-tip">Canada Post, Purolator, and UPS rates can be used as reference</div>
+            <div class="step-tip">Free shipping on orders over $X increases conversions significantly</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-num">5</div></div>
+        <div class="step-body">
+          <div class="step-tag">Step 5 · 3 minutes</div>
+          <div class="step-img">💳</div>
+          <div class="step-title">Connect Your Payout Method</div>
+          <div class="step-desc">Add your Interac e-Transfer email or Canadian bank account details to receive weekly payouts. Your financial info is encrypted and never shared.</div>
+          <div class="step-tips">
+            <div class="step-tip">Interac e-Transfer is the fastest payout method for Canadian sellers</div>
+            <div class="step-tip">Direct deposit available for amounts over $500</div>
+            <div class="step-tip">Funds are released 5 days after confirmed delivery</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num-wrap"><div class="step-num">6</div></div>
+        <div class="step-body">
+          <div class="step-tag">Step 6 · You're live!</div>
+          <div class="step-img">🚀</div>
+          <div class="step-title">Start Selling!</div>
+          <div class="step-desc">Your shop is live and visible to buyers across Canada. Share your shop link on social media, respond to messages promptly, and watch the orders come in.</div>
+          <div class="step-tips">
+            <div class="step-tip">Share your shop link on Instagram, Reddit r/3Dprinting, and Facebook groups</div>
+            <div class="step-tip">Respond to buyer messages within 24 hours for best results</div>
+            <div class="step-tip">Consider promoting a listing to get your first few sales faster</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHAT YOU NEED -->
+<section class="section" style="background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="section-inner">
+    <div class="s-title">What You <span>Need to Start</span></div>
+    <p class="s-sub">The bar to start selling is intentionally low. Here's everything required vs. nice to have.</p>
+    <div class="req-grid">
+      <div class="req-card">
+        <div class="req-icon">🖨️</div>
+        <div class="req-title">A 3D Printer</div>
+        <div class="req-desc">FDM, resin, SLA — any type works. You can even sell designs or partner with a print farm.</div>
+        <span class="req-required req-must">Required</span>
+      </div>
+      <div class="req-card">
+        <div class="req-icon">📧</div>
+        <div class="req-title">Email Address</div>
+        <div class="req-desc">For account creation, order notifications, and receiving your weekly payout confirmations.</div>
+        <span class="req-required req-must">Required</span>
+      </div>
+      <div class="req-card">
+        <div class="req-icon">💳</div>
+        <div class="req-title">Interac / Bank Account</div>
+        <div class="req-desc">Canadian bank account or Interac e-Transfer enabled email to receive your earnings.</div>
+        <span class="req-required req-must">Required</span>
+      </div>
+      <div class="req-card">
+        <div class="req-icon">📸</div>
+        <div class="req-title">Product Photos</div>
+        <div class="req-desc">Just your phone camera works great. Natural light, clean background. No studio needed.</div>
+        <span class="req-required req-must">Required</span>
+      </div>
+      <div class="req-card">
+        <div class="req-icon">🎨</div>
+        <div class="req-title">Logo or Profile Photo</div>
+        <div class="req-desc">A simple logo or photo makes your shop look professional and trustworthy to buyers.</div>
+        <span class="req-required req-nice">Nice to Have</span>
+      </div>
+      <div class="req-card">
+        <div class="req-icon">📐</div>
+        <div class="req-title">Design Files (STL/OBJ)</div>
+        <div class="req-desc">If you're taking custom orders, having your own design files is a big advantage.</div>
+        <span class="req-required req-nice">Nice to Have</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO SELLS HERE -->
+<section class="section">
+  <div class="section-inner">
+    <div class="s-title">Who <span>Sells on 3DPS.ca</span></div>
+    <p class="s-sub">Our sellers range from hobbyists printing a few items a month to full-time makers running print farms.</p>
+    <div class="seller-types">
+      <div class="seller-type">
+        <div class="seller-type-icon">🎮</div>
+        <div class="seller-type-title">Hobbyist Makers</div>
+        <div class="seller-type-desc">Print as a hobby and sell the extras to offset filament costs. No pressure — sell at your own pace.</div>
+        <div class="seller-type-tags"><span class="tag">FDM</span><span class="tag">Miniatures</span><span class="tag">Decor</span></div>
+      </div>
+      <div class="seller-type">
+        <div class="seller-type-icon">💼</div>
+        <div class="seller-type-title">Side Hustlers</div>
+        <div class="seller-type-desc">Earn $500–$2,000/month running a part-time print shop alongside your day job. Many of our top sellers started this way.</div>
+        <div class="seller-type-tags"><span class="tag">Custom Orders</span><span class="tag">Functional Parts</span></div>
+      </div>
+      <div class="seller-type">
+        <div class="seller-type-icon">🏭</div>
+        <div class="seller-type-title">Full-Time Makers</div>
+        <div class="seller-type-desc">Running a print farm? 3DPS.ca gives you access to thousands of Canadian buyers and a platform built for volume.</div>
+        <div class="seller-type-tags"><span class="tag">High Volume</span><span class="tag">Multiple Printers</span></div>
+      </div>
+      <div class="seller-type">
+        <div class="seller-type-icon">🎨</div>
+        <div class="seller-type-title">Designers & Artists</div>
+        <div class="seller-type-desc">Sell your original designs as physical prints. Combine digital design skills with 3D printing to create truly unique items.</div>
+        <div class="seller-type-tags"><span class="tag">Original Designs</span><span class="tag">Art</span><span class="tag">Jewelry</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" style="background:var(--white);border-top:1px solid var(--border)">
+  <div class="section-inner">
+    <div class="s-title">Seller <span>FAQ</span></div>
+    <p class="s-sub">Common questions from new sellers.</p>
+    <div class="faq-list">
+      <div class="faq-item" id="faq-0">
+        <button class="faq-q" onclick="toggleFaq(0)"><span>Do I need a business license to sell?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">No business license is required to start selling. Many sellers operate as individuals. If you earn over $30,000/year in taxable sales, you'll need to register for a GST/HST number — we recommend speaking with an accountant at that point.</div>
+      </div>
+      <div class="faq-item" id="faq-1">
+        <button class="faq-q" onclick="toggleFaq(1)"><span>Can I sell custom / made-to-order items?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">Absolutely — custom orders are a huge part of 3DPS.ca. Buyers can message you directly to request custom prints. You can create a "Custom Order" listing that buyers purchase, then you discuss the details through our messaging system.</div>
+      </div>
+      <div class="faq-item" id="faq-2">
+        <button class="faq-q" onclick="toggleFaq(2)"><span>What can I sell on 3DPS.ca?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">Any item that is 3D printed or directly related to 3D printing. This includes home décor, miniatures, jewelry, functional parts, cosplay props, toys, art, and more. Items must comply with our seller policies — no weapons, illegal items, or copyright-infringing designs.</div>
+      </div>
+      <div class="faq-item" id="faq-3">
+        <button class="faq-q" onclick="toggleFaq(3)"><span>How do I handle returns and refunds?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">You set your own return policy. Most sellers on 3DPS.ca don't accept returns on custom orders (which is standard for made-to-order items), but do accept returns on ready-made items within 14 days. Our buyer protection policy provides a safety net for both parties.</div>
+      </div>
+      <div class="faq-item" id="faq-4">
+        <button class="faq-q" onclick="toggleFaq(4)"><span>Can I sell from anywhere in Canada?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">Yes! 3DPS.ca is open to sellers across all provinces and territories. Your city is displayed on listings to help local buyers find you for pickup, but you can ship to buyers anywhere in Canada regardless of where you're located.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <h2 class="cta-title">Ready to Start <em>Earning</em>?</h2>
+    <p class="cta-sub">Open your shop in minutes. Free to list — we only earn when you do. Join 340+ Canadian makers already selling on 3DPS.ca.</p>
+    <div class="cta-btns">
+      <button class="btn-hero" onclick="document.getElementById('signup-modal').style.display='flex'">Open Your Shop — Free →</button>
+      <a href="fees.html" class="btn-hero-outline">View Fees & Pricing</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">3DPS<span>.ca</span></div>
+    <div class="footer-links">
+      <a href="index.html">Marketplace</a>
+      <a href="open-shop.html">Open a Shop</a>
+      <a href="fees.html">Fees & Pricing</a>
+      <a href="categories.html">Categories</a>
+      <a href="index.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-inner"><div class="footer-copy">© 2025 3DPS.ca Inc. All rights reserved. · 🇨🇦 Made in Canada</div></div>
+</footer>
+
+<!-- SIGNUP MODAL -->
+<div id="signup-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)this.style.display='none'">
+  <div style="background:#fff;border-radius:20px;padding:36px;max-width:440px;width:100%;position:relative">
+    <button onclick="document.getElementById('signup-modal').style.display='none'" style="position:absolute;top:14px;right:14px;background:var(--cream);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px">✕</button>
+    <div style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:6px">Open Your Shop</div>
+    <div style="font-size:13px;color:var(--muted);margin-bottom:20px">Free to start · $0.20/listing · 6.5% on sales only</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">First Name</label><input style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" placeholder="Jane"/></div>
+      <div><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">Last Name</label><input style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" placeholder="Doe"/></div>
+    </div>
+    <div style="margin-bottom:12px"><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">Shop Name</label><input style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" placeholder="e.g. HamiltonMakes"/></div>
+    <div style="margin-bottom:12px"><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">Email</label><input style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" type="email" placeholder="jane@email.com"/></div>
+    <div style="margin-bottom:20px"><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">Password</label><input style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" type="password" placeholder="••••••••"/></div>
+    <button style="width:100%;background:var(--orange);color:#fff;border:none;padding:13px;border-radius:var(--r-pill);font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font-display)">Create My Shop →</button>
+    <div style="text-align:center;font-size:12px;color:var(--muted);margin-top:12px">Already have an account? <a href="index.html" style="color:var(--orange);font-weight:600">Sign In</a></div>
+  </div>
+</div>
+
+<script>
+function toggleFaq(i) {
+  document.getElementById('faq-' + i).classList.toggle('open');
+}
+</script>
+</body>
+</html>

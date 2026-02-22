@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Categories — 3DPS.ca</title>
+<meta name="description" content="Browse all 3D printed item categories on 3DPS.ca — Canada's 3D print marketplace." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --orange:#0A7A4B; --orange2:#12A868; --orange-pale:#E8F7F1;
+  --dark:#0A1A12; --mid:#1A3D2B; --muted:#6B8C7A;
+  --cream:#F0FAF5; --white:#FFFFFF;
+  --border:#C8E8D8; --border2:#D8F0E4;
+  --green:#0A7A4B; --green-pale:#E8F7F1;
+  --shadow:0 2px 16px rgba(10,26,18,.09);
+  --shadow-lg:0 8px 40px rgba(10,26,18,.15);
+  --r:12px; --r-sm:8px; --r-lg:20px; --r-pill:999px;
+  --font-display:'Outfit',sans-serif;
+  --font-body:'Plus Jakarta Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--cream);color:var(--dark);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font-body);cursor:pointer}
+
+#topbar{background:#051a0e;color:rgba(255,255,255,.7);font-size:12px;text-align:center;padding:8px 24px}
+#topbar a{color:var(--orange2)}
+nav{background:var(--white);border-bottom:1.5px solid var(--border);position:sticky;top:0;z-index:90;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:16px;height:66px}
+.logo{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--orange);letter-spacing:-.04em}
+.logo span{color:var(--dark)}
+.searchbar{flex:1;max-width:500px;display:flex;border:2px solid var(--dark);border-radius:var(--r-pill);overflow:hidden}
+.searchbar input{flex:1;border:none;outline:none;padding:9px 18px;font-size:14px}
+.searchbar button{background:var(--orange);border:none;padding:9px 18px;color:#fff;font-size:17px;cursor:pointer}
+.nav-actions{display:flex;align-items:center;gap:8px;margin-left:auto}
+.nav-link{font-size:14px;font-weight:500;color:var(--mid);padding:8px 14px;border-radius:var(--r-sm);background:none;border:none;cursor:pointer}
+.nav-link:hover{background:var(--cream);color:var(--orange)}
+.btn-primary{background:var(--orange);color:#fff;border:none;padding:10px 22px;border-radius:var(--r-pill);font-size:14px;font-weight:600;cursor:pointer}
+.btn-primary:hover{background:var(--orange2)}
+
+.breadcrumb{max-width:1280px;margin:0 auto;padding:20px 24px 0;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.breadcrumb a{color:var(--orange)}
+
+/* HERO */
+.page-hero{background:linear-gradient(135deg,#051a0e 0%,#0a2e1a 55%,#0d4a28 100%);padding:56px 24px;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230A7A4B' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");opacity:.5}
+.hero-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
+.hero-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(10,122,75,.25);border:1px solid rgba(18,168,104,.35);border-radius:var(--r-pill);padding:5px 16px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange2);margin-bottom:18px}
+.hero-h1{font-family:var(--font-display);font-size:clamp(28px,5vw,48px);font-weight:800;color:#fff;line-height:1.08;letter-spacing:-.02em;margin-bottom:14px}
+.hero-h1 em{color:var(--orange2);font-style:normal}
+.hero-sub{font-size:16px;color:rgba(255,255,255,.6);margin-bottom:28px}
+.hero-search{display:flex;max-width:480px;margin:0 auto;border:2px solid rgba(255,255,255,.2);border-radius:var(--r-pill);overflow:hidden;background:rgba(255,255,255,.08);transition:border-color .2s}
+.hero-search:focus-within{border-color:var(--orange2)}
+.hero-search input{flex:1;background:transparent;border:none;outline:none;padding:12px 20px;color:#fff;font-size:15px;font-family:var(--font-body)}
+.hero-search input::placeholder{color:rgba(255,255,255,.4)}
+.hero-search button{background:var(--orange2);border:none;padding:12px 20px;color:#fff;font-size:18px;cursor:pointer}
+
+/* FILTER BAR */
+.filter-bar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 24px;position:sticky;top:66px;z-index:80}
+.filter-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.filter-label{font-size:13px;font-weight:600;color:var(--mid)}
+.filter-chip{background:var(--cream);border:1.5px solid var(--border);border-radius:var(--r-pill);padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;color:var(--mid)}
+.filter-chip:hover,.filter-chip.active{background:var(--orange);color:#fff;border-color:var(--orange)}
+.result-count{margin-left:auto;font-size:13px;color:var(--muted)}
+
+/* CONTENT */
+.content{max-width:1280px;margin:0 auto;padding:40px 24px 80px}
+
+/* FEATURED CATEGORY BANNER */
+.featured-cats{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;margin-bottom:48px}
+.featured-cat{border-radius:var(--r-lg);overflow:hidden;position:relative;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.featured-cat:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.featured-cat-main{height:240px;display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+.featured-cat-sm{height:112px;display:flex;flex-direction:column;justify-content:flex-end;padding:18px}
+.featured-cat-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:80px;opacity:.25}
+.featured-cat-sm .featured-cat-bg{font-size:56px}
+.featured-cat-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 60%)}
+.featured-cat-content{position:relative;z-index:1}
+.featured-cat-title{font-family:var(--font-display);font-size:22px;font-weight:800;color:#fff;margin-bottom:4px}
+.featured-cat-sm .featured-cat-title{font-size:16px}
+.featured-cat-count{font-size:13px;color:rgba(255,255,255,.7)}
+.featured-cat-sm .featured-cat-count{font-size:11px}
+.featured-cat-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.2);border-radius:var(--r-pill);padding:3px 10px;font-size:11px;color:#fff;font-weight:600;margin-bottom:8px}
+
+/* CATEGORY SECTIONS */
+.cat-section{margin-bottom:48px}
+.cat-section-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--border)}
+.cat-section-icon{font-size:32px}
+.cat-section-title{font-family:var(--font-display);font-size:22px;font-weight:700;letter-spacing:-.01em}
+.cat-section-title span{color:var(--orange)}
+.cat-section-count{font-size:13px;color:var(--muted);margin-left:auto}
+.cat-section-link{font-size:13px;font-weight:600;color:var(--orange);border-bottom:1.5px solid transparent;transition:border-color .15s}
+.cat-section-link:hover{border-bottom-color:var(--orange)}
+
+.subcats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.subcat{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:18px 16px;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s;display:flex;align-items:center;gap:12px}
+.subcat:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:var(--shadow)}
+.subcat-icon{font-size:26px;flex-shrink:0}
+.subcat-name{font-size:14px;font-weight:600;color:var(--dark)}
+.subcat-count{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* POPULAR ITEMS STRIP */
+.items-strip{display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;margin-top:16px}
+.items-strip::-webkit-scrollbar{display:none}
+.strip-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;flex:0 0 160px}
+.strip-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.strip-card-img{height:110px;display:flex;align-items:center;justify-content:center;font-size:44px}
+.strip-card-body{padding:10px}
+.strip-card-name{font-size:12px;font-weight:500;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px}
+.strip-card-price{font-family:var(--font-display);font-size:14px;font-weight:700}
+
+/* LOCAL BADGE */
+.local-tag{font-size:11px;color:var(--green);font-weight:600;margin-top:3px}
+
+/* CTA */
+.cta-banner{background:var(--orange);border-radius:var(--r-lg);padding:36px;text-align:center;color:#fff;margin-bottom:40px}
+.cta-banner h2{font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.cta-banner p{font-size:14px;opacity:.85;margin-bottom:20px;max-width:440px;margin-left:auto;margin-right:auto}
+.btn-white{background:#fff;color:var(--orange);border:none;padding:12px 28px;border-radius:var(--r-pill);font-size:14px;font-weight:700;cursor:pointer}
+.btn-white:hover{background:#f0faf5}
+
+footer{background:#051a0e;padding:40px 24px 24px}
+.footer-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--orange)}
+.footer-logo span{color:rgba(255,255,255,.35)}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.4);margin-left:20px}
+.footer-links a:hover{color:var(--orange2)}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.25);width:100%;text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.07)}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.content{animation:fadeIn .3s ease}
+
+@media(max-width:768px){
+  .featured-cats{grid-template-columns:1fr;grid-template-rows:auto}
+  .featured-cat-sm{height:140px}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">🇨🇦 Canada's #1 marketplace for 3D printed goods — <a href="index.html">Shop now</a></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">3DPS<span>.ca</span></a>
+    <div class="searchbar">
+      <input type="text" placeholder="Search 3D printed items…" id="search-input"/>
+      <button onclick="doSearch()">🔍</button>
+    </div>
+    <div class="nav-actions">
+      <a href="index.html" class="nav-link">← Marketplace</a>
+      <a href="open-shop.html" class="nav-link">Sell</a>
+      <button class="btn-primary" onclick="window.location.href='index.html'">Sign In</button>
+    </div>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a> <span>›</span> <span>Categories</span>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-inner">
+    <div class="hero-pill">🗂️ Browse by Category</div>
+    <h1 class="hero-h1">Find Your Perfect<br/><em>3D Printed Item</em></h1>
+    <p class="hero-sub">2,400+ items across 12 categories from Canadian makers — ready to ship or available for local pickup.</p>
+    <div class="hero-search">
+      <input type="text" placeholder="Search within categories…" id="hero-search"/>
+      <button onclick="doSearch()">🔍</button>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <span class="filter-label">Filter:</span>
+    <span class="filter-chip active" onclick="setFilter(this,'all')">All Items</span>
+    <span class="filter-chip" onclick="setFilter(this,'local')">📍 Local Only</span>
+    <span class="filter-chip" onclick="setFilter(this,'custom')">💬 Custom Orders</span>
+    <span class="filter-chip" onclick="setFilter(this,'under25')">Under $25</span>
+    <span class="filter-chip" onclick="setFilter(this,'new')">New Arrivals</span>
+    <span class="filter-chip" onclick="setFilter(this,'featured')">⭐ Featured</span>
+    <span class="result-count">2,433 items</span>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- FEATURED BANNERS -->
+  <div class="featured-cats" style="margin-bottom:48px">
+    <div class="featured-cat featured-cat-main" style="background:linear-gradient(135deg,#1a0a2e,#3d1a6e)" onclick="window.location.href='index.html'">
+      <div class="featured-cat-bg">🎲</div>
+      <div class="featured-cat-overlay"></div>
+      <div class="featured-cat-content">
+        <div class="featured-cat-badge">🔥 Most Popular</div>
+        <div class="featured-cat-title">Miniatures & Gaming</div>
+        <div class="featured-cat-count">319 items · From $8.00</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="featured-cat featured-cat-sm" style="background:linear-gradient(135deg,#1a2e0a,#2e6e1a)" onclick="window.location.href='index.html'">
+        <div class="featured-cat-bg" style="font-size:48px">🏠</div>
+        <div class="featured-cat-overlay"></div>
+        <div class="featured-cat-content">
+          <div class="featured-cat-title">Home Décor</div>
+          <div class="featured-cat-count">482 items</div>
+        </div>
+      </div>
+      <div class="featured-cat featured-cat-sm" style="background:linear-gradient(135deg,#2e1a0a,#6e3d1a)" onclick="window.location.href='index.html'">
+        <div class="featured-cat-bg" style="font-size:48px">🎭</div>
+        <div class="featured-cat-overlay"></div>
+        <div class="featured-cat-content">
+          <div class="featured-cat-title">Cosplay & Props</div>
+          <div class="featured-cat-count">201 items</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="featured-cat featured-cat-sm" style="background:linear-gradient(135deg,#0a1a2e,#1a3d6e)" onclick="window.location.href='index.html'">
+        <div class="featured-cat-bg" style="font-size:48px">⚙️</div>
+        <div class="featured-cat-overlay"></div>
+        <div class="featured-cat-content">
+          <div class="featured-cat-title">Tech Parts</div>
+          <div class="featured-cat-count">312 items</div>
+        </div>
+      </div>
+      <div class="featured-cat featured-cat-sm" style="background:linear-gradient(135deg,#2e0a1a,#6e1a3d)" onclick="window.location.href='index.html'">
+        <div class="featured-cat-bg" style="font-size:48px">💍</div>
+        <div class="featured-cat-overlay"></div>
+        <div class="featured-cat-content">
+          <div class="featured-cat-title">Jewelry</div>
+          <div class="featured-cat-count">214 items</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOME DECOR -->
+  <div class="cat-section" id="cat-decor">
+    <div class="cat-section-header">
+      <span class="cat-section-icon">🏠</span>
+      <div>
+        <div class="cat-section-title">Home <span>Décor</span></div>
+      </div>
+      <span class="cat-section-count">482 items</span>
+      <a class="cat-section-link" href="index.html">Browse all →</a>
+    </div>
+    <div class="subcats">
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🌿</span><div><div class="subcat-name">Planters & Vases</div><div class="subcat-count">143 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🕯️</span><div><div class="subcat-name">Candle Holders</div><div class="subcat-count">67 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🕐</span><div><div class="subcat-name">Wall Clocks</div><div class="subcat-count">34 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🖼️</span><div><div class="subcat-name">Wall Art</div><div class="subcat-count">89 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">💡</span><div><div class="subcat-name">Lamp Shades</div><div class="subcat-count">28 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">📦</span><div><div class="subcat-name">Desk Organizers</div><div class="subcat-count">55 items</div></div></div>
+    </div>
+    <div class="items-strip">
+      <div class="strip-card"><div class="strip-card-img" style="background:linear-gradient(135deg,#e8f4f1,#c8e6e0)">🏺</div><div class="strip-card-body"><div class="strip-card-name">Geometric Planter</div><div class="strip-card-price">$28.00</div><div class="local-tag">📍 Hamilton</div></div></div>
+      <div class="strip-card"><div class="strip-card-img" style="background:linear-gradient(135deg,#f5f5f0,#e8e8e0)">🕐</div><div class="strip-card-body"><div class="strip-card-name">Minimalist Clock</div><div class="strip-card-price">$45.00</div><div class="local-tag">📍 Hamilton</div></div></div>
+      <div class="strip-card"><div class="strip-card-img" style="background:linear-gradient(135deg,#edfaef,#c0eec8)">🌱</div><div class="strip-card-body"><div class="strip-card-name">Baby Groot Planter</div><div class="strip-card-price">$29.00</div><div style="font-size:11px;color:var(--muted);margin-top:3px">📦 Toronto</div></div></div>
+      <div class="strip-card"><div class="strip-card-img" style="background:linear-gradient(135deg,#fff5e6,#ffe0b2)">📦</div><div class="strip-card-body"><div class="strip-card-name">Hex Desk Organizer</div><div class="strip-card-price">$32.00</div><div class="local-tag">📍 Burlington</div></div></div>
+      <div class="strip-card"><div class="strip-card-img" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0)">🕯️</div><div class="strip-card-body"><div class="strip-card-name">Lattice Candle Holder</div><div class="strip-card-price">$18.00</div><div style="font-size:11px;color:var(--muted);margin-top:3px">📦 Ottawa</div></div></div>
+    </div>
+  </div>
+
+  <!-- GAMING -->
+  <div class="cat-section" id="cat-gaming">
+    <div class="cat-section-header">
+      <span class="cat-section-icon">🎲</span>
+      <div>
+        <div class="cat-section-title">Miniatures <span>& Gaming</span></div>
+      </div>
+      <span class="cat-section-count">319 items</span>
+      <a class="cat-section-link" href="index.html">Browse all →</a>
+    </div>
+    <div class="subcats">
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🐉</span><div><div class="subcat-name">D&D Miniatures</div><div class="subcat-count">98 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">⚔️</span><div><div class="subcat-name">Warhammer 40K</div><div class="subcat-count">74 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🏰</span><div><div class="subcat-name">Terrain & Scenery</div><div class="subcat-count">56 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🎯</span><div><div class="subcat-name">Board Game Pieces</div><div class="subcat-count">47 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🎲</span><div><div class="subcat-name">Dice Towers</div><div class="subcat-count">28 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🗺️</span><div><div class="subcat-name">Map Tiles</div><div class="subcat-count">16 items</div></div></div>
+    </div>
+    <div class="items-strip">
+      <div class="strip-card"><div class="strip-card-img" style="background:linear-gradient(135deg,#f4eef8,#e0d0ec)">🐉</div><div class="strip-card-body"><div class="strip-card-name">Articulated Dragon</div><div class="strip-card-price">$52.00</div><div class="local-tag">📍 Hamilton</div></div></div>
+      <div class="strip-card"><div class="strip-card-img" style="background:linear-gradient(135deg,#fffde7,#fff9c4)">⚔️</div><div class="strip-card-body"><div class="strip-card-name">Space Marine Statue</div><div class="strip-card-price">$68.00</div><div style="font-size:11px;color:var(--muted);margin-top:3px">📦 Kitchener</div></div></div>
+      <div class="strip-card"><div class="strip-card-img" style="background:linear-gradient(135deg,#e8f5e9,#c8e6c9)">🏰</div><div class="strip-card-body"><div class="strip-card-name">Castle Terrain Set</div><div class="strip-card-price">$95.00</div><div style="font-size:11px;color:var(--muted);margin-top:3px">📦 Toronto</div></div></div>
+      <div class="strip-card"><div class="strip-card-img" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb)">🎲</div><div class="strip-card-body"><div class="strip-card-name">Dragon Dice Tower</div><div class="strip-card-price">$38.00</div><div style="font-size:11px;color:var(--muted);margin-top:3px">📦 Vancouver</div></div></div>
+    </div>
+  </div>
+
+  <!-- FUNCTIONAL PARTS -->
+  <div class="cat-section" id="cat-functional">
+    <div class="cat-section-header">
+      <span class="cat-section-icon">🔧</span>
+      <div>
+        <div class="cat-section-title">Functional <span>Parts</span></div>
+      </div>
+      <span class="cat-section-count">312 items</span>
+      <a class="cat-section-link" href="index.html">Browse all →</a>
+    </div>
+    <div class="subcats">
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🔌</span><div><div class="subcat-name">Cable Management</div><div class="subcat-count">45 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🔩</span><div><div class="subcat-name">Brackets & Mounts</div><div class="subcat-count">67 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🚪</span><div><div class="subcat-name">Door & Drawer Knobs</div><div class="subcat-count">38 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🧰</span><div><div class="subcat-name">Tool Holders</div><div class="subcat-count">54 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🏠</span><div><div class="subcat-name">Home Repairs</div><div class="subcat-count">72 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🚗</span><div><div class="subcat-name">Car Parts</div><div class="subcat-count">36 items</div></div></div>
+    </div>
+  </div>
+
+  <!-- ART & SCULPTURE -->
+  <div class="cat-section" id="cat-art">
+    <div class="cat-section-header">
+      <span class="cat-section-icon">🎨</span>
+      <div>
+        <div class="cat-section-title">Art <span>& Sculpture</span></div>
+      </div>
+      <span class="cat-section-count">263 items</span>
+      <a class="cat-section-link" href="index.html">Browse all →</a>
+    </div>
+    <div class="subcats">
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🗿</span><div><div class="subcat-name">Sculptures</div><div class="subcat-count">89 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🚀</span><div><div class="subcat-name">Desk Ornaments</div><div class="subcat-count">67 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🪆</span><div><div class="subcat-name">Figurines</div><div class="subcat-count">74 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🌊</span><div><div class="subcat-name">Abstract Art</div><div class="subcat-count">33 items</div></div></div>
+    </div>
+  </div>
+
+  <!-- COSPLAY -->
+  <div class="cat-section" id="cat-cosplay">
+    <div class="cat-section-header">
+      <span class="cat-section-icon">🎭</span>
+      <div>
+        <div class="cat-section-title">Cosplay <span>& Props</span></div>
+      </div>
+      <span class="cat-section-count">201 items</span>
+      <a class="cat-section-link" href="index.html">Browse all →</a>
+    </div>
+    <div class="subcats">
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🦸</span><div><div class="subcat-name">Superhero Props</div><div class="subcat-count">67 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">⚔️</span><div><div class="subcat-name">Swords & Weapons</div><div class="subcat-count">45 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">👑</span><div><div class="subcat-name">Crowns & Helmets</div><div class="subcat-count">38 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🎪</span><div><div class="subcat-name">Accessories</div><div class="subcat-count">51 items</div></div></div>
+    </div>
+  </div>
+
+  <!-- JEWELRY -->
+  <div class="cat-section" id="cat-jewelry">
+    <div class="cat-section-header">
+      <span class="cat-section-icon">💍</span>
+      <div>
+        <div class="cat-section-title"><span>Jewelry</span> & Accessories</div>
+      </div>
+      <span class="cat-section-count">214 items</span>
+      <a class="cat-section-link" href="index.html">Browse all →</a>
+    </div>
+    <div class="subcats">
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">💍</span><div><div class="subcat-name">Rings</div><div class="subcat-count">54 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">📿</span><div><div class="subcat-name">Necklaces</div><div class="subcat-count">43 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">💎</span><div><div class="subcat-name">Earrings</div><div class="subcat-count">67 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🔑</span><div><div class="subcat-name">Keychains</div><div class="subcat-count">50 items</div></div></div>
+    </div>
+  </div>
+
+  <!-- KIDS & TOYS -->
+  <div class="cat-section" id="cat-kids">
+    <div class="cat-section-header">
+      <span class="cat-section-icon">🧸</span>
+      <div>
+        <div class="cat-section-title">Kids <span>& Toys</span></div>
+      </div>
+      <span class="cat-section-count">155 items</span>
+      <a class="cat-section-link" href="index.html">Browse all →</a>
+    </div>
+    <div class="subcats">
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🐙</span><div><div class="subcat-name">Fidget Toys</div><div class="subcat-count">38 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🚂</span><div><div class="subcat-name">Toy Vehicles</div><div class="subcat-count">29 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🧩</span><div><div class="subcat-name">Puzzles</div><div class="subcat-count">34 items</div></div></div>
+      <div class="subcat" onclick="window.location.href='index.html'"><span class="subcat-icon">🦕</span><div><div class="subcat-name">Animal Figures</div><div class="subcat-count">54 items</div></div></div>
+    </div>
+  </div>
+
+  <!-- CUSTOM ORDERS CTA -->
+  <div class="cta-banner">
+    <h2>💬 Can't Find What You Need?</h2>
+    <p>Request a fully custom 3D print from a local maker. Describe your idea and get quotes within hours.</p>
+    <button class="btn-white" onclick="window.location.href='index.html'">Request a Custom Print →</button>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">3DPS<span>.ca</span></div>
+    <div class="footer-links">
+      <a href="index.html">Marketplace</a>
+      <a href="open-shop.html">Sell</a>
+      <a href="fees.html">Fees</a>
+      <a href="categories.html">Categories</a>
+    </div>
+  </div>
+  <div class="footer-inner"><div class="footer-copy">© 2025 3DPS.ca Inc. All rights reserved. · 🇨🇦 Made in Canada</div></div>
+</footer>
+
+<script>
+function setFilter(el, filter) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+}
+function doSearch() {
+  const q = document.getElementById('search-input').value || document.getElementById('hero-search').value;
+  if (q) window.location.href = 'index.html#' + encodeURIComponent(q);
+}
+document.getElementById('search-input').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
+document.getElementById('hero-search').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
+</script>
+</body>
+</html>
