@@ -6,24 +6,24 @@
 <title>Fees & Pricing — 3DPS.ca</title>
 <meta name="description" content="Transparent fees for buyers and sellers on 3DPS.ca — Canada's 3D print marketplace." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 <style>
 :root {
-  --orange:#E85D04; --orange2:#F48C06; --orange-pale:#FFF3E8;
-  --dark:#1A1210; --mid:#3D2B1F; --muted:#8C7B74;
-  --cream:#FFF8F1; --white:#FFFFFF;
-  --border:#E8DDD7; --border2:#F0E8E0;
-  --green:#1B6E3C; --green-pale:#EAF6EE;
+  --orange:#0A7A4B; --orange2:#12A868; --orange-pale:#E8F7F1;
+  --dark:#0A1A12; --mid:#1A3D2B; --muted:#6B8C7A;
+  --cream:#F0FAF5; --white:#FFFFFF;
+  --border:#C8E8D8; --border2:#D8F0E4;
+  --green:#0A7A4B; --green-pale:#E8F7F1;
   --blue:#1A5DAD; --blue-pale:#EEF4FF;
-  --shadow:0 2px 16px rgba(26,18,16,.09);
-  --shadow-lg:0 8px 40px rgba(26,18,16,.15);
+  --shadow:0 2px 16px rgba(10,26,18,.09);
+  --shadow-lg:0 8px 40px rgba(10,26,18,.15);
   --r:12px; --r-sm:8px; --r-lg:20px; --r-pill:999px;
-  --font-display:'Syne',sans-serif;
-  --font-body:'DM Sans',sans-serif;
+  --font-display:'Outfit',sans-serif;
+  --font-body:'Plus Jakarta Sans',sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--font-body);background:var(--cream);color:var(--dark);-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);background:var(--cream);color:var(--dark);-webkit-font-smoothing:antialiased;overflow-x:hidden;touch-action:manipulation}
 a{color:inherit;text-decoration:none}
 button{font-family:var(--font-body);cursor:pointer}
 
@@ -48,7 +48,7 @@ nav{background:var(--white);border-bottom:1.5px solid var(--border);position:sti
 .breadcrumb a:hover{opacity:.7}
 
 /* ── HERO ── */
-.page-hero{background:linear-gradient(135deg,#1a1210 0%,#2d1a0e 55%,#4a2800 100%);padding:64px 24px;text-align:center;position:relative;overflow:hidden}
+.page-hero{background:linear-gradient(135deg,#051a0e 0%,#0a2e1a 55%,#0d4a28 100%);padding:64px 24px;text-align:center;position:relative;overflow:hidden}
 .page-hero::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23E85D04' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");opacity:.5}
 .page-hero-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
 .page-hero-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(232,93,4,.18);border:1px solid rgba(232,93,4,.3);border-radius:var(--r-pill);padding:5px 16px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange2);margin-bottom:20px}
@@ -554,24 +554,38 @@ footer{background:var(--dark);padding:40px 24px 24px}
     <p class="s-sub">Everything you need to know about fees, payments, and policies on 3DPS.ca.</p>
 
     <div class="faq-list">
-      {[
-        ["When is the listing fee charged?","The $0.20 listing fee is charged when you publish a new listing. If an item sells, the listing fee is not refunded — it's a one-time publication fee. Listings renew every 4 months at $0.20 if the item hasn't sold."],
-        ["What exactly does the 6.5% transaction fee cover?","The 6.5% fee covers: payment processing infrastructure, fraud detection, buyer protection insurance, platform hosting, seller dashboard, messaging system, and customer support. We keep the platform running so you don't have to worry about it."],
-        ["Do I pay tax on my sales?","If you're a registered business or earning above Canada's small supplier threshold ($30,000/year in taxable sales), you may need to collect and remit GST/HST. We recommend consulting a Canadian accountant. 3DPS.ca collects and remits taxes on behalf of buyers in applicable provinces."],
-        ["How quickly do I get paid?","Earnings are released to your 3DPS.ca balance once the buyer confirms receipt, or automatically 5 days after tracking shows delivery. Payouts to your bank account process weekly every Monday via Interac e-Transfer or direct deposit."],
-        ["What if a buyer requests a refund?","If a buyer opens a dispute, our team reviews the case fairly. If the refund is legitimate, it's deducted from your balance. The 6.5% transaction fee is refunded to you on valid refunds. Listing fees are non-refundable."],
-        ["Are there fees for custom orders?","Custom orders go through the same fee structure — $0.20 listing fee if you create a listing for it, plus 6.5% when the sale completes. Many custom orders are handled through messaging and a private listing, which works the same way."],
-        ["Can I offer free local pickup?","Absolutely — and we encourage it! Local pickup is free to offer. No transaction fees on the shipping portion since there isn't one. The 6.5% still applies to the item price."],
-        ["Is there a minimum or maximum sale price?","Minimum item price is $1.00. There's no maximum. For orders over $500, we recommend the buyer and seller agree on terms in writing via the messaging system before proceeding."],
-      ].map(([q, a], i) => `
-        <div class="faq-item" id="faq-${i}">
-          <button class="faq-q" onclick="toggleFaq(${i})">
-            <span>${q}</span>
-            <span class="faq-chevron">⌄</span>
-          </button>
-          <div class="faq-a">${a}</div>
-        </div>
-      `).join('')}
+      <div class="faq-item" id="faq-0">
+        <button class="faq-q" onclick="toggleFaq(0)"><span>When is the listing fee charged?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">The $0.20 listing fee is charged when you publish a new listing. If an item sells, the listing fee is not refunded — it's a one-time publication fee. Listings renew every 4 months at $0.20 if the item hasn't sold.</div>
+      </div>
+      <div class="faq-item" id="faq-1">
+        <button class="faq-q" onclick="toggleFaq(1)"><span>What exactly does the 6.5% transaction fee cover?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">The 6.5% fee covers: payment processing infrastructure, fraud detection, buyer protection insurance, platform hosting, seller dashboard, messaging system, and customer support. We keep the platform running so you don't have to worry about it.</div>
+      </div>
+      <div class="faq-item" id="faq-2">
+        <button class="faq-q" onclick="toggleFaq(2)"><span>Do I pay tax on my sales?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">If you're a registered business or earning above Canada's small supplier threshold ($30,000/year in taxable sales), you may need to collect and remit GST/HST. We recommend consulting a Canadian accountant. 3DPS.ca collects and remits taxes on behalf of buyers in applicable provinces.</div>
+      </div>
+      <div class="faq-item" id="faq-3">
+        <button class="faq-q" onclick="toggleFaq(3)"><span>How quickly do I get paid?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">Earnings are released to your 3DPS.ca balance once the buyer confirms receipt, or automatically 5 days after tracking shows delivery. Payouts to your bank account process weekly every Monday via Interac e-Transfer or direct deposit.</div>
+      </div>
+      <div class="faq-item" id="faq-4">
+        <button class="faq-q" onclick="toggleFaq(4)"><span>What if a buyer requests a refund?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">If a buyer opens a dispute, our team reviews the case fairly. If the refund is legitimate, it's deducted from your balance. The 6.5% transaction fee is refunded to you on valid refunds. Listing fees are non-refundable.</div>
+      </div>
+      <div class="faq-item" id="faq-5">
+        <button class="faq-q" onclick="toggleFaq(5)"><span>Are there fees for custom orders?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">Custom orders go through the same fee structure — $0.20 listing fee if you create a listing for it, plus 6.5% when the sale completes. Many custom orders are handled through messaging and a private listing, which works the same way.</div>
+      </div>
+      <div class="faq-item" id="faq-6">
+        <button class="faq-q" onclick="toggleFaq(6)"><span>Can I offer free local pickup?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">Absolutely — and we encourage it! Local pickup is free to offer. No transaction fees on the shipping portion since there isn't one. The 6.5% still applies to the item price.</div>
+      </div>
+      <div class="faq-item" id="faq-7">
+        <button class="faq-q" onclick="toggleFaq(7)"><span>Is there a minimum or maximum sale price?</span><span class="faq-chevron">⌄</span></button>
+        <div class="faq-a">Minimum item price is $1.00. There's no maximum. For orders over $500, we recommend the buyer and seller agree on terms in writing via the messaging system before proceeding.</div>
+      </div>
     </div>
 
     <div style="text-align:center;padding:32px;background:var(--white);border:1px solid var(--border);border-radius:var(--r)">

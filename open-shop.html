@@ -23,7 +23,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--font-body);background:var(--cream);color:var(--dark);-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-body);background:var(--cream);color:var(--dark);-webkit-font-smoothing:antialiased;overflow-x:hidden;touch-action:manipulation}
 a{color:inherit;text-decoration:none}
 button{font-family:var(--font-body);cursor:pointer}
 
@@ -250,7 +250,7 @@ footer{background:#051a0e;padding:40px 24px 24px}
           <div class="step-tips">
             <div class="step-tip">Use natural light photos — no filters needed, just clear and sharp</div>
             <div class="step-tip">Write titles that describe what the item IS, not just what it looks like</div>
-            <div class="step-tip">Include material, dimensions, and color options in your description</div>
+            <div class="step-tip">Include material, dimensions, and colour options in your description</div>
             <div class="step-tip">Competitive pricing tip: search similar items first</div>
           </div>
         </div>
@@ -448,10 +448,10 @@ footer{background:#051a0e;padding:40px 24px 24px}
     <div style="font-family:var(--font-display);font-size:22px;font-weight:700;margin-bottom:6px">Open Your Shop</div>
     <div style="font-size:13px;color:var(--muted);margin-bottom:20px">Free to start · $0.20/listing · 6.5% on sales only</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
-      <div><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">First Name</label><input style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" placeholder="Jane"/></div>
-      <div><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">Last Name</label><input style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" placeholder="Doe"/></div>
+      <div><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">First Name</label><input type="text" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" placeholder="Jane"/></div>
+      <div><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">Last Name</label><input type="text" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" placeholder="Doe"/></div>
     </div>
-    <div style="margin-bottom:12px"><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">Shop Name</label><input style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" placeholder="e.g. HamiltonMakes"/></div>
+    <div style="margin-bottom:12px"><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">Shop Name</label><input type="text" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" placeholder="e.g. HamiltonMakes"/></div>
     <div style="margin-bottom:12px"><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">Email</label><input style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" type="email" placeholder="jane@email.com"/></div>
     <div style="margin-bottom:20px"><label style="font-size:12px;font-weight:600;color:var(--mid);display:block;margin-bottom:5px">Password</label><input style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none" type="password" placeholder="••••••••"/></div>
     <button style="width:100%;background:var(--orange);color:#fff;border:none;padding:13px;border-radius:var(--r-pill);font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font-display)">Create My Shop →</button>
