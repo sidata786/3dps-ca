@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Local Sellers — 3DPS.ca</title>
+<meta name="description" content="Find 3D print makers near you across Canada. Browse local sellers by city, see their work, and arrange pickup." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --green:#0A7A4B; --green2:#12A868; --green-pale:#E8F7F1;
+  --dark:#0A1A12; --mid:#1A3D2B; --muted:#6B8C7A;
+  --cream:#F0FAF5; --white:#FFFFFF;
+  --border:#C8E8D8; --border2:#D8F0E4;
+  --shadow:0 2px 16px rgba(10,26,18,.09);
+  --shadow-lg:0 8px 40px rgba(10,26,18,.18);
+  --r:12px; --r-sm:8px; --r-lg:20px; --r-pill:999px;
+  --font-display:'Outfit',sans-serif;
+  --font-body:'Plus Jakarta Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--cream);color:var(--dark);overflow-x:hidden;-webkit-font-smoothing:antialiased;touch-action:manipulation}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--font-body);cursor:pointer}
+
+/* ── TOPBAR ── */
+#topbar{background:#051a0e;color:rgba(255,255,255,.65);font-size:12px;text-align:center;padding:8px 24px;letter-spacing:.03em}
+#topbar a{color:var(--green2);font-weight:600}
+
+/* ── NAV ── */
+nav{background:var(--white);border-bottom:1.5px solid var(--border);position:sticky;top:0;z-index:90;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.nav-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:16px;height:66px}
+.logo{font-family:var(--font-display);font-size:26px;font-weight:800;color:var(--green);letter-spacing:-.04em;cursor:pointer}
+.logo span{color:var(--dark)}
+.searchbar{flex:1;max-width:440px;display:flex;border:2px solid var(--dark);border-radius:var(--r-pill);overflow:hidden}
+.searchbar input{flex:1;border:none;outline:none;padding:8px 18px;font-size:14px;font-family:var(--font-body)}
+.searchbar button{background:var(--dark);border:none;padding:8px 16px;color:#fff;font-size:16px;cursor:pointer;transition:background .15s}
+.searchbar button:hover{background:var(--green)}
+.nav-links{display:flex;gap:4px}
+.nav-link{font-size:14px;font-weight:500;color:var(--mid);padding:8px 12px;border-radius:var(--r-sm);background:none;border:none;cursor:pointer;transition:background .15s,color .15s}
+.nav-link:hover{background:var(--cream);color:var(--green)}
+.nav-link.active{color:var(--green);font-weight:600}
+.btn-primary{background:var(--green);color:#fff;border:none;padding:10px 22px;border-radius:var(--r-pill);font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,transform .15s;margin-left:auto}
+.btn-primary:hover{background:var(--green2);transform:translateY(-1px)}
+
+/* ── BREADCRUMB ── */
+.breadcrumb{max-width:1280px;margin:0 auto;padding:18px 24px 0;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.breadcrumb a{color:var(--green);transition:opacity .15s}
+.breadcrumb a:hover{opacity:.7}
+
+/* ── HERO ── */
+.page-hero{background:linear-gradient(135deg,#051a0e 0%,#0a2e1a 55%,#0d4a28 100%);padding:56px 24px 48px;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230A7A4B' fill-opacity='0.08'%3E%3Ccircle cx='40' cy='40' r='2'/%3E%3Ccircle cx='0' cy='0' r='2'/%3E%3Ccircle cx='80' cy='0' r='2'/%3E%3Ccircle cx='0' cy='80' r='2'/%3E%3Ccircle cx='80' cy='80' r='2'/%3E%3C/g%3E%3C/svg%3E")}
+.hero-inner{position:relative;z-index:1;max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.hero-text{flex:1;min-width:280px}
+.hero-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(18,168,104,.15);border:1px solid rgba(18,168,104,.3);border-radius:var(--r-pill);padding:5px 14px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--green2);margin-bottom:18px}
+.hero-h1{font-family:var(--font-display);font-size:clamp(28px,4vw,48px);font-weight:800;color:#fff;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+.hero-h1 em{color:var(--green2);font-style:normal}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.6);line-height:1.7;max-width:480px;margin-bottom:24px}
+.hero-stats{display:flex;gap:24px;flex-wrap:wrap}
+.hero-stat{text-align:left}
+.hero-stat-val{font-family:var(--font-display);font-size:28px;font-weight:800;color:var(--green2);line-height:1}
+.hero-stat-label{font-size:12px;color:rgba(255,255,255,.45);margin-top:3px}
+
+/* CANADA MAP SVG AREA */
+.hero-map{flex:0 0 360px;height:220px;position:relative;display:flex;align-items:center;justify-content:center}
+.map-bg{width:100%;height:100%;position:relative}
+.map-pin{position:absolute;display:flex;flex-direction:column;align-items:center;cursor:pointer;transition:transform .2s}
+.map-pin:hover{transform:translateY(-4px) scale(1.1)}
+.pin-dot{width:14px;height:14px;background:var(--green2);border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 4px rgba(18,168,104,.25);animation:pulse 2s infinite}
+.pin-dot.large{width:18px;height:18px;box-shadow:0 0 0 6px rgba(18,168,104,.25)}
+.pin-label{font-size:10px;font-weight:700;color:#fff;margin-top:4px;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.6);letter-spacing:.03em}
+.pin-count{font-size:9px;color:var(--green2);font-weight:700}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(18,168,104,.25)}50%{box-shadow:0 0 0 8px rgba(18,168,104,.1)}}
+
+/* ── FILTER / SEARCH BAR ── */
+.filter-bar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 24px;position:sticky;top:66px;z-index:80}
+.filter-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.filter-label{font-size:13px;font-weight:600;color:var(--mid);white-space:nowrap}
+.filter-chips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.chip{background:var(--cream);border:1.5px solid var(--border);border-radius:var(--r-pill);padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;transition:background .15s,border-color .15s,color .15s;color:var(--mid);white-space:nowrap}
+.chip:hover,.chip.active{background:var(--green);color:#fff;border-color:var(--green)}
+.view-toggle{display:flex;border:1.5px solid var(--border);border-radius:var(--r-sm);overflow:hidden;margin-left:auto}
+.view-btn{background:none;border:none;padding:7px 12px;font-size:16px;cursor:pointer;transition:background .15s}
+.view-btn.active{background:var(--green);color:#fff}
+.sort-select{border:1.5px solid var(--border);border-radius:var(--r-sm);padding:7px 12px;font-size:13px;font-family:var(--font-body);outline:none;color:var(--mid);background:var(--white);cursor:pointer}
+
+/* ── MAIN LAYOUT ── */
+.page-body{max-width:1280px;margin:0 auto;padding:32px 24px 80px;display:grid;grid-template-columns:280px 1fr;gap:28px;align-items:start}
+
+/* ── SIDEBAR ── */
+.sidebar{position:sticky;top:130px}
+.sidebar-section{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;margin-bottom:16px}
+.sidebar-title{font-family:var(--font-display);font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.city-list{display:flex;flex-direction:column;gap:2px}
+.city-item{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;border-radius:var(--r-sm);cursor:pointer;transition:background .15s;border:1.5px solid transparent}
+.city-item:hover{background:var(--green-pale)}
+.city-item.active{background:var(--green-pale);border-color:var(--green)}
+.city-item-left{display:flex;align-items:center;gap:10px}
+.city-dot{width:10px;height:10px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .15s}
+.city-item.active .city-dot{background:var(--green)}
+.city-name{font-size:14px;font-weight:500;color:var(--dark)}
+.city-count{font-size:12px;font-weight:700;color:var(--muted);background:var(--cream);padding:2px 8px;border-radius:var(--r-pill)}
+.city-item.active .city-count{background:rgba(10,122,75,.12);color:var(--green)}
+
+.spec-list{display:flex;flex-direction:column;gap:6px}
+.spec-item{display:flex;align-items:center;gap:8px;cursor:pointer}
+.spec-check{width:18px;height:18px;border:2px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#fff;background:transparent;transition:all .15s;flex-shrink:0}
+.spec-item.checked .spec-check{background:var(--green);border-color:var(--green)}
+.spec-item.checked .spec-check::after{content:'✓'}
+.spec-label{font-size:13px;color:var(--mid)}
+
+.pricerange{padding:4px 0}
+.range-row{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
+input[type=range]{width:100%;accent-color:var(--green);cursor:pointer}
+
+/* ── RESULTS HEADER ── */
+.results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.results-count{font-family:var(--font-display);font-size:18px;font-weight:700}
+.results-count span{color:var(--green)}
+.results-sub{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* ── CITY SECTION HEADERS ── */
+.city-section{margin-bottom:40px}
+.city-section-head{display:flex;align-items:center;gap:14px;margin-bottom:18px;padding-bottom:14px;border-bottom:2px solid var(--border)}
+.city-icon{font-size:28px}
+.city-section-title{font-family:var(--font-display);font-size:20px;font-weight:700;letter-spacing:-.01em}
+.city-section-title span{color:var(--green)}
+.city-section-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.city-see-all{margin-left:auto;font-size:13px;font-weight:600;color:var(--green);border:1.5px solid var(--border);padding:6px 14px;border-radius:var(--r-pill);cursor:pointer;transition:border-color .15s,background .15s}
+.city-see-all:hover{border-color:var(--green);background:var(--green-pale)}
+
+/* ── SELLER CARDS ── */
+.sellers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.sellers-list{display:flex;flex-direction:column;gap:12px}
+
+/* CARD VIEW */
+.seller-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s}
+.seller-card:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.seller-card-banner{height:90px;display:flex;align-items:center;justify-content:center;font-size:44px;position:relative}
+.seller-card-avatar{position:absolute;bottom:-20px;left:20px;width:44px;height:44px;background:var(--white);border:2px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:var(--shadow)}
+.seller-card-body{padding:28px 20px 20px}
+.seller-name{font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:3px}
+.seller-city{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:4px;margin-bottom:10px}
+.seller-city-dot{width:6px;height:6px;background:var(--green);border-radius:50%;flex-shrink:0}
+.seller-bio{font-size:13px;color:var(--mid);line-height:1.6;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.seller-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.seller-tag{background:var(--green-pale);color:var(--green);border:1px solid #b2ddc0;border-radius:var(--r-pill);padding:3px 9px;font-size:11px;font-weight:600}
+.seller-stats{display:flex;gap:16px;padding-top:12px;border-top:1px solid var(--border2)}
+.seller-stat{text-align:center;flex:1}
+.seller-stat-val{font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--dark)}
+.seller-stat-label{font-size:10px;color:var(--muted);margin-top:1px}
+.seller-card-footer{padding:12px 20px;border-top:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;background:var(--cream)}
+.pickup-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--green)}
+.online-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)}
+.online-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;flex-shrink:0}
+.view-shop-btn{font-size:12px;font-weight:600;color:var(--green);background:none;border:1.5px solid var(--green);padding:5px 12px;border-radius:var(--r-pill);cursor:pointer;transition:background .15s,color .15s}
+.view-shop-btn:hover{background:var(--green);color:#fff}
+
+/* LIST VIEW */
+.seller-row{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:20px 24px;cursor:pointer;display:flex;align-items:center;gap:20px;transition:border-color .2s,box-shadow .2s}
+.seller-row:hover{border-color:var(--green);box-shadow:var(--shadow)}
+.seller-row-avatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.seller-row-info{flex:1;min-width:0}
+.seller-row-name{font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:2px}
+.seller-row-meta{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.seller-row-bio{font-size:13px;color:var(--mid);line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px}
+.seller-row-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.seller-row-stats{display:flex;gap:20px;text-align:center;flex-shrink:0}
+.seller-row-stat-val{font-family:var(--font-display);font-size:18px;font-weight:700}
+.seller-row-stat-label{font-size:10px;color:var(--muted)}
+
+/* ── RATING STARS ── */
+.stars{color:#f59e0b;font-size:12px;letter-spacing:1px}
+
+/* ── FEATURED SELLER ── */
+.featured-seller{background:linear-gradient(135deg,#051a0e,#0a2e1a);border:1.5px solid rgba(18,168,104,.3);border-radius:var(--r-lg);padding:24px;margin-bottom:16px;cursor:pointer;transition:border-color .2s,box-shadow .2s;position:relative;overflow:hidden}
+.featured-seller::before{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:radial-gradient(circle,rgba(18,168,104,.15),transparent 70%);pointer-events:none}
+.featured-seller:hover{border-color:var(--green2);box-shadow:0 8px 32px rgba(18,168,104,.2)}
+.featured-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(18,168,104,.2);border:1px solid rgba(18,168,104,.35);border-radius:var(--r-pill);padding:3px 10px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--green2);margin-bottom:12px}
+.featured-seller-inner{display:flex;align-items:center;gap:16px}
+.featured-avatar{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:28px;border:2px solid rgba(18,168,104,.3);flex-shrink:0}
+.featured-name{font-family:var(--font-display);font-size:18px;font-weight:700;color:#fff;margin-bottom:3px}
+.featured-city{font-size:12px;color:rgba(255,255,255,.5);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.featured-tags{display:flex;gap:5px;flex-wrap:wrap}
+.featured-tag{background:rgba(18,168,104,.15);color:var(--green2);border:1px solid rgba(18,168,104,.25);border-radius:var(--r-pill);padding:2px 8px;font-size:11px;font-weight:600}
+.featured-stats{margin-left:auto;text-align:right;flex-shrink:0}
+.featured-stat-val{font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--green2)}
+.featured-stat-label{font-size:11px;color:rgba(255,255,255,.4)}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:60px 24px;background:var(--white);border:1.5px dashed var(--border);border-radius:var(--r-lg)}
+.empty-icon{font-size:48px;margin-bottom:14px}
+.empty-title{font-family:var(--font-display);font-size:20px;font-weight:700;margin-bottom:8px}
+.empty-desc{font-size:14px;color:var(--muted);line-height:1.65;max-width:360px;margin:0 auto 20px}
+
+/* ── CTA ── */
+.cta-banner{background:var(--green);border-radius:var(--r-lg);padding:32px;text-align:center;color:#fff;margin-top:40px}
+.cta-banner h2{font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.cta-banner p{font-size:14px;opacity:.85;margin-bottom:18px}
+.btn-white{background:#fff;color:var(--green);border:none;padding:11px 26px;border-radius:var(--r-pill);font-size:14px;font-weight:700;cursor:pointer;transition:transform .15s,background .15s}
+.btn-white:hover{transform:translateY(-1px);background:#f0faf5}
+
+/* ── FOOTER ── */
+footer{background:#051a0e;padding:36px 24px 24px}
+.footer-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--green)}
+.footer-logo span{color:rgba(255,255,255,.3)}
+.footer-links{display:flex;gap:18px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.4);transition:color .15s;cursor:pointer}
+.footer-links a:hover{color:var(--green2)}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.2);width:100%;text-align:center;margin-top:16px;padding-top:16px;border-top:1px solid rgba(255,255,255,.06)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.seller-card,.seller-row,.city-section{animation:fadeUp .3s ease both}
+.city-section:nth-child(2){animation-delay:.05s}
+.city-section:nth-child(3){animation-delay:.1s}
+.city-section:nth-child(4){animation-delay:.15s}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .page-body{grid-template-columns:1fr}
+  .sidebar{position:static;display:flex;gap:12px;flex-wrap:wrap}
+  .sidebar-section{flex:1;min-width:200px}
+  .hero-map{display:none}
+}
+@media(max-width:600px){
+  .filter-inner{gap:6px}
+  .sellers-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div id="topbar">🇨🇦 Canada's #1 marketplace for 3D printed goods — <a href="index.html">Browse items</a></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">3DPS<span>.ca</span></a>
+    <div class="searchbar">
+      <input type="text" id="search-input" placeholder="Search sellers, cities, specialties…" />
+      <button onclick="doSearch()">🔍</button>
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Shop</a>
+      <a href="categories.html" class="nav-link">Categories</a>
+      <button class="nav-link active">Local Sellers</button>
+    </div>
+    <button class="btn-primary" onclick="window.location.href='open-shop.html'">Sell on 3DPS</button>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="index.html">Home</a> <span>›</span> <span>Local Sellers</span>
+</div>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-pill">📍 Find Makers Near You</div>
+      <h1 class="hero-h1">Your Neighbours<br/>Are <em>Making Things</em></h1>
+      <p class="hero-sub">Browse 340+ Canadian makers by city. Buy local, arrange free pickup, and support makers in your community.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-val">340+</div><div class="hero-stat-label">Active sellers</div></div>
+        <div class="hero-stat"><div class="hero-stat-val">28</div><div class="hero-stat-label">Cities covered</div></div>
+        <div class="hero-stat"><div class="hero-stat-val">62%</div><div class="hero-stat-label">Offer pickup</div></div>
+        <div class="hero-stat"><div class="hero-stat-val">4.8★</div><div class="hero-stat-label">Avg. rating</div></div>
+      </div>
+    </div>
+
+    <!-- CANADA DOT MAP -->
+    <div class="hero-map">
+      <div class="map-bg" style="position:relative;width:360px;height:220px">
+        <!-- Stylised province outlines as SVG -->
+        <svg width="360" height="220" viewBox="0 0 360 220" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;opacity:.15">
+          <path d="M20 80 Q60 40 100 50 Q140 60 160 40 Q200 20 240 30 Q280 40 320 20 L340 60 Q300 80 280 100 Q240 120 200 110 Q160 100 120 120 Q80 140 60 130 Z" fill="#12A868"/>
+          <path d="M40 130 Q80 140 120 120 Q140 110 160 120 Q180 130 200 110 Q240 90 280 100 L290 140 Q260 160 220 155 Q180 150 140 165 Q100 180 70 170 Z" fill="#0A7A4B" opacity=".6"/>
+          <path d="M70 170 Q100 180 140 165 Q180 150 210 160 L220 195 Q180 205 140 200 Q100 195 70 200 Z" fill="#0A7A4B" opacity=".4"/>
+        </svg>
+
+        <!-- City pins -->
+        <div class="map-pin" style="left:48px;top:105px" onclick="filterCity('Vancouver')">
+          <div class="pin-dot large"></div>
+          <div class="pin-label">Vancouver</div>
+          <div class="pin-count">42 sellers</div>
+        </div>
+        <div class="map-pin" style="left:118px;top:88px" onclick="filterCity('Calgary')">
+          <div class="pin-dot"></div>
+          <div class="pin-label">Calgary</div>
+          <div class="pin-count">31 sellers</div>
+        </div>
+        <div class="map-pin" style="left:170px;top:100px" onclick="filterCity('Edmonton')">
+          <div class="pin-dot"></div>
+          <div class="pin-label">Edmonton</div>
+          <div class="pin-count">24 sellers</div>
+        </div>
+        <div class="map-pin" style="left:245px;top:118px" onclick="filterCity('Winnipeg')">
+          <div class="pin-dot"></div>
+          <div class="pin-label">Winnipeg</div>
+          <div class="pin-count">18 sellers</div>
+        </div>
+        <div class="map-pin" style="left:292px;top:130px" onclick="filterCity('Toronto')">
+          <div class="pin-dot large"></div>
+          <div class="pin-label">Toronto</div>
+          <div class="pin-count">89 sellers</div>
+        </div>
+        <div class="map-pin" style="left:318px;top:148px" onclick="filterCity('Hamilton')">
+          <div class="pin-dot"></div>
+          <div class="pin-label">Hamilton</div>
+          <div class="pin-count">27 sellers</div>
+        </div>
+        <div class="map-pin" style="left:326px;top:106px" onclick="filterCity('Ottawa')">
+          <div class="pin-dot"></div>
+          <div class="pin-label">Ottawa</div>
+          <div class="pin-count">35 sellers</div>
+        </div>
+        <div class="map-pin" style="left:340px;top:88px" onclick="filterCity('Montréal')">
+          <div class="pin-dot large"></div>
+          <div class="pin-label">Montréal</div>
+          <div class="pin-count">54 sellers</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <span class="filter-label">City:</span>
+    <div class="filter-chips">
+      <span class="chip active" onclick="filterCity('all',this)">🇨🇦 All Canada</span>
+      <span class="chip" onclick="filterCity('Hamilton',this)">Hamilton</span>
+      <span class="chip" onclick="filterCity('Toronto',this)">Toronto</span>
+      <span class="chip" onclick="filterCity('Ottawa',this)">Ottawa</span>
+      <span class="chip" onclick="filterCity('Vancouver',this)">Vancouver</span>
+      <span class="chip" onclick="filterCity('Calgary',this)">Calgary</span>
+      <span class="chip" onclick="filterCity('Montréal',this)">Montréal</span>
+      <span class="chip" onclick="filterCity('Winnipeg',this)">Winnipeg</span>
+    </div>
+    <select class="sort-select" id="sort-select" onchange="sortSellers()">
+      <option value="rating">Top Rated</option>
+      <option value="sales">Most Sales</option>
+      <option value="newest">Newest</option>
+      <option value="pickup">Pickup Available</option>
+    </select>
+    <div class="view-toggle">
+      <button class="view-btn active" id="grid-btn" onclick="setView('grid')" title="Grid view">▦</button>
+      <button class="view-btn" id="list-btn" onclick="setView('list')" title="List view">≡</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE BODY -->
+<div class="page-body" id="page-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
+    <!-- FEATURED SELLER -->
+    <div class="sidebar-section" style="padding:0;overflow:hidden;border:none;background:transparent">
+      <div class="featured-seller" onclick="window.location.href='index.html'">
+        <div class="featured-badge">⭐ Featured Maker</div>
+        <div class="featured-seller-inner">
+          <div class="featured-avatar">🦊</div>
+          <div>
+            <div class="featured-name">FoxForge3D</div>
+            <div class="featured-city"><span style="color:var(--green2)">📍</span> Hamilton, ON</div>
+            <div class="featured-tags">
+              <span class="featured-tag">Resin</span>
+              <span class="featured-tag">Miniatures</span>
+              <span class="featured-tag">Custom</span>
+            </div>
+          </div>
+          <div class="featured-stats">
+            <div class="featured-stat-val">4.9★</div>
+            <div class="featured-stat-label">312 reviews</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BY CITY -->
+    <div class="sidebar-section">
+      <div class="sidebar-title">🗺️ Browse by City</div>
+      <div class="city-list" id="city-list">
+        <div class="city-item active" onclick="filterCity('all',null,this)">
+          <div class="city-item-left"><div class="city-dot"></div><span class="city-name">All Canada</span></div>
+          <span class="city-count">340</span>
+        </div>
+        <div class="city-item" onclick="filterCity('Hamilton',null,this)">
+          <div class="city-item-left"><div class="city-dot"></div><span class="city-name">Hamilton</span></div>
+          <span class="city-count">27</span>
+        </div>
+        <div class="city-item" onclick="filterCity('Toronto',null,this)">
+          <div class="city-item-left"><div class="city-dot"></div><span class="city-name">Toronto</span></div>
+          <span class="city-count">89</span>
+        </div>
+        <div class="city-item" onclick="filterCity('Ottawa',null,this)">
+          <div class="city-item-left"><div class="city-dot"></div><span class="city-name">Ottawa</span></div>
+          <span class="city-count">35</span>
+        </div>
+        <div class="city-item" onclick="filterCity('Montréal',null,this)">
+          <div class="city-item-left"><div class="city-dot"></div><span class="city-name">Montréal</span></div>
+          <span class="city-count">54</span>
+        </div>
+        <div class="city-item" onclick="filterCity('Vancouver',null,this)">
+          <div class="city-item-left"><div class="city-dot"></div><span class="city-name">Vancouver</span></div>
+          <span class="city-count">42</span>
+        </div>
+        <div class="city-item" onclick="filterCity('Calgary',null,this)">
+          <div class="city-item-left"><div class="city-dot"></div><span class="city-name">Calgary</span></div>
+          <span class="city-count">31</span>
+        </div>
+        <div class="city-item" onclick="filterCity('Edmonton',null,this)">
+          <div class="city-item-left"><div class="city-dot"></div><span class="city-name">Edmonton</span></div>
+          <span class="city-count">24</span>
+        </div>
+        <div class="city-item" onclick="filterCity('Winnipeg',null,this)">
+          <div class="city-item-left"><div class="city-dot"></div><span class="city-name">Winnipeg</span></div>
+          <span class="city-count">18</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPECIALITY FILTER -->
+    <div class="sidebar-section">
+      <div class="sidebar-title">🖨️ Printer Type</div>
+      <div class="spec-list">
+        <div class="spec-item checked" onclick="toggleSpec(this)">
+          <div class="spec-check"></div>
+          <span class="spec-label">FDM / Filament</span>
+        </div>
+        <div class="spec-item checked" onclick="toggleSpec(this)">
+          <div class="spec-check"></div>
+          <span class="spec-label">Resin / SLA</span>
+        </div>
+        <div class="spec-item checked" onclick="toggleSpec(this)">
+          <div class="spec-check"></div>
+          <span class="spec-label">SLS / Powder</span>
+        </div>
+        <div class="spec-item checked" onclick="toggleSpec(this)">
+          <div class="spec-check"></div>
+          <span class="spec-label">Multi-material</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPTIONS -->
+    <div class="sidebar-section">
+      <div class="sidebar-title">✅ Options</div>
+      <div class="spec-list">
+        <div class="spec-item checked" onclick="toggleSpec(this)">
+          <div class="spec-check"></div>
+          <span class="spec-label">Pickup available</span>
+        </div>
+        <div class="spec-item" onclick="toggleSpec(this)">
+          <div class="spec-check"></div>
+          <span class="spec-label">Custom orders</span>
+        </div>
+        <div class="spec-item" onclick="toggleSpec(this)">
+          <div class="spec-check"></div>
+          <span class="spec-label">Rush orders</span>
+        </div>
+        <div class="spec-item" onclick="toggleSpec(this)">
+          <div class="spec-check"></div>
+          <span class="spec-label">Wholesale / bulk</span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main id="main-content">
+
+    <div class="results-header">
+      <div>
+        <div class="results-count" id="results-count">Showing <span>340</span> sellers</div>
+        <div class="results-sub" id="results-sub">across all of Canada · sorted by top rated</div>
+      </div>
+    </div>
+
+    <!-- SELLERS CONTENT -->
+    <div id="sellers-output"></div>
+
+    <div class="cta-banner">
+      <h2>🖨️ Are You a Maker?</h2>
+      <p>Join 340+ Canadian sellers already earning on 3DPS.ca. Free to open your shop.</p>
+      <button class="btn-white" onclick="window.location.href='open-shop.html'">Open Your Shop — Free →</button>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">3DPS<span>.ca</span></div>
+    <div class="footer-links">
+      <a href="index.html">Marketplace</a>
+      <a href="local-sellers.html">Local Sellers</a>
+      <a href="categories.html">Categories</a>
+      <a href="open-shop.html">Sell</a>
+      <a href="fees.html">Fees</a>
+    </div>
+  </div>
+  <div class="footer-inner"><div class="footer-copy">© 2025 3DPS.ca Inc. All rights reserved. · 🇨🇦 Made in Canada</div></div>
+</footer>
+
+<script>
+// ── DATA ──
+const SELLERS = [
+  // Hamilton
+  { id:1, name:'FoxForge3D', city:'Hamilton', province:'ON', emoji:'🦊', banner:'linear-gradient(135deg,#1a0a2e,#3d1a6e)', bio:'Specialising in high-detail resin minis and custom commission pieces. 4 printers running daily.', tags:['Resin','Miniatures','Custom'], printer:'Resin/SLA', rating:4.9, reviews:312, sales:847, items:34, pickup:true, custom:true, rush:false, featured:true },
+  { id:2, name:'SteelCityPrint', city:'Hamilton', province:'ON', emoji:'🏭', banner:'linear-gradient(135deg,#0a1a2e,#1a3d6e)', bio:'FDM specialist. Functional parts, brackets, organizers. Same-week pickup available in Hamilton.', tags:['FDM','Functional','Pickup'], printer:'FDM', rating:4.7, reviews:189, sales:521, items:28, pickup:true, custom:true, rush:true, featured:false },
+  { id:3, name:'HammerheadMakes', city:'Hamilton', province:'ON', emoji:'🔨', banner:'linear-gradient(135deg,#1a1a0a,#3d3d1a)', bio:'Cosplay props and armour pieces. Can scale to any size. Pickup from Westdale.', tags:['Cosplay','Props','FDM'], printer:'FDM', rating:4.8, reviews:97, sales:203, items:19, pickup:true, custom:true, rush:false, featured:false },
+
+  // Toronto
+  { id:4, name:'ToroMakersLab', city:'Toronto', province:'ON', emoji:'🌆', banner:'linear-gradient(135deg,#1a0a0a,#6e1a1a)', bio:'Professional print farm. Fast turnaround, all materials, bulk orders welcome. Studio in Kensington Market.', tags:['FDM','Resin','Bulk','Fast'], printer:'Multi-material', rating:4.9, reviews:621, sales:2341, items:87, pickup:true, custom:true, rush:true, featured:true },
+  { id:5, name:'PixelPrintTO', city:'Toronto', province:'ON', emoji:'🎮', banner:'linear-gradient(135deg,#0a1a0a,#1a6e1a)', bio:'Video game props and collectibles. Articulated figures, display pieces, and dioramas.', tags:['Gaming','Collectibles','Resin'], printer:'Resin/SLA', rating:4.8, reviews:234, sales:678, items:42, pickup:false, custom:true, rush:false, featured:false },
+  { id:6, name:'NorthYorkBuilds', city:'Toronto', province:'ON', emoji:'⚙️', banner:'linear-gradient(135deg,#0a0a1a,#1a1a6e)', bio:'Engineering-grade prints. PETG, nylon, ASA. Custom industrial parts and brackets.', tags:['Engineering','FDM','Industrial'], printer:'FDM', rating:4.6, reviews:156, sales:389, items:31, pickup:true, custom:true, rush:true, featured:false },
+  { id:7, name:'ArtisanAM', city:'Toronto', province:'ON', emoji:'🎨', banner:'linear-gradient(135deg,#2e0a1a,#6e1a3d)', bio:'Art-focused prints. Sculptures, jewellery, unique home décor. Resin and SLA specialist.', tags:['Art','Jewellery','Resin'], printer:'Resin/SLA', rating:4.9, reviews:445, sales:1102, items:63, pickup:false, custom:true, rush:false, featured:false },
+
+  // Ottawa
+  { id:8, name:'CapitalCraft3D', city:'Ottawa', province:'ON', emoji:'🏛️', banner:'linear-gradient(135deg,#1a0a0a,#4a1a00)', bio:'Ottawa\'s longest-running 3D print shop. Bilingual service. Pickup in Centretown.', tags:['FDM','Bilingual','Pickup'], printer:'FDM', rating:4.8, reviews:278, sales:834, items:45, pickup:true, custom:true, rush:true, featured:false },
+  { id:9, name:'GatineauGears', city:'Ottawa', province:'ON', emoji:'⚙️', banner:'linear-gradient(135deg,#0a1a0a,#2e4a1a)', bio:'Mechanical components, robotics parts, and STEM educational models. Quick turnaround.', tags:['Mechanical','STEM','FDM'], printer:'FDM', rating:4.7, reviews:134, sales:312, items:38, pickup:true, custom:true, rush:true, featured:false },
+  { id:10, name:'ByWardBuilds', city:'Ottawa', province:'ON', emoji:'🌿', banner:'linear-gradient(135deg,#0a1a12,#1a3d2b)', bio:'Home décor and plant accessories. Sustainably-minded maker using recycled filament.', tags:['Décor','Eco-friendly','FDM'], printer:'FDM', rating:4.9, reviews:201, sales:567, items:29, pickup:true, custom:false, rush:false, featured:false },
+
+  // Vancouver
+  { id:11, name:'PacificPrintCo', city:'Vancouver', province:'BC', emoji:'🌊', banner:'linear-gradient(135deg,#0a1a2e,#1a3d5e)', bio:'West Coast vibes. Surf props, outdoor gear clips, marine-grade PETG. Pickup in Gastown.', tags:['Outdoor','PETG','Custom'], printer:'FDM', rating:4.8, reviews:312, sales:921, items:52, pickup:true, custom:true, rush:false, featured:true },
+  { id:12, name:'VanMinis', city:'Vancouver', province:'BC', emoji:'🐋', banner:'linear-gradient(135deg,#0a2e1a,#1a5e3d)', bio:'Tabletop gaming miniatures and terrain. Huge catalogue. Ships anywhere in BC same week.', tags:['Miniatures','Gaming','Resin'], printer:'Resin/SLA', rating:4.9, reviews:489, sales:1567, items:104, pickup:false, custom:true, rush:true, featured:false },
+  { id:13, name:'KitsilanoCraft', city:'Vancouver', province:'BC', emoji:'🌸', banner:'linear-gradient(135deg,#2e0a2e,#5e1a5e)', bio:'Jewellery and wearables. Premium resin in stunning colours. Each piece unique.', tags:['Jewellery','Resin','Art'], printer:'Resin/SLA', rating:4.7, reviews:198, sales:445, items:67, pickup:true, custom:true, rush:false, featured:false },
+
+  // Calgary
+  { id:14, name:'PrairiePrints', city:'Calgary', province:'AB', emoji:'🌾', banner:'linear-gradient(135deg,#2e1a0a,#5e3d1a)', bio:'Agricultural & ranch equipment parts. Also does home décor and novelty items. Pickup NE Calgary.', tags:['Functional','FDM','Custom'], printer:'FDM', rating:4.7, reviews:167, sales:412, items:33, pickup:true, custom:true, rush:true, featured:false },
+  { id:15, name:'RockyMtnMakes', city:'Calgary', province:'AB', emoji:'⛰️', banner:'linear-gradient(135deg,#0a1a2e,#2e4a6e)', bio:'Outdoor adventure gear. Carabiner holders, tent clips, camping accessories. All PETG/ASA.', tags:['Outdoor','PETG','Functional'], printer:'FDM', rating:4.8, reviews:231, sales:634, items:41, pickup:true, custom:true, rush:false, featured:false },
+
+  // Montréal
+  { id:16, name:'AtélierPrint', city:'Montréal', province:'QC', emoji:'🎭', banner:'linear-gradient(135deg,#2e0a0a,#5e1a1a)', bio:'Montreal\'s premier artistic 3D print studio. Sculpture, fashion accessories, gallery pieces.', tags:['Art','Fashion','Resin'], printer:'Resin/SLA', rating:4.9, reviews:534, sales:1234, items:78, pickup:true, custom:true, rush:false, featured:true },
+  { id:17, name:'MTLFab3D', city:'Montréal', province:'QC', emoji:'🏗️', banner:'linear-gradient(135deg,#0a0a2e,#1a1a5e)', bio:'Industrial fabrication and prototyping. Serving Montréal businesses since 2021. Bulk discounts.', tags:['Industrial','Bulk','FDM'], printer:'Multi-material', rating:4.6, reviews:289, sales:923, items:56, pickup:true, custom:true, rush:true, featured:false },
+  { id:18, name:'PlateauMakers', city:'Montréal', province:'QC', emoji:'✨', banner:'linear-gradient(135deg,#1a2e0a,#3d5e1a)', bio:'Indie makers collective. Funky home items, pins, badges, unique gifts. Always something new.', tags:['Décor','Gifts','FDM'], printer:'FDM', rating:4.8, reviews:178, sales:445, items:89, pickup:false, custom:false, rush:false, featured:false },
+
+  // Winnipeg
+  { id:19, name:'PlainsPrint', city:'Winnipeg', province:'MB', emoji:'🌻', banner:'linear-gradient(135deg,#2e2e0a,#5e5e1a)', bio:'General purpose prints. Home, toys, tools. Best prices in Manitoba. Fast local pickup.', tags:['FDM','General','Pickup'], printer:'FDM', rating:4.6, reviews:89, sales:234, items:24, pickup:true, custom:true, rush:false, featured:false },
+  { id:20, name:'ForkRiverFab', city:'Winnipeg', province:'MB', emoji:'🌊', banner:'linear-gradient(135deg,#0a1a2e,#1a3d5e)', bio:'Sci-fi props and tabletop terrain. Huge resin setup. Ships across the prairies.', tags:['Sci-fi','Gaming','Resin'], printer:'Resin/SLA', rating:4.8, reviews:145, sales:378, items:47, pickup:true, custom:true, rush:true, featured:false },
+
+  // Edmonton
+  { id:21, name:'OilCityPrints', city:'Edmonton', province:'AB', emoji:'🔩', banner:'linear-gradient(135deg,#1a1a0a,#4a3a1a)', bio:'Industrial and automotive parts. Heat-resistant materials. Serving Edmonton trades.', tags:['Industrial','Automotive','FDM'], printer:'FDM', rating:4.7, reviews:112, sales:298, items:36, pickup:true, custom:true, rush:true, featured:false },
+  { id:22, name:'WhytemudWorx', city:'Edmonton', province:'AB', emoji:'🦅', banner:'linear-gradient(135deg,#1a2e0a,#2e5e1a)', bio:'Nature-inspired designs. Planters, bird feeders, garden stakes. Eco-filament only.', tags:['Décor','Eco','FDM'], printer:'FDM', rating:4.9, reviews:167, sales:412, items:28, pickup:true, custom:false, rush:false, featured:false },
+];
+
+let currentCity = 'all';
+let currentView = 'grid';
+
+// ── FILTER CITY ──
+function filterCity(city, chipEl, sidebarEl) {
+  currentCity = city;
+
+  // Update filter bar chips
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  if (chipEl) chipEl.classList.add('active');
+  else {
+    document.querySelectorAll('.chip').forEach(c => {
+      if (c.textContent.trim().includes(city) || (city==='all' && c.textContent.includes('All Canada')))
+        c.classList.add('active');
+    });
+  }
+
+  // Update sidebar city list
+  document.querySelectorAll('.city-item').forEach(c => c.classList.remove('active'));
+  if (sidebarEl) {
+    sidebarEl.classList.add('active');
+  } else {
+    document.querySelectorAll('.city-item').forEach(c => {
+      const name = c.querySelector('.city-name').textContent;
+      if ((city === 'all' && name === 'All Canada') || name === city)
+        c.classList.add('active');
+    });
+  }
+
+  renderSellers();
+}
+
+// ── SORT ──
+function sortSellers() { renderSellers(); }
+
+// ── VIEW TOGGLE ──
+function setView(v) {
+  currentView = v;
+  document.getElementById('grid-btn').classList.toggle('active', v === 'grid');
+  document.getElementById('list-btn').classList.toggle('active', v === 'list');
+  renderSellers();
+}
+
+// ── SEARCH ──
+function doSearch() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  renderSellers(q);
+}
+document.getElementById('search-input').addEventListener('input', () => doSearch());
+document.getElementById('search-input').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
+
+// ── SPEC CHECKBOX ──
+function toggleSpec(el) { el.classList.toggle('checked'); renderSellers(); }
+
+// ── BUILD SELLER CARD ──
+function buildCard(s) {
+  return `
+  <div class="seller-card" onclick="window.location.href='index.html'">
+    <div class="seller-card-banner" style="background:${s.banner}">
+      <span style="font-size:40px;opacity:.4">${s.emoji}</span>
+      <div class="seller-card-avatar">${s.emoji}</div>
+    </div>
+    <div class="seller-card-body">
+      <div class="seller-name">${s.name}</div>
+      <div class="seller-city"><div class="seller-city-dot"></div>${s.city}, ${s.province}</div>
+      <div class="seller-bio">${s.bio}</div>
+      <div class="seller-tags">${s.tags.map(t=>`<span class="seller-tag">${t}</span>`).join('')}</div>
+      <div class="seller-stats">
+        <div class="seller-stat"><div class="seller-stat-val">${s.rating}★</div><div class="seller-stat-label">Rating</div></div>
+        <div class="seller-stat"><div class="seller-stat-val">${s.reviews}</div><div class="seller-stat-label">Reviews</div></div>
+        <div class="seller-stat"><div class="seller-stat-val">${s.items}</div><div class="seller-stat-label">Listings</div></div>
+      </div>
+    </div>
+    <div class="seller-card-footer">
+      <div>
+        ${s.pickup ? '<span class="pickup-badge">📍 Pickup available</span>' : '<span class="online-badge"><span class="online-dot"></span>Ships only</span>'}
+      </div>
+      <button class="view-shop-btn" onclick="event.stopPropagation();window.location.href='index.html'">View Shop →</button>
+    </div>
+  </div>`;
+}
+
+// ── BUILD SELLER ROW ──
+function buildRow(s) {
+  return `
+  <div class="seller-row" onclick="window.location.href='index.html'">
+    <div class="seller-row-avatar" style="background:${s.banner}">${s.emoji}</div>
+    <div class="seller-row-info">
+      <div class="seller-row-name">${s.name}</div>
+      <div class="seller-row-meta">
+        <span>📍 ${s.city}, ${s.province}</span>
+        <span class="stars">${'★'.repeat(Math.floor(s.rating))}${s.rating%1?'½':''}</span>
+        <span style="color:var(--muted)">${s.rating} (${s.reviews} reviews)</span>
+        ${s.pickup ? '<span style="color:var(--green);font-weight:600;font-size:11px">📍 Pickup</span>' : ''}
+        ${s.custom ? '<span style="color:var(--muted);font-size:11px">💬 Custom</span>' : ''}
+      </div>
+      <div class="seller-row-bio">${s.bio}</div>
+      <div class="seller-row-tags">${s.tags.map(t=>`<span class="seller-tag">${t}</span>`).join('')}</div>
+    </div>
+    <div class="seller-row-stats">
+      <div><div class="seller-row-stat-val">${s.sales.toLocaleString()}</div><div class="seller-row-stat-label">Sales</div></div>
+      <div><div class="seller-row-stat-val">${s.items}</div><div class="seller-row-stat-label">Items</div></div>
+    </div>
+    <button class="view-shop-btn" onclick="event.stopPropagation();window.location.href='index.html'" style="flex-shrink:0">View →</button>
+  </div>`;
+}
+
+// ── RENDER ──
+function renderSellers(searchQuery = '') {
+  const sortVal = document.getElementById('sort-select').value;
+
+  // Filter
+  let filtered = SELLERS.filter(s => {
+    if (currentCity !== 'all' && s.city !== currentCity) return false;
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      return s.name.toLowerCase().includes(q) ||
+             s.city.toLowerCase().includes(q) ||
+             s.bio.toLowerCase().includes(q) ||
+             s.tags.some(t => t.toLowerCase().includes(q));
+    }
+    return true;
+  });
+
+  // Sort
+  filtered.sort((a,b) => {
+    if (sortVal === 'rating') return b.rating - a.rating || b.reviews - a.reviews;
+    if (sortVal === 'sales') return b.sales - a.sales;
+    if (sortVal === 'newest') return b.id - a.id;
+    if (sortVal === 'pickup') return (b.pickup ? 1:0) - (a.pickup ? 1:0);
+    return 0;
+  });
+
+  // Update count
+  const countEl = document.getElementById('results-count');
+  const subEl = document.getElementById('results-sub');
+  const cityLabel = currentCity === 'all' ? 'all of Canada' : currentCity;
+  countEl.innerHTML = `Showing <span>${filtered.length}</span> seller${filtered.length!==1?'s':''}`;
+  subEl.textContent = `in ${cityLabel} · sorted by ${sortVal === 'rating' ? 'top rated' : sortVal === 'sales' ? 'most sales' : sortVal === 'newest' ? 'newest' : 'pickup available'}`;
+
+  // Group by city if showing all
+  const output = document.getElementById('sellers-output');
+
+  if (currentCity === 'all' && !searchQuery) {
+    // Group by city
+    const byCity = {};
+    filtered.forEach(s => {
+      if (!byCity[s.city]) byCity[s.city] = [];
+      byCity[s.city].push(s);
+    });
+
+    const cityOrder = ['Hamilton','Toronto','Montréal','Vancouver','Ottawa','Calgary','Edmonton','Winnipeg'];
+    let html = '';
+    cityOrder.forEach(city => {
+      const sellers = byCity[city];
+      if (!sellers) return;
+      const icons = {Hamilton:'🏭',Toronto:'🌆',Montréal:'🎭',Vancouver:'🌊',Ottawa:'🏛️',Calgary:'⛰️',Edmonton:'🔩',Winnipeg:'🌻'};
+      const prov = sellers[0].province;
+      html += `
+      <div class="city-section" id="city-${city.replace(/é/,'e')}">
+        <div class="city-section-head">
+          <span class="city-icon">${icons[city]||'📍'}</span>
+          <div>
+            <div class="city-section-title">${city}, <span>${prov}</span></div>
+            <div class="city-section-meta">${sellers.length} active seller${sellers.length!==1?'s':''} · ${sellers.filter(s=>s.pickup).length} offer pickup</div>
+          </div>
+          <button class="city-see-all" onclick="filterCity('${city}',null,null)">See all in ${city} →</button>
+        </div>
+        <div class="${currentView === 'grid' ? 'sellers-grid' : 'sellers-list'}">
+          ${sellers.slice(0,4).map(s => currentView === 'grid' ? buildCard(s) : buildRow(s)).join('')}
+        </div>
+      </div>`;
+    });
+    output.innerHTML = html;
+  } else {
+    // Flat list / grid
+    if (filtered.length === 0) {
+      output.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <div class="empty-title">No sellers found</div>
+        <div class="empty-desc">Try a different city or search term. New sellers join every week!</div>
+        <button class="btn-white" style="background:var(--green);color:#fff" onclick="filterCity('all',null,null)">Show all sellers</button>
+      </div>`;
+      return;
+    }
+    output.innerHTML = `
+    <div class="${currentView === 'grid' ? 'sellers-grid' : 'sellers-list'}">
+      ${filtered.map(s => currentView === 'grid' ? buildCard(s) : buildRow(s)).join('')}
+    </div>`;
+  }
+}
+
+// Init
+renderSellers();
+</script>
+</body>
+</html>

@@ -1077,7 +1077,7 @@ function Footer({store}) {
         {[
           {h:'Shop',links:[
             {label:'Browse All Items', action:()=>{store.setActiveCat('all');store.setPage('home')}},
-            {label:'Local Sellers', action:()=>{store.setActiveCat('local');store.setPage('home')}},
+            {label:'Local Sellers', action:()=>window.location.href='local-sellers.html'},
             {label:'Custom Requests', action:()=>store.setPage('messages')},
             {label:'Categories', action:()=>window.location.href='categories.html'},
             {label:'New Arrivals', action:()=>{store.setActiveCat('all');store.setPage('home')}},
