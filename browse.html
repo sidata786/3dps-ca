@@ -1224,51 +1224,77 @@ function togglePill(el, key) {
 }
 
 // ─────────────────────────────────────────
-// RENDER
+// RENDER — driven by API
 // ─────────────────────────────────────────
+let _fetchTimer = null;
 function render() {
-  const q      = document.getElementById('q').value.toLowerCase().trim();
+  clearTimeout(_fetchTimer);
+  _fetchTimer = setTimeout(fetchListings, 120); // debounce rapid filter changes
+}
+
+async function fetchListings() {
+  const q      = document.getElementById('q').value.trim();
   const city   = document.getElementById('city-sel').value;
   const sort   = document.getElementById('sort-sel').value;
   const pickup = document.getElementById('fp-pickup').classList.contains('on');
   const custom = document.getElementById('fp-custom').classList.contains('on');
   const u25    = document.getElementById('fp-under25').classList.contains('on');
   const resin  = document.getElementById('fp-resin').classList.contains('on');
+  const rc     = document.getElementById('rc');
+  const grid   = document.getElementById('grid');
 
-  let items = LISTINGS.filter(l => {
-    if (activeCat !== 'all' && l.cat !== activeCat) return false;
-    if (city !== 'all' && l.city !== city) return false;
-    if (pickup && !l.pickup) return false;
-    if (custom && !l.custom) return false;
-    if (u25 && l.price >= 25) return false;
-    if (resin && l.printer !== 'Resin') return false;
-    if (q && !l.title.toLowerCase().includes(q) &&
-             !l.seller.toLowerCase().includes(q) &&
-             !l.city.toLowerCase().includes(q) &&
-             !l.cat.toLowerCase().includes(q)) return false;
-    return true;
-  });
+  // Build query string
+  const params = new URLSearchParams({ sort, limit: 60 });
+  if (activeCat !== 'all') params.set('cat',    activeCat);
+  if (city      !== 'all') params.set('city',   city);
+  if (q)                   params.set('q',      q);
+  if (pickup)              params.set('pickup', 'true');
+  if (custom)              params.set('custom', 'true');
+  if (u25)                 params.set('under25','true');
+  if (resin)               params.set('resin',  'true');
 
-  // Sort
-  if (sort === 'newest') items.sort((a,b) => b.id - a.id);
-  else if (sort === 'price-asc') items.sort((a,b) => a.price - b.price);
-  else if (sort === 'price-desc') items.sort((a,b) => b.price - a.price);
-  else if (sort === 'rating') items.sort((a,b) => b.rating - a.rating || b.reviews - a.reviews);
-  else if (sort === 'popular') items.sort((a,b) => b.reviews - a.reviews);
-  else { // featured — interleave categories & boost sale/new
-    items.sort((a,b) => {
-      const aScore = (a.isSale?3:0)+(a.isNew?2:0)+(a.rating*10)+(a.reviews*.01);
-      const bScore = (b.isSale?3:0)+(b.isNew?2:0)+(b.rating*10)+(b.reviews*.01);
-      return bScore - aScore;
+  rc.innerHTML = 'Loading…';
+  grid.innerHTML = '';
+
+  let items = [];
+  try {
+    const res  = await fetch(`/api/listings?${params}`);
+    if (!res.ok) throw new Error(`API error ${res.status}`);
+    const data = await res.json();
+    items = data.listings || [];
+    rc.innerHTML = `<strong>${data.total}</strong> listing${data.total!==1?'s':''}`;
+  } catch (err) {
+    console.warn('API unavailable, falling back to demo data:', err.message);
+    // Graceful fallback to hardcoded data while backend is being set up
+    items = LISTINGS.filter(l => {
+      if (activeCat !== 'all' && l.cat !== activeCat) return false;
+      if (city !== 'all' && l.city !== city) return false;
+      if (pickup && !l.pickup) return false;
+      if (custom && !l.custom) return false;
+      if (u25 && l.price >= 25) return false;
+      if (resin && l.printer !== 'Resin') return false;
+      if (q && !l.title.toLowerCase().includes(q.toLowerCase()) &&
+               !l.seller.toLowerCase().includes(q.toLowerCase()) &&
+               !l.city.toLowerCase().includes(q.toLowerCase())) return false;
+      return true;
     });
+    // Normalise field names to match API shape
+    items = items.map(l => ({
+      ...l,
+      category:        l.cat,
+      shop_name:       l.seller,
+      province:        l.prov,
+      pickup_available:l.pickup,
+      custom_orders:   l.custom,
+      is_new:          l.isNew,
+      is_on_sale:      l.isSale,
+      avg_rating:      l.rating,
+      total_reviews:   l.reviews,
+      printer_type:    l.printer,
+    }));
+    rc.innerHTML = `<strong>${items.length}</strong> listing${items.length!==1?'s':''} <span style="font-size:11px;color:var(--mut)">(demo)</span>`;
   }
 
-  // Count
-  const rc = document.getElementById('rc');
-  rc.innerHTML = `<strong>${items.length}</strong> listing${items.length!==1?'s':''}`;
-
-  // Build cards
-  const grid = document.getElementById('grid');
   if (items.length === 0) {
     grid.innerHTML = `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-h">No listings found</div><div class="empty-p">Try a different category, city, or search term.</div></div>`;
     return;
@@ -1278,23 +1304,22 @@ function render() {
 
   grid.innerHTML = items.map((l, idx) => {
     const delay   = Math.min(idx * 30, 800);
-    // Vary image heights for masonry feel
     const heights = [220,260,240,280,230,270,250,290,235,265];
     const h = heights[l.id % heights.length];
 
-    // Use real Etsy image if loaded, otherwise fall back to SVG
+    // Image: use URL from API if available, otherwise SVG
     let imgHtml;
-    if (ETSY_IMGS[l.cat] && ETSY_IMGS[l.cat].length > 0) {
-      const imgUrl = ETSY_IMGS[l.cat][l.img % ETSY_IMGS[l.cat].length];
-      imgHtml = `<img src="${imgUrl}" alt="${l.title}" loading="lazy"
+    if (l.featured_image_url) {
+      imgHtml = `<img src="${l.featured_image_url}" alt="${l.title}" loading="lazy"
         style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s"/>`;
     } else {
-      const svgPool = IMGS[l.cat];
-      imgHtml = svgPool[l.img % svgPool.length];
+      const svgPool = IMGS[l.category] || IMGS.functional;
+      imgHtml = svgPool[l.id % svgPool.length];
     }
 
-    const oldPrice = l.isSale ? (l.price * 1.25).toFixed(2) : null;
-    const stars = '★'.repeat(Math.floor(l.rating)) + (l.rating%1>=0.5?'½':'');
+    const oldPrice = l.is_on_sale ? (l.price * 1.25).toFixed(2) : null;
+    const rating   = l.avg_rating || 0;
+    const stars = '★'.repeat(Math.floor(rating)) + (rating%1>=0.5?'½':'');
 
     return `
     <div class="lc" style="animation-delay:${delay}ms" onclick="window.location.href='listing.html?id=${l.id}'">
@@ -1302,88 +1327,37 @@ function render() {
         ${imgHtml}
         <div class="lc-badges">
           ${activeCat==='all' ? `<span class="badge badge-cat">${CAT_LABELS[l.cat]}</span>` : ''}
-          ${l.pickup ? '<span class="badge badge-pickup">📍 Pickup</span>' : ''}
-          ${l.isNew ? '<span class="badge badge-new">NEW</span>' : ''}
-          ${l.isSale ? '<span class="badge badge-sale">SALE</span>' : ''}
+          ${l.pickup_available ? '<span class="badge badge-pickup">📍 Pickup</span>' : ''}
+          ${l.is_new  ? '<span class="badge badge-new">NEW</span>'   : ''}
+          ${l.is_on_sale ? '<span class="badge badge-sale">SALE</span>' : ''}
         </div>
         <button class="lc-fav" onclick="event.stopPropagation();this.classList.toggle('loved');this.textContent=this.classList.contains('loved')?'❤️':'🤍'" title="Save">🤍</button>
       </div>
       <div class="lc-body">
-        <div class="lc-seller"><div class="seller-dot"></div>${l.seller}</div>
+        <div class="lc-seller"><div class="seller-dot"></div>${l.shop_name}</div>
         <div class="lc-title">${l.title}</div>
-        <div class="lc-city">📍 ${l.city}, ${l.prov}</div>
+        <div class="lc-city">📍 ${l.city}, ${l.province}</div>
         <div class="lc-bottom">
           <div>
-            <span class="lc-price">$${l.price.toFixed(2)}</span>
+            <span class="lc-price">$${parseFloat(l.price).toFixed(2)}</span>
             ${oldPrice ? `<span class="lc-price-old">$${oldPrice}</span>` : ''}
           </div>
           <div style="text-align:right">
-            <div class="lc-stars"><span>${stars}</span> ${l.rating}</div>
-            <div style="font-size:10px;color:var(--mut);margin-top:1px">${l.reviews} reviews</div>
+            <div class="lc-stars"><span>${stars}</span> ${rating}</div>
+            <div style="font-size:10px;color:var(--mut);margin-top:1px">${l.total_reviews} reviews</div>
           </div>
         </div>
         <div style="margin-top:8px">
-          <span class="lc-printer">${l.printer}</span>
-          ${l.custom ? '<span class="lc-printer" style="margin-left:4px">Custom ✓</span>' : ''}
+          <span class="lc-printer">${l.printer_type || l.material || 'FDM'}</span>
+          ${l.custom_orders ? '<span class="lc-printer" style="margin-left:4px">Custom ✓</span>' : ''}
         </div>
       </div>
     </div>`;
   }).join('');
 }
 
-// ─────────────────────────────────────────
-// ETSY IMAGE INTEGRATION
-// ─────────────────────────────────────────
-const ETSY_KEY = 'csqcw2vqyi3uassv40tr7bku';
-const ETSY_IMGS = {};
-const CAT_QUERIES = {
-  functional: '3d printed organizer storage functional',
-  miniatures: '3d printed miniature figurine tabletop',
-  decor:      '3d printed home decor vase planter',
-  toys:       '3d printed toy kids flexi articulated',
-  jewellery:  '3d printed jewelry earrings necklace',
-  cosplay:    '3d printed cosplay prop helmet',
-  tech:       '3d printed phone stand desk gadget',
-  art:        '3d printed art sculpture wall'
-};
-
-async function fetchEtsyImages(cat) {
-  try {
-    const q = encodeURIComponent(CAT_QUERIES[cat]);
-    const etsyUrl = `https://openapi.etsy.com/v3/application/listings/active?keywords=${q}&limit=24&includes[]=Images`;
-    // Route through CORS proxy so browser can call Etsy API directly
-    const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(etsyUrl)}`;
-    const res = await fetch(proxyUrl, {
-      headers: {
-        'x-api-key': ETSY_KEY,
-        'x-requested-with': 'XMLHttpRequest'
-      }
-    });
-    if (!res.ok) return;
-    const data = await res.json();
-    const urls = [];
-    for (const listing of (data.results || [])) {
-      if (listing.images && listing.images.length > 0) {
-        const img = listing.images[0];
-        urls.push(img.url_570xN || img.url_fullxfull || img.url_170x135);
-      }
-    }
-    if (urls.length > 0) ETSY_IMGS[cat] = urls;
-  } catch(e) {
-    console.warn('Etsy fetch failed for', cat, e);
-  }
-}
-
-async function loadAllEtsyImages() {
-  const bar = document.getElementById('rc');
-  bar.innerHTML = 'Loading real images…';
-  await Promise.all(Object.keys(CAT_QUERIES).map(cat => fetchEtsyImages(cat)));
-  render();
-}
-
-// Init — load SVG placeholders immediately, then swap in real images
+// Init
 render();
-loadAllEtsyImages();
 </script>
 </body>
 </html>

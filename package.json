@@ -1,0 +1,18 @@
+{
+  "name": "3dps-ca",
+  "version": "1.0.0",
+  "description": "3DPS.ca — Canada's 3D print marketplace",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'Static site — no build step required'"
+  }
+}

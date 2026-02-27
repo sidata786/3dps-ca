@@ -534,41 +534,152 @@ nav{background:var(--wh);border-bottom:1.5px solid var(--bd);position:sticky;top
 </div><!-- /main -->
 
 <script>
-// ── STEP NAVIGATION ──
+// ── STATE ──
 let currentStep = 1;
+let authToken   = null;   // JWT stored after step 1 API call
 
-function goStep(n) {
-  if (n > currentStep && !validateStep(currentStep)) return;
+// ── HELPERS ──
+function setLoading(btnId, loading) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.disabled = loading;
+  btn.style.opacity = loading ? '0.7' : '1';
+  btn.textContent = loading ? 'Please wait…' : btn.dataset.label || btn.textContent;
+}
 
-  document.getElementById(`step-${currentStep}`).classList.remove('active');
-  document.getElementById(`step-${n}`).classList.add('active');
+function showApiError(msg) {
+  let box = document.getElementById('api-error-banner');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'api-error-banner';
+    box.style.cssText = 'background:#fff5f5;border:1.5px solid #fc8181;border-radius:8px;padding:12px 16px;font-size:13px;color:#c53030;margin-bottom:16px;display:flex;align-items:center;gap:10px';
+    document.querySelector('.main').prepend(box);
+  }
+  box.innerHTML = `⚠️ <span>${msg}</span>`;
+  box.style.display = 'flex';
+  setTimeout(() => { box.style.display = 'none'; }, 6000);
+}
 
-  // Update progress dots
+function getSelectedRadioVal(name) {
+  const card = document.querySelector(`[onclick*="'${name}'"].selected`);
+  return card ? card.querySelector('input[type=radio]').value : '';
+}
+
+function leadTimeDays(val) {
+  if (!val || val === 'Ready to ship') return 0;
+  if (val === '1–2 days') return 2;
+  if (val === '3–5 days') return 5;
+  if (val === '1–2 weeks') return 14;
+  return null;
+}
+
+// ── TRANSITION TO STEP 4 (success screen) ──
+function showSuccess(withListing) {
+  const first = document.getElementById('f-first').value || 'maker';
+  const shop  = document.getElementById('f-shopname').value || 'Your Shop';
+  document.getElementById('succ-name').textContent = first;
+  document.getElementById('succ-shop').textContent = `"${shop}"`;
+  document.getElementById('succ-listings').textContent = withListing ? '1' : '0';
+}
+
+// ── ADVANCE PANELS (visual only) ──
+function advancePanel(from, to) {
+  document.getElementById(`step-${from}`).classList.remove('active');
+  document.getElementById(`step-${to}`).classList.add('active');
   for (let i = 1; i <= 4; i++) {
     const dot = document.getElementById(`dot-${i}`);
     const lbl = document.getElementById(`lbl-${i}`);
     dot.classList.remove('active','done');
     lbl.classList.remove('active');
-    if (i < n) { dot.classList.add('done'); }
-    else if (i === n) { dot.classList.add('active'); lbl.classList.add('active'); }
+    if (i < to) { dot.classList.add('done'); }
+    else if (i === to) { dot.classList.add('active'); lbl.classList.add('active'); }
   }
   for (let i = 1; i <= 3; i++) {
-    const line = document.getElementById(`line-${i}`);
-    line.classList.toggle('done', i < n);
+    document.getElementById(`line-${i}`).classList.toggle('done', i < to);
   }
-
-  // Populate success screen
-  if (n === 4) {
-    const first = document.getElementById('f-first').value || 'maker';
-    const shop  = document.getElementById('f-shopname').value || 'Your Shop';
-    const title = document.getElementById('f-title').value;
-    document.getElementById('succ-name').textContent = first;
-    document.getElementById('succ-shop').textContent = `"${shop}"`;
-    document.getElementById('succ-listings').textContent = title ? '1' : '0';
-  }
-
-  currentStep = n;
+  currentStep = to;
   window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── STEP NAVIGATION ──
+async function goStep(n) {
+  if (n > currentStep && !validateStep(currentStep)) return;
+
+  // ── Step 1 → 2: register account ──
+  if (currentStep === 1 && n === 2) {
+    const btnId = 'btn-s1';
+    const btn = document.querySelector('#step-1 .btn-primary');
+    if (btn && !btn.id) btn.id = btnId;
+    if (btn) { btn.dataset.label = btn.textContent; btn.disabled = true; btn.textContent = 'Creating account…'; }
+
+    try {
+      const res = await fetch('/api/auth-register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          step:       1,
+          first_name: document.getElementById('f-first').value.trim(),
+          last_name:  document.getElementById('f-last').value.trim(),
+          email:      document.getElementById('f-email').value.trim(),
+          password:   document.getElementById('f-pass').value,
+          city:       document.getElementById('f-city').value.trim(),
+          province:   document.getElementById('f-prov').value,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Registration failed');
+      authToken = data.token;
+      try { localStorage.setItem('3dps_token', authToken); } catch(_) {}
+    } catch (err) {
+      // If API is unavailable or email already exists, warn but still let them proceed in demo mode
+      if (err.message && err.message.toLowerCase().includes('already')) {
+        showApiError('That email is already registered. Please use a different email or log in.');
+        if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || 'Continue →'; }
+        return;
+      }
+      // Network / server down — allow demo mode
+      showApiError('Could not reach server — continuing in demo mode. Your shop won\'t be saved yet.');
+    }
+    if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || 'Continue →'; }
+  }
+
+  // ── Step 2 → 3: save shop details ──
+  if (currentStep === 2 && n === 3 && authToken) {
+    const btn = document.querySelector('#step-2 .btn-primary');
+    if (btn) { btn.dataset.label = btn.textContent; btn.disabled = true; btn.textContent = 'Saving shop…'; }
+
+    const printers = Array.from(document.querySelectorAll('#printer-checks input[type=checkbox]:checked'))
+                       .map(c => c.value);
+
+    try {
+      const res = await fetch('/api/auth-register', {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          step:           2,
+          shop_name:      document.getElementById('f-shopname').value.trim(),
+          tagline:        document.getElementById('f-tagline').value.trim(),
+          about:          document.getElementById('f-about').value.trim(),
+          printers:       printers.length ? printers : ['FDM'],
+          fulfil_option:  getSelectedRadioVal('fulfil') || 'pickup',
+          payout_method:  getSelectedRadioVal('payout') || 'etransfer',
+        }),
+      });
+      if (!res.ok) {
+        const d = await res.json();
+        throw new Error(d.error || 'Failed to save shop');
+      }
+    } catch (err) {
+      showApiError('Shop details couldn\'t be saved to server — continuing in demo mode.');
+    }
+    if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || 'Continue →'; }
+  }
+
+  if (n === 4) showSuccess(false);
+  advancePanel(currentStep, n);
 }
 
 // ── VALIDATION ──
@@ -619,9 +730,47 @@ function validateStep(s) {
   return ok;
 }
 
-function submitForm() {
+// ── SUBMIT FIRST LISTING ──
+async function submitForm() {
   if (!validateStep(3)) return;
-  goStep(4);
+
+  const btn = document.querySelector('#step-3 .btn-primary');
+  if (btn) { btn.dataset.label = btn.textContent; btn.disabled = true; btn.textContent = 'Launching shop…'; }
+
+  if (authToken) {
+    const leadSel = document.getElementById('f-lead').value;
+    try {
+      const res = await fetch('/api/auth-register', {
+        method: 'POST',
+        headers: {
+          'Content-Type':  'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+          step:            3,
+          title:           document.getElementById('f-title').value.trim(),
+          description:     document.getElementById('f-desc').value.trim(),
+          category:        document.getElementById('f-cat').value,
+          material:        document.getElementById('f-material').value || null,
+          price:           parseFloat(document.getElementById('f-price').value),
+          compare_price:   document.getElementById('f-compare').value
+                             ? parseFloat(document.getElementById('f-compare').value) : null,
+          lead_time_days:  leadTimeDays(leadSel),
+          tags:            [...tags],
+        }),
+      });
+      if (!res.ok) {
+        const d = await res.json();
+        throw new Error(d.error || 'Failed to create listing');
+      }
+    } catch (err) {
+      showApiError('Listing couldn\'t be saved to server — shop will still go live.');
+    }
+  }
+
+  if (btn) { btn.disabled = false; btn.textContent = btn.dataset.label || 'Launch My Shop 🚀'; }
+  showSuccess(true);
+  advancePanel(currentStep, 4);
 }
 
 // ── RADIO CARDS ──
