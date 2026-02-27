@@ -1350,8 +1350,10 @@ const CAT_QUERIES = {
 async function fetchEtsyImages(cat) {
   try {
     const q = encodeURIComponent(CAT_QUERIES[cat]);
-    const url = `https://openapi.etsy.com/v3/application/listings/active?keywords=${q}&limit=24&includes[]=Images`;
-    const res = await fetch(url, { headers: { 'x-api-key': ETSY_KEY } });
+    const etsyUrl = `https://openapi.etsy.com/v3/application/listings/active?keywords=${q}&limit=24&includes[]=Images`;
+    // Route through CORS proxy so browser can call Etsy API directly
+    const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(etsyUrl)}`;
+    const res = await fetch(proxyUrl, { headers: { 'x-api-key': ETSY_KEY } });
     if (!res.ok) return;
     const data = await res.json();
     const urls = [];
