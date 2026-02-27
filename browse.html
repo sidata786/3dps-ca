@@ -1277,12 +1277,21 @@ function render() {
   const CAT_LABELS = {functional:'Functional',miniatures:'Miniatures',decor:'Décor',toys:'Toys',jewellery:'Jewellery',cosplay:'Cosplay',tech:'Tech',art:'Art'};
 
   grid.innerHTML = items.map((l, idx) => {
-    const svgPool = IMGS[l.cat];
-    const svg     = svgPool[l.img % svgPool.length];
     const delay   = Math.min(idx * 30, 800);
     // Vary image heights for masonry feel
     const heights = [220,260,240,280,230,270,250,290,235,265];
     const h = heights[l.id % heights.length];
+
+    // Use real Etsy image if loaded, otherwise fall back to SVG
+    let imgHtml;
+    if (ETSY_IMGS[l.cat] && ETSY_IMGS[l.cat].length > 0) {
+      const imgUrl = ETSY_IMGS[l.cat][l.img % ETSY_IMGS[l.cat].length];
+      imgHtml = `<img src="${imgUrl}" alt="${l.title}" loading="lazy"
+        style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s"/>`;
+    } else {
+      const svgPool = IMGS[l.cat];
+      imgHtml = svgPool[l.img % svgPool.length];
+    }
 
     const oldPrice = l.isSale ? (l.price * 1.25).toFixed(2) : null;
     const stars = '★'.repeat(Math.floor(l.rating)) + (l.rating%1>=0.5?'½':'');
@@ -1290,7 +1299,7 @@ function render() {
     return `
     <div class="lc" style="animation-delay:${delay}ms" onclick="window.location.href='index.html'">
       <div class="lc-img" style="height:${h}px;overflow:hidden">
-        ${svg}
+        ${imgHtml}
         <div class="lc-badges">
           ${activeCat==='all' ? `<span class="badge badge-cat">${CAT_LABELS[l.cat]}</span>` : ''}
           ${l.pickup ? '<span class="badge badge-pickup">📍 Pickup</span>' : ''}
@@ -1322,8 +1331,52 @@ function render() {
   }).join('');
 }
 
-// Init
+// ─────────────────────────────────────────
+// ETSY IMAGE INTEGRATION
+// ─────────────────────────────────────────
+const ETSY_KEY = 'csqcw2vqyi3uassv40tr7bku';
+const ETSY_IMGS = {};
+const CAT_QUERIES = {
+  functional: '3d printed organizer storage functional',
+  miniatures: '3d printed miniature figurine tabletop',
+  decor:      '3d printed home decor vase planter',
+  toys:       '3d printed toy kids flexi articulated',
+  jewellery:  '3d printed jewelry earrings necklace',
+  cosplay:    '3d printed cosplay prop helmet',
+  tech:       '3d printed phone stand desk gadget',
+  art:        '3d printed art sculpture wall'
+};
+
+async function fetchEtsyImages(cat) {
+  try {
+    const q = encodeURIComponent(CAT_QUERIES[cat]);
+    const url = `https://openapi.etsy.com/v3/application/listings/active?keywords=${q}&limit=24&includes[]=Images`;
+    const res = await fetch(url, { headers: { 'x-api-key': ETSY_KEY } });
+    if (!res.ok) return;
+    const data = await res.json();
+    const urls = [];
+    for (const listing of (data.results || [])) {
+      if (listing.images && listing.images.length > 0) {
+        const img = listing.images[0];
+        urls.push(img.url_570xN || img.url_fullxfull || img.url_170x135);
+      }
+    }
+    if (urls.length > 0) ETSY_IMGS[cat] = urls;
+  } catch(e) {
+    console.warn('Etsy fetch failed for', cat, e);
+  }
+}
+
+async function loadAllEtsyImages() {
+  const bar = document.getElementById('rc');
+  bar.innerHTML = 'Loading real images…';
+  await Promise.all(Object.keys(CAT_QUERIES).map(cat => fetchEtsyImages(cat)));
+  render();
+}
+
+// Init — load SVG placeholders immediately, then swap in real images
 render();
+loadAllEtsyImages();
 </script>
 </body>
 </html>
