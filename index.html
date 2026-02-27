@@ -527,6 +527,8 @@ function Navbar({store}) {
           <button className="searchbar-btn" onClick={()=>{store.setActiveCat('all');store.setPage('home')}}>🔍</button>
         </div>
         <div className="nav-actions">
+          <button className="nav-link" onClick={()=>window.location.href='browse.html'}>Browse All</button>
+          <button className="nav-link" onClick={()=>window.location.href='local-sellers.html'}>Local Sellers</button>
           <button className="nav-link" onClick={()=>store.setPage('messages')}>Messages</button>
           <button className="nav-link" onClick={()=>store.setPage('dashboard')}>Sell</button>
           <button className="nav-link" onClick={()=>store.setAuthOpen(true)}>
