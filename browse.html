@@ -73,16 +73,16 @@ nav{background:var(--wh);border-bottom:1.5px solid var(--bd);position:sticky;top
 /* LISTING CARD */
 .lc{break-inside:avoid;background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:14px;cursor:pointer;transition:border-color .2s,transform .25s,box-shadow .25s;display:block}
 .lc:hover{border-color:var(--g);transform:translateY(-4px);box-shadow:var(--shl)}
-.lc-img{width:100%;display:block;position:relative;overflow:hidden;background:#e8f0ec}
-.lc-img img{width:100%;display:block;transition:transform .35s;object-fit:cover}
-.lc:hover .lc-img img{transform:scale(1.06)}
-.lc-badges{position:absolute;top:8px;left:8px;display:flex;gap:5px;flex-wrap:wrap}
+.lc-img{width:100%;display:block;position:relative;overflow:hidden;background:#0a1a0a}
+.lc-img svg{width:100%;height:100%;display:block;transition:transform .35s}
+.lc:hover .lc-img svg{transform:scale(1.05)}
+.lc-badges{position:absolute;top:8px;left:8px;display:flex;gap:5px;flex-wrap:wrap;z-index:2}
 .badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:var(--rp);letter-spacing:.03em;line-height:1}
-.badge-cat{background:rgba(10,26,18,.72);color:#fff;backdrop-filter:blur(4px)}
+.badge-cat{background:rgba(10,26,18,.72);color:#fff;backdrop-filter:blur(4px);z-index:2}
 .badge-pickup{background:rgba(10,122,75,.85);color:#fff}
 .badge-new{background:#f59e0b;color:#fff}
 .badge-sale{background:#dc2626;color:#fff}
-.lc-fav{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:transform .15s,background .15s;backdrop-filter:blur(4px)}
+.lc-fav{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;transition:transform .15s,background .15s;backdrop-filter:blur(4px);z-index:2}
 .lc-fav:hover{transform:scale(1.15);background:#fff}
 .lc-fav.loved{color:#ef4444}
 .lc-body{padding:11px 13px 13px}
@@ -116,6 +116,15 @@ footer{background:#051a0e;padding:32px 24px 20px}
 .flinks a{font-size:13px;color:rgba(255,255,255,.38);cursor:pointer;transition:color .15s}
 .flinks a:hover{color:var(--g2)}
 .fcp{font-size:12px;color:rgba(255,255,255,.2);text-align:center;padding-top:16px;margin-top:16px;border-top:1px solid rgba(255,255,255,.06)}
+
+/* ── SHARED NAV OVERRIDES ── */
+.nav-links{display:flex;gap:2px;flex-wrap:nowrap}
+.nl{display:flex;gap:2px}
+.nav-link,.nl-a{font-size:13px;font-weight:500;color:var(--mut,#6B8C7A);padding:7px 11px;border-radius:8px;background:none;border:none;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center}
+.nav-link:hover,.nl-a:hover,.nav-link.on,.nl-a.on{background:var(--gp,var(--cr,var(--cream)));color:var(--g,#0A7A4B)}
+.nav-link.on,.nl-a.on{font-weight:700}
+@media(max-width:860px){.nav-links .nav-link:nth-child(n+4),.nl .nl-a:nth-child(n+4){display:none}}
+@media(max-width:600px){.nav-links,.nl{display:none}}
 </style>
 </head>
 <body>
@@ -126,16 +135,17 @@ footer{background:#051a0e;padding:32px 24px 20px}
   <div class="ni">
     <a href="index.html" class="logo">3DPS<span>.ca</span></a>
     <div class="sb">
-      <input type="text" id="q" placeholder="Search prints, sellers, cities…" oninput="render()" onkeydown="if(event.key==='Enter')render()"/>
-      <button onclick="render()">🔍</button>
+      <input type="text" placeholder="Search 3D prints, sellers, cities…" onclick="window.location.href='browse.html'" style="cursor:pointer" readonly/>
+      <button onclick="window.location.href='browse.html'">🔍</button>
     </div>
     <div class="nl">
-      <a href="index.html">Home</a>
-      <a href="browse.html" class="on">Browse</a>
-      <a href="categories.html">Categories</a>
-      <a href="local-sellers.html">Local Sellers</a>
+      <a href="browse.html" class="nl-a on">Browse All</a>
+      <a href="categories.html" class="nl-a ">Categories</a>
+      <a href="local-sellers.html" class="nl-a ">Local Sellers</a>
+      <a href="open-shop.html" class="nl-a ">Open a Shop</a>
+      <a href="fees.html" class="nl-a ">Fees</a>
     </div>
-    <button class="btn-sell" onclick="location.href='open-shop.html'">Sell on 3DPS</button>
+    <button class="btn-sell" onclick="window.location.href='open-shop.html'">Sell on 3DPS</button>
   </div>
 </nav>
 
@@ -213,107 +223,863 @@ footer{background:#051a0e;padding:32px 24px 20px}
 
 <script>
 // ─────────────────────────────────────────
-// IMAGE POOLS — Unsplash curated photo IDs
-// Each resolves to a real publicly accessible photo
+// SVG ILLUSTRATIONS — actual 3D printed items
+// Inline SVGs: always correct, zero load time, no wrong images ever
+// Each shows real FDM/resin layer lines and recognisable item shape
 // ─────────────────────────────────────────
+
+// Layer-line texture pattern (FDM aesthetic)
+const LAYERS = (col='rgba(0,0,0,0.06)') =>
+  `<pattern id="ll" width="1" height="3" patternUnits="userSpaceOnUse"><rect width="1" height="1.2" fill="${col}"/></pattern>`;
+
+const SVG = (w,h,bg,content) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="100%" height="100%" style="display:block;background:${bg}">${content}</svg>`;
+
+// ── FUNCTIONAL ──
+// 0: Gridfinity storage bin (3/4 view, PLA green)
+const F0 = SVG(280,230,'#1a2e1a',`<defs>${LAYERS('rgba(255,255,255,0.04)')}</defs>
+<rect x="40" y="80" width="200" height="120" rx="6" fill="#2d5a2d"/>
+<rect x="40" y="80" width="200" height="120" fill="url(#ll)"/>
+<rect x="40" y="76" width="200" height="14" rx="4" fill="#3a7a3a"/>
+<!-- grid holes top face -->
+<rect x="55" y="88" width="22" height="22" rx="3" fill="#1a2e1a" opacity=".9"/>
+<rect x="85" y="88" width="22" height="22" rx="3" fill="#1a2e1a" opacity=".9"/>
+<rect x="115" y="88" width="22" height="22" rx="3" fill="#1a2e1a" opacity=".9"/>
+<rect x="145" y="88" width="22" height="22" rx="3" fill="#1a2e1a" opacity=".9"/>
+<rect x="175" y="88" width="22" height="22" rx="3" fill="#1a2e1a" opacity=".9"/>
+<rect x="205" y="88" width="22" height="22" rx="3" fill="#1a2e1a" opacity=".9"/>
+<!-- front face -->
+<rect x="40" y="100" width="200" height="100" rx="0" fill="#245424" opacity=".5"/>
+<!-- label bump -->
+<rect x="80" y="155" width="120" height="28" rx="4" fill="#1a2e1a" opacity=".4"/>
+<!-- layer lines on sides -->
+<line x1="40" y1="110" x2="240" y2="110" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+<line x1="40" y1="120" x2="240" y2="120" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+<line x1="40" y1="130" x2="240" y2="130" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+<line x1="40" y1="140" x2="240" y2="140" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+<line x1="40" y1="150" x2="240" y2="150" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+<line x1="40" y1="160" x2="240" y2="160" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+<line x1="40" y1="170" x2="240" y2="170" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+<line x1="40" y1="180" x2="240" y2="180" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+<text x="140" y="175" font-family="monospace" font-size="10" fill="rgba(255,255,255,.25)" text-anchor="middle">GRIDFINITY</text>
+<text x="140" y="218" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA · 0.2mm layers</text>`);
+
+// 1: Cable organiser (wall clip, white PLA)
+const F1 = SVG(280,230,'#1c2c1c',`<defs>${LAYERS('rgba(255,255,255,0.05)')}</defs>
+<!-- wall plate -->
+<rect x="90" y="30" width="100" height="160" rx="8" fill="#e8f0e8"/>
+<rect x="90" y="30" width="100" height="160" fill="url(#ll)" opacity=".4"/>
+<!-- mounting holes -->
+<circle cx="140" cy="52" r="7" fill="#1c2c1c"/>
+<circle cx="140" cy="168" r="7" fill="#1c2c1c"/>
+<!-- cable channels -->
+<rect x="106" y="72" width="68" height="18" rx="9" fill="#b8d4b8"/>
+<rect x="106" y="100" width="68" height="18" rx="9" fill="#b8d4b8"/>
+<rect x="106" y="128" width="68" height="18" rx="9" fill="#b8d4b8"/>
+<!-- cables through channels -->
+<circle cx="128" cy="81" r="5" fill="#555"/>
+<circle cx="148" cy="81" r="5" fill="#333"/>
+<circle cx="168" cy="81" r="5" fill="#666"/>
+<circle cx="128" cy="109" r="5" fill="#444"/>
+<circle cx="148" cy="109" r="5" fill="#222"/>
+<circle cx="128" cy="137" r="5" fill="#555"/>
+<!-- layer lines -->
+<line x1="90" y1="65" x2="190" y2="65" stroke="rgba(0,0,0,.06)" stroke-width="1"/>
+<line x1="90" y1="95" x2="190" y2="95" stroke="rgba(0,0,0,.06)" stroke-width="1"/>
+<line x1="90" y1="125" x2="190" y2="125" stroke="rgba(0,0,0,.06)" stroke-width="1"/>
+<line x1="90" y1="155" x2="190" y2="155" stroke="rgba(0,0,0,.06)" stroke-width="1"/>
+<text x="140" y="218" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA White · 3-port</text>`);
+
+// 2: Monitor stand with cable tray (black PETG)
+const F2 = SVG(280,230,'#111a11',`<defs>${LAYERS('rgba(255,255,255,0.04)')}</defs>
+<!-- stand platform -->
+<rect x="30" y="80" width="220" height="30" rx="6" fill="#2a2a2a"/>
+<rect x="30" y="80" width="220" height="30" fill="url(#ll)" opacity=".6"/>
+<!-- legs -->
+<rect x="55" y="110" width="30" height="80" rx="4" fill="#1e1e1e"/>
+<rect x="195" y="110" width="30" height="80" rx="4" fill="#1e1e1e"/>
+<rect x="55" y="110" width="30" height="80" fill="url(#ll)" opacity=".4"/>
+<rect x="195" y="110" width="30" height="80" fill="url(#ll)" opacity=".4"/>
+<!-- cable tray underneath -->
+<rect x="85" y="125" width="110" height="18" rx="4" fill="#252525"/>
+<!-- cable slots -->
+<rect x="95" y="128" width="12" height="12" rx="2" fill="#111a11"/>
+<rect x="114" y="128" width="12" height="12" rx="2" fill="#111a11"/>
+<rect x="133" y="128" width="12" height="12" rx="2" fill="#111a11"/>
+<rect x="152" y="128" width="12" height="12" rx="2" fill="#111a11"/>
+<rect x="171" y="128" width="12" height="12" rx="2" fill="#111a11"/>
+<!-- infill pattern top surface -->
+<line x1="50" y1="88" x2="230" y2="88" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<line x1="50" y1="96" x2="230" y2="96" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<!-- feet -->
+<rect x="48" y="185" width="44" height="8" rx="3" fill="#333"/>
+<rect x="188" y="185" width="44" height="8" rx="3" fill="#333"/>
+<text x="140" y="218" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PETG Black · Monitor Stand</text>`);
+
+// 3: Wall pegboard hook set
+const F3 = SVG(280,230,'#0f1e0f',`<defs>${LAYERS('rgba(255,255,255,0.05)')}</defs>
+<!-- pegboard background -->
+<rect x="20" y="20" width="240" height="180" rx="4" fill="#1a2a1a"/>
+<!-- pegboard holes grid -->
+${Array.from({length:6},(_,r)=>Array.from({length:8},(_,c)=>`<circle cx="${40+c*30}" cy="${45+r*28}" r="4" fill="#0f1e0f"/>`).join('')).join('')}
+<!-- hooks in various positions - orange PLA -->
+<g fill="#d4520a">
+  <!-- hook 1 - J shape -->
+  <rect x="55" y="38" width="8" height="32" rx="3"/>
+  <rect x="55" y="62" width="20" height="8" rx="3"/>
+  <!-- hook 2 - longer -->
+  <rect x="115" y="38" width="8" height="40" rx="3"/>
+  <rect x="115" y="70" width="28" height="8" rx="3"/>
+  <!-- hook 3 - double -->
+  <rect x="175" y="38" width="8" height="28" rx="3"/>
+  <rect x="175" y="58" width="18" height="7" rx="3"/>
+  <rect x="175" y="50" width="18" height="7" rx="3"/>
+  <!-- small hooks row 2 -->
+  <rect x="55" y="96" width="7" height="24" rx="2"/>
+  <rect x="55" y="112" width="16" height="7" rx="2"/>
+  <rect x="95" y="96" width="7" height="24" rx="2"/>
+  <rect x="95" y="112" width="16" height="7" rx="2"/>
+  <rect x="135" y="96" width="7" height="24" rx="2"/>
+  <rect x="135" y="112" width="16" height="7" rx="2"/>
+</g>
+<text x="140" y="218" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA · Pegboard Hook Set</text>`);
+
+// ── MINIATURES ──
+// 0: Articulated dragon (resin, grey)
+const M0 = SVG(280,260,'#12101a',`<defs><radialGradient id="rg0" cx="50%" cy="40%"><stop offset="0%" stop-color="#6a5acd"/><stop offset="100%" stop-color="#1a1530"/></radialGradient></defs>
+<ellipse cx="140" cy="130" rx="120" ry="110" fill="url(#rg0)" opacity=".3"/>
+<!-- dragon body -->
+<ellipse cx="140" cy="155" rx="35" ry="50" fill="#8c8099" transform="rotate(-10,140,155)"/>
+<!-- layer lines on body -->
+${Array.from({length:12},(_,i)=>`<ellipse cx="138" cy="${110+i*8}" rx="${28-i*0.5}" ry="3" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="1"/>`).join('')}
+<!-- neck -->
+<ellipse cx="128" cy="95" rx="16" ry="28" fill="#8c8099" transform="rotate(-20,128,95)"/>
+<!-- head -->
+<ellipse cx="112" cy="70" rx="22" ry="16" fill="#9a8aaa" transform="rotate(-30,112,70)"/>
+<!-- snout -->
+<ellipse cx="96" cy="64" rx="14" ry="8" fill="#8a7a9a" transform="rotate(-25,96,64)"/>
+<!-- eye -->
+<circle cx="106" cy="65" r="4" fill="#ff4444"/>
+<circle cx="107" cy="64" r="1.5" fill="#000"/>
+<!-- wings -->
+<path d="M150,120 L210,60 L220,100 L190,115 Z" fill="#6a5a8a" opacity=".8"/>
+<path d="M135,120 L70,58 L62,98 L100,115 Z" fill="#6a5a8a" opacity=".8"/>
+<!-- wing membranes lines -->
+<line x1="150" y1="120" x2="210" y2="60" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+<line x1="190" y1="75" x2="205" y2="95" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+<!-- tail -->
+<path d="M155,190 Q185,210 200,200 Q195,185 175,190 Q165,175 155,190" fill="#8c8099"/>
+<!-- front leg -->
+<rect x="118" y="190" width="12" height="38" rx="5" fill="#7c708c" transform="rotate(10,124,210)"/>
+<!-- claws -->
+<path d="M115,226 L110,238 M120,228 L118,240 M125,227 L124,239" stroke="#aaa" stroke-width="2.5" stroke-linecap="round"/>
+<text x="140" y="252" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">Resin · Grey · Articulated Dragon</text>`);
+
+// 1: Dice tower (FDM, dark grey stone-look)
+const M1 = SVG(280,260,'#0d1117',`<defs>${LAYERS('rgba(255,255,255,0.05)')}</defs>
+<!-- tower body -->
+<rect x="90" y="40" width="100" height="170" rx="6" fill="#2a2a35"/>
+<rect x="90" y="40" width="100" height="170" fill="url(#ll)"/>
+<!-- battlements top -->
+<rect x="88" y="30" width="20" height="22" rx="3" fill="#2a2a35"/>
+<rect x="116" y="30" width="20" height="22" rx="3" fill="#2a2a35"/>
+<rect x="144" y="30" width="20" height="22" rx="3" fill="#2a2a35"/>
+<rect x="172" y="30" width="20" height="22" rx="3" fill="#2a2a35"/>
+<!-- door arch -->
+<rect x="112" y="155" width="56" height="55" rx="4" fill="#181820"/>
+<ellipse cx="140" cy="155" rx="28" ry="14" fill="#181820"/>
+<!-- window slots -->
+<rect x="118" y="70" width="44" height="28" rx="3" fill="#181820"/>
+<rect x="118" y="110" width="44" height="22" rx="3" fill="#181820"/>
+<!-- stone texture lines -->
+<line x1="90" y1="95" x2="190" y2="95" stroke="rgba(255,255,255,.07)" stroke-width="1.5"/>
+<line x1="90" y1="125" x2="190" y2="125" stroke="rgba(255,255,255,.07)" stroke-width="1.5"/>
+<line x1="90" y1="155" x2="190" y2="155" stroke="rgba(255,255,255,.07)" stroke-width="1.5"/>
+<line x1="140" y1="95" x2="140" y2="125" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+<!-- dice in mouth -->
+<rect x="125" y="205" width="16" height="16" rx="3" fill="#ff6b35" transform="rotate(15,133,213)"/>
+<circle cx="129" cy="209" r="1.5" fill="white"/>
+<circle cx="136" cy="213" r="1.5" fill="white"/>
+<circle cx="134" cy="208" r="1.5" fill="white"/>
+<text x="140" y="252" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA · Dice Tower</text>`);
+
+// 2: Flexi axolotl (print-in-place, pink PLA)
+const M2 = SVG(280,260,'#0a1520',`
+<!-- body segments - articulated -->
+${Array.from({length:10},(_,i)=>`<ellipse cx="${90+i*12}" cy="${145+Math.sin(i*0.8)*18}" rx="11" ry="13" fill="#ff8cb4" stroke="#ff6a9a" stroke-width="1.5" opacity="${1-i*0.03}"/>`).join('')}
+<!-- layer lines on each segment -->
+${Array.from({length:10},(_,i)=>`<ellipse cx="${90+i*12}" cy="${145+Math.sin(i*0.8)*18}" rx="9" ry="3" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"/>`).join('')}
+<!-- head -->
+<ellipse cx="82" cy="138" rx="22" ry="20" fill="#ffaac8"/>
+<!-- eyes -->
+<circle cx="74" cy="132" r="7" fill="white"/>
+<circle cx="90" cy="132" r="7" fill="white"/>
+<circle cx="75" cy="133" r="3.5" fill="#1a0a20"/>
+<circle cx="91" cy="133" r="3.5" fill="#1a0a20"/>
+<circle cx="76" cy="132" r="1.2" fill="white"/>
+<circle cx="92" cy="132" r="1.2" fill="white"/>
+<!-- smile -->
+<path d="M76,145 Q82,150 88,145" stroke="#ff6a9a" stroke-width="2" fill="none" stroke-linecap="round"/>
+<!-- gills (feathery) -->
+<path d="M68,128 Q58,110 62,100 M68,128 Q55,115 56,104 M68,128 Q52,120 50,110" stroke="#ff6a9a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<path d="M96,128 Q106,110 102,100 M96,128 Q109,115 108,104 M96,128 Q112,120 114,110" stroke="#ff6a9a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<!-- feet -->
+<ellipse cx="94" cy="166" rx="10" ry="5" fill="#ff8cb4" transform="rotate(-20,94,166)"/>
+<ellipse cx="118" cy="170" rx="10" ry="5" fill="#ff8cb4" transform="rotate(10,118,170)"/>
+<!-- tail tip -->
+<ellipse cx="198" cy="152" rx="8" ry="5" fill="#ff8cb4"/>
+<text x="140" y="252" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · Pink PLA · Print-in-Place Flexi</text>`);
+
+// 3: D&D dungeon tile set
+const M3 = SVG(280,260,'#0e0e0e',`<defs>${LAYERS('rgba(255,255,255,0.04)')}</defs>
+<!-- several tiles stacked/spread -->
+<!-- tile 1 -->
+<rect x="20" y="90" width="90" height="90" rx="4" fill="#2c2c2c"/>
+<rect x="20" y="90" width="90" height="90" fill="url(#ll)"/>
+<!-- cobblestone pattern -->
+<rect x="28" y="98" width="22" height="14" rx="2" fill="#383838"/>
+<rect x="56" y="98" width="22" height="14" rx="2" fill="#303030"/>
+<rect x="84" y="98" width="18" height="14" rx="2" fill="#383838"/>
+<rect x="28" y="118" width="15" height="14" rx="2" fill="#303030"/>
+<rect x="49" y="118" width="22" height="14" rx="2" fill="#383838"/>
+<rect x="77" y="118" width="25" height="14" rx="2" fill="#303030"/>
+<rect x="28" y="138" width="22" height="14" rx="2" fill="#383838"/>
+<rect x="56" y="138" width="22" height="14" rx="2" fill="#303030"/>
+<rect x="84" y="138" width="18" height="14" rx="2" fill="#383838"/>
+<!-- tile 2 (corner) -->
+<rect x="120" y="50" width="90" height="90" rx="4" fill="#2c2c2c"/>
+<rect x="120" y="50" width="90" height="90" fill="url(#ll)"/>
+<!-- wall sections on tile 2 -->
+<rect x="120" y="50" width="90" height="18" rx="2" fill="#404040"/>
+<rect x="120" y="50" width="18" height="90" rx="2" fill="#404040"/>
+<!-- floor dots -->
+<circle cx="160" cy="100" r="3" fill="#383838"/>
+<circle cx="176" cy="100" r="3" fill="#383838"/>
+<circle cx="192" cy="100" r="3" fill="#383838"/>
+<circle cx="160" cy="116" r="3" fill="#383838"/>
+<circle cx="176" cy="116" r="3" fill="#383838"/>
+<!-- tile 3 front -->
+<rect x="70" y="155" width="90" height="90" rx="4" fill="#2c2c2c"/>
+<rect x="70" y="155" width="90" height="90" fill="url(#ll)"/>
+<rect x="78" y="163" width="22" height="14" rx="2" fill="#383838"/>
+<rect x="106" y="163" width="22" height="14" rx="2" fill="#303030"/>
+<rect x="134" y="163" width="18" height="14" rx="2" fill="#383838"/>
+<rect x="78" y="183" width="32" height="14" rx="2" fill="#303030"/>
+<rect x="116" y="183" width="22" height="14" rx="2" fill="#383838"/>
+<rect x="78" y="203" width="22" height="14" rx="2" fill="#383838"/>
+<rect x="106" y="203" width="32" height="14" rx="2" fill="#303030"/>
+<rect x="144" y="203" width="12" height="14" rx="2" fill="#383838"/>
+<text x="140" y="255" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA · D&amp;D Dungeon Tiles</text>`);
+
+// ── DECOR ──
+// 0: Low-poly geometric planter (terracotta PLA)
+const D0 = SVG(280,260,'#1a120a',`<defs><linearGradient id="dg0" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c85a1e"/><stop offset="100%" stop-color="#8a3a0e"/></linearGradient></defs>
+<!-- pot body polygon -->
+<polygon points="140,40 205,80 220,170 140,195 60,170 75,80" fill="url(#dg0)"/>
+<!-- facets (low-poly shading) -->
+<polygon points="140,40 205,80 140,100" fill="#d06a2e" opacity=".6"/>
+<polygon points="140,40 75,80 140,100" fill="#a84a18" opacity=".6"/>
+<polygon points="205,80 220,170 140,195 140,100" fill="#c05020" opacity=".5"/>
+<polygon points="75,80 60,170 140,195 140,100" fill="#8a3010" opacity=".5"/>
+<!-- layer lines across each face -->
+${Array.from({length:12},(_,i)=>`<line x1="${70+i*3}" y1="${90+i*9}" x2="${210-i*3}" y2="${90+i*9}" stroke="rgba(0,0,0,.1)" stroke-width="1"/>`).join('')}
+<!-- rim -->
+<polygon points="140,40 205,80 200,70 140,28 80,70 75,80" fill="#e07838" opacity=".7"/>
+<!-- soil + plant -->
+<ellipse cx="140" cy="80" rx="52" ry="18" fill="#3a2010"/>
+<circle cx="140" cy="68" r="6" fill="#1a5a1a"/>
+<path d="M140,68 Q125,45 118,35 M140,68 Q155,45 162,35 M140,68 Q140,40 140,28" stroke="#2a7a2a" stroke-width="3" fill="none" stroke-linecap="round"/>
+<!-- pot base -->
+<ellipse cx="140" cy="192" rx="55" ry="10" fill="#7a3a0a"/>
+<text x="140" y="252" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · Terracotta PLA · Low-Poly Planter</text>`);
+
+// 1: Wave vase (white PLA, ripple effect)
+const D1 = SVG(280,260,'#0a1a0a',`<defs><linearGradient id="dg1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#e8e8e0"/><stop offset="50%" stop-color="#f5f5f0"/><stop offset="100%" stop-color="#d8d8d0"/></linearGradient></defs>
+<!-- vase body with wave profile -->
+<path d="M120,220 Q95,200 90,160 Q85,130 100,105 Q108,90 105,70 Q102,50 115,35 L165,35 Q178,50 175,70 Q172,90 180,105 Q195,130 190,160 Q185,200 160,220 Z" fill="url(#dg1)"/>
+<!-- wave texture rings -->
+${Array.from({length:22},(_,i)=>{
+  const y = 40 + i*8;
+  const wave = 4*Math.sin(i*0.6);
+  return `<path d="M${112+wave},${y} Q${130+wave*0.5},${y+2} ${140},${y+1} Q${150+wave*0.5},${y} ${168-wave},${y}" stroke="rgba(0,0,0,0.08)" stroke-width="1.2" fill="none"/>`;
+}).join('')}
+<!-- highlight stripe -->
+<path d="M165,38 Q176,52 173,72 Q170,92 178,108" stroke="rgba(255,255,255,.6)" stroke-width="4" fill="none" stroke-linecap="round"/>
+<!-- rim -->
+<ellipse cx="140" cy="35" rx="28" ry="8" fill="#f0f0e8"/>
+<ellipse cx="140" cy="35" rx="28" ry="8" fill="none" stroke="rgba(0,0,0,.1)" stroke-width="1"/>
+<!-- base shadow -->
+<ellipse cx="140" cy="220" rx="42" ry="8" fill="rgba(0,0,0,.25)"/>
+<text x="140" y="252" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA White · Wave Vase 30cm</text>`);
+
+// 2: Moon phase wall display (black PLA)
+const D2 = SVG(280,260,'#050a14',`
+<!-- background plate -->
+<rect x="15" y="85" width="250" height="75" rx="8" fill="#0e1420"/>
+<!-- 9 moon phases -->
+${[
+  [35,122,18,18,0],   // new moon
+  [67,122,18,18,0.12],  // waxing crescent
+  [99,122,18,18,0.3],   // first quarter
+  [131,122,18,18,0.55], // waxing gibbous
+  [163,122,18,18,1],    // full moon
+  [195,122,18,18,0.7],  // waning gibbous
+  [227,122,18,16,0.4],  // third quarter
+  [245,122,14,16,0.15], // waning crescent (smaller)
+  [258,122,10,14,0.02], // new moon
+].map(([x,y,rx,ry,fill],i) => `
+  <ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#e8e0c8" opacity="${0.15+fill*0.85}"/>
+  ${fill>0.1&&fill<0.9?`<ellipse cx="${x+rx*(fill<0.5?-0.5:0.5)}" cy="${y}" rx="${rx*0.7}" ry="${ry}" fill="#0e1420"/>`:''}`).join('')}
+<!-- stars scattered -->
+<circle cx="30" cy="50" r="1.5" fill="white" opacity=".6"/>
+<circle cx="80" cy="35" r="1" fill="white" opacity=".4"/>
+<circle cx="150" cy="30" r="2" fill="white" opacity=".7"/>
+<circle cx="220" cy="45" r="1" fill="white" opacity=".5"/>
+<circle cx="260" cy="60" r="1.5" fill="white" opacity=".4"/>
+<circle cx="50" cy="170" r="1" fill="white" opacity=".3"/>
+<circle cx="190" cy="175" r="1.5" fill="white" opacity=".5"/>
+<circle cx="240" cy="165" r="1" fill="white" opacity=".4"/>
+<!-- mounting holes -->
+<circle cx="28" cy="122" r="4" fill="#050a14"/>
+<circle cx="252" cy="122" r="4" fill="#050a14"/>
+<text x="140" y="252" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA Black · Moon Phase Display</text>`);
+
+// 3: Lattice candle holder trio
+const D3 = SVG(280,260,'#1a0f08',`<defs><linearGradient id="dg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8a060"/><stop offset="100%" stop-color="#8a6030"/></linearGradient></defs>
+<!-- three cylinders of different heights -->
+<!-- tall left -->
+<rect x="30" y="60" width="54" height="155" rx="8" fill="url(#dg3)" opacity=".9"/>
+<!-- lattice cutout pattern tall -->
+${Array.from({length:8},(_,r)=>Array.from({length:3},(_,c)=>`<rect x="${38+c*16}" y="${75+r*17}" width="10" height="10" rx="2" fill="#1a0f08" opacity=".7"/>`).join('')).join('')}
+<!-- rim top -->
+<ellipse cx="57" cy="62" rx="27" ry="7" fill="#d4aa70"/>
+<ellipse cx="57" cy="215" rx="27" ry="7" fill="#7a5020"/>
+<!-- candle flame tall -->
+<ellipse cx="57" cy="55" rx="5" ry="8" fill="#ffcc44" opacity=".9"/>
+<ellipse cx="57" cy="52" rx="3" ry="5" fill="#ff8800"/>
+
+<!-- medium middle -->
+<rect x="113" y="100" width="54" height="115" rx="8" fill="url(#dg3)"/>
+${Array.from({length:6},(_,r)=>Array.from({length:3},(_,c)=>`<rect x="${121+c*16}" y="${115+r*17}" width="10" height="10" rx="2" fill="#1a0f08" opacity=".7"/>`).join('')).join('')}
+<ellipse cx="140" cy="102" rx="27" ry="7" fill="#d4aa70"/>
+<ellipse cx="140" cy="215" rx="27" ry="7" fill="#7a5020"/>
+<ellipse cx="140" cy="95" rx="5" ry="8" fill="#ffcc44" opacity=".9"/>
+<ellipse cx="140" cy="92" rx="3" ry="5" fill="#ff8800"/>
+
+<!-- short right -->
+<rect x="196" y="135" width="54" height="80" rx="8" fill="url(#dg3)" opacity=".85"/>
+${Array.from({length:4},(_,r)=>Array.from({length:3},(_,c)=>`<rect x="${204+c*16}" y="${148+r*17}" width="10" height="10" rx="2" fill="#1a0f08" opacity=".7"/>`).join('')).join('')}
+<ellipse cx="223" cy="137" rx="27" ry="7" fill="#d4aa70"/>
+<ellipse cx="223" cy="215" rx="27" ry="7" fill="#7a5020"/>
+<ellipse cx="223" cy="130" rx="5" ry="8" fill="#ffcc44" opacity=".9"/>
+<ellipse cx="223" cy="127" rx="3" ry="5" fill="#ff8800"/>
+<text x="140" y="252" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">Resin · Gold PLA · Lattice Candle Trio</text>`);
+
+// ── TOYS ──
+// 0: Flexi fidget snake articulated
+const T0 = SVG(280,230,'#0a1a2e',`
+<!-- 18 segments in S-curve -->
+${Array.from({length:18},(_,i)=>{
+  const t = i/17;
+  const x = 30 + i*13;
+  const y = 110 + Math.sin(i*0.7)*35;
+  const colors=['#ff6b35','#ff8c42','#ffa550','#ff6b35','#e55a2b','#ff8c42','#ffa550','#ff6b35','#e55a2b','#ff8c42','#ffa550','#ff6b35','#e55a2b','#ff8c42','#ffa550','#ff6b35','#e55a2b','#ff8c42'];
+  return `<ellipse cx="${x}" cy="${y}" rx="11" ry="13" fill="${colors[i]}" stroke="rgba(0,0,0,.2)" stroke-width="1"/>
+<ellipse cx="${x}" cy="${y}" rx="9" ry="3" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="1"/>`;
+}).join('')}
+<!-- head segment -->
+<ellipse cx="30" cy="118" rx="14" ry="16" fill="#ff4a20"/>
+<!-- eyes -->
+<circle cx="24" cy="112" r="4" fill="white"/>
+<circle cx="36" cy="112" r="4" fill="white"/>
+<circle cx="24" cy="113" r="2" fill="#111"/>
+<circle cx="36" cy="113" r="2" fill="#111"/>
+<!-- tongue -->
+<path d="M30,125 L30,132 M30,132 L26,138 M30,132 L34,138" stroke="#ff1111" stroke-width="2" stroke-linecap="round"/>
+<text x="140" y="220" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA Orange · Flexi Fidget Snake</text>`);
+
+// 1: Articulated T-Rex dinosaur
+const T1 = SVG(280,260,'#0a180a',`<defs><linearGradient id="tg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4a8a2a"/><stop offset="100%" stop-color="#2a5a1a"/></linearGradient></defs>
+<!-- body -->
+<ellipse cx="145" cy="145" rx="55" ry="45" fill="url(#tg1)"/>
+${Array.from({length:10},(_,i)=>`<ellipse cx="145" cy="${112+i*7}" rx="${50-i*2}" ry="3" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="1"/>`).join('')}
+<!-- tail -->
+<path d="M195,155 Q230,160 245,145 Q250,130 240,125 Q225,140 200,140 Q195,145 195,155" fill="#3a7a1a"/>
+<!-- neck -->
+<ellipse cx="110" cy="100" rx="22" ry="32" fill="#4a8a2a" transform="rotate(-25,110,100)"/>
+<!-- head -->
+<ellipse cx="82" cy="72" rx="35" ry="22" fill="#5a9a3a" transform="rotate(-15,82,72)"/>
+<!-- upper jaw -->
+<rect x="52" y="60" width="40" height="14" rx="6" fill="#5a9a3a" transform="rotate(-12,72,67)"/>
+<!-- lower jaw -->
+<rect x="55" y="72" width="36" height="12" rx="5" fill="#4a8a2a" transform="rotate(-8,73,78)"/>
+<!-- teeth -->
+<rect x="58" y="71" width="4" height="8" rx="1" fill="white" transform="rotate(-10,60,75)"/>
+<rect x="66" y="70" width="4" height="9" rx="1" fill="white" transform="rotate(-8,68,74)"/>
+<rect x="74" y="69" width="4" height="9" rx="1" fill="white" transform="rotate(-6,76,73)"/>
+<!-- eye -->
+<circle cx="90" cy="66" r="7" fill="#ffcc00"/>
+<circle cx="91" cy="67" r="3.5" fill="#111"/>
+<!-- arms (tiny T-rex arms) -->
+<rect x="150" y="130" width="12" height="22" rx="5" fill="#4a8a2a" transform="rotate(30,156,141)"/>
+<rect x="120" y="132" width="12" height="22" rx="5" fill="#4a8a2a" transform="rotate(-20,126,143)"/>
+<!-- legs -->
+<rect x="110" y="180" width="20" height="45" rx="8" fill="#3a7a1a"/>
+<rect x="148" y="180" width="20" height="45" rx="8" fill="#3a7a1a"/>
+<!-- feet -->
+<ellipse cx="120" cy="225" rx="18" ry="8" fill="#2a6a0a" transform="rotate(-5,120,225)"/>
+<ellipse cx="158" cy="225" rx="18" ry="8" fill="#2a6a0a" transform="rotate(5,158,225)"/>
+<text x="140" y="252" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · Green PLA · Articulated T-Rex</text>`);
+
+// 2: Pop-it fidget toy
+const T2 = SVG(280,230,'#14081e',`
+<!-- grid of bubbles -->
+<rect x="30" y="35" width="220" height="160" rx="12" fill="#9b5de5"/>
+${Array.from({length:5},(_,r)=>Array.from({length:7},(_,c)=>{
+  const popped = (r+c)%3===0;
+  return `<ellipse cx="${65+c*26}" cy="${70+r*28}" rx="11" ry="${popped?4:11}" fill="${popped?'#7a3acc':'#c084fc'}" stroke="#7a3acc" stroke-width="1.5"/>
+${popped?'':` <ellipse cx="${65+c*26}" cy="${68+r*28}" rx="6" ry="5" fill="#d4a8ff" opacity=".4"/>`}`;
+}).join('')).join('')}
+<!-- side shadow -->
+<rect x="30" y="183" width="220" height="12" rx="6" fill="#6a2aa0" opacity=".6"/>
+<text x="140" y="220" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · Purple PLA · Pop-It Sensory Toy</text>`);
+
+// 3: Construction dump truck toy
+const T3 = SVG(280,250,'#1a1200',`<defs><linearGradient id="tg3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffcc00"/><stop offset="100%" stop-color="#cc9900"/></linearGradient></defs>
+<!-- truck body -->
+<rect x="30" y="110" width="180" height="90" rx="6" fill="url(#tg3)"/>
+<!-- layer lines -->
+${Array.from({length:10},(_,i)=>`<line x1="30" y1="${116+i*9}" x2="210" y2="${116+i*9}" stroke="rgba(0,0,0,.08)" stroke-width="1"/>`).join('')}
+<!-- cab -->
+<rect x="30" y="65" width="85" height="55" rx="6" fill="#ffdd00"/>
+<!-- windscreen -->
+<rect x="38" y="72" width="62" height="38" rx="4" fill="#a8d8f8" opacity=".8"/>
+<!-- tipping bed -->
+<rect x="115" y="80" width="95" height="120" rx="4" fill="#e8b800" transform="rotate(-8,162,140)"/>
+<!-- wheels -->
+<circle cx="70" cy="200" r="26" fill="#222"/>
+<circle cx="70" cy="200" r="18" fill="#444"/>
+<circle cx="70" cy="200" r="8" fill="#666"/>
+<circle cx="175" cy="200" r="26" fill="#222"/>
+<circle cx="175" cy="200" r="18" fill="#444"/>
+<circle cx="175" cy="200" r="8" fill="#666"/>
+<!-- headlights -->
+<rect x="22" y="88" width="12" height="8" rx="2" fill="#ffffaa"/>
+<!-- exhaust -->
+<rect x="100" y="55" width="8" height="18" rx="3" fill="#888"/>
+<text x="140" y="242" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · Yellow PLA · Dump Truck Toy</text>`);
+
+// ── JEWELLERY ──
+// 0: Geometric tetrahedron earrings
+const J0 = SVG(280,240,'#0e0e18',`<defs><linearGradient id="jg0" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c8a0e8"/><stop offset="100%" stop-color="#8060b8"/></linearGradient></defs>
+<!-- ear hook left -->
+<path d="M80,30 Q68,30 65,45 L65,70" stroke="#c8a0e8" stroke-width="3" fill="none" stroke-linecap="round"/>
+<!-- tetrahedron left - 3 visible faces -->
+<polygon points="80,75 50,140 110,140" fill="#a070c8" stroke="#c8a0e8" stroke-width="1.5"/>
+<polygon points="80,75 110,140 130,100" fill="#c8a0e8" stroke="#e8c8ff" stroke-width="1"/>
+<polygon points="80,75 50,140 30,100" fill="#6040a0" stroke="#a070c8" stroke-width="1"/>
+<!-- layer lines on face -->
+<line x1="65" y1="105" x2="95" y2="105" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<line x1="60" y1="118" x2="100" y2="118" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<line x1="55" y1="130" x2="105" y2="130" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+
+<!-- ear hook right -->
+<path d="M200,30 Q212,30 215,45 L215,70" stroke="#c8a0e8" stroke-width="3" fill="none" stroke-linecap="round"/>
+<!-- tetrahedron right -->
+<polygon points="200,75 170,140 230,140" fill="#a070c8" stroke="#c8a0e8" stroke-width="1.5"/>
+<polygon points="200,75 230,140 250,100" fill="#c8a0e8" stroke="#e8c8ff" stroke-width="1"/>
+<polygon points="200,75 170,140 150,100" fill="#6040a0" stroke="#a070c8" stroke-width="1"/>
+<line x1="185" y1="105" x2="215" y2="105" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<line x1="180" y1="118" x2="220" y2="118" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<line x1="175" y1="130" x2="225" y2="130" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+<!-- face highlight -->
+<line x1="80" y1="75" x2="110" y2="140" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+<line x1="200" y1="75" x2="230" y2="140" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+<text x="140" y="230" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">Resin · Purple · Geometric Earrings</text>`);
+
+// 1: Honeycomb adjustable ring
+const J1 = SVG(280,240,'#0a0a14',`<defs><linearGradient id="jg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f0c060"/><stop offset="100%" stop-color="#b08020"/></linearGradient></defs>
+<!-- ring band perspective view -->
+<ellipse cx="140" cy="140" rx="80" ry="24" fill="none" stroke="#b08020" stroke-width="18"/>
+<!-- honeycomb texture on band -->
+${Array.from({length:8},(_,i)=>{
+  const a = (i/8)*Math.PI*2;
+  const x = 140 + 80*Math.cos(a);
+  const y = 140 + 24*Math.sin(a);
+  return `<ellipse cx="${x}" cy="${y}" rx="8" ry="5" fill="none" stroke="#f0c060" stroke-width="1" transform="rotate(${a*180/Math.PI},${x},${y})"/>`;
+}).join('')}
+<!-- top of ring -->
+<ellipse cx="140" cy="116" rx="80" ry="24" fill="#d0a040" opacity=".6"/>
+<!-- inner ring shadow -->
+<ellipse cx="140" cy="140" rx="62" ry="18" fill="#0a0a14"/>
+<ellipse cx="140" cy="116" rx="62" ry="18" fill="#0a0a14"/>
+<!-- gemstone setting on top -->
+<polygon points="140,90 125,105 155,105" fill="#f0c060"/>
+<polygon points="140,82 125,105 155,105 140,105" fill="#e0b030" opacity=".8"/>
+<ellipse cx="140" cy="96" rx="10" ry="8" fill="#80d0ff" opacity=".9"/>
+<!-- layer lines on band top -->
+<ellipse cx="140" cy="116" rx="72" ry="6" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+<ellipse cx="140" cy="116" rx="78" ry="10" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+<text x="140" y="230" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">Resin · Gold · Honeycomb Ring</text>`);
+
+// 2: Art deco cuff bracelet
+const J2 = SVG(280,240,'#080810',`<defs><linearGradient id="jg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8e0f0"/><stop offset="100%" stop-color="#a090c0"/></linearGradient></defs>
+<!-- cuff band -->
+<path d="M40,80 Q40,60 140,55 Q240,60 240,80 L240,165 Q240,185 140,190 Q40,185 40,165 Z" fill="url(#jg2)"/>
+<!-- art deco geometric pattern -->
+<!-- central diamond -->
+<polygon points="140,75 165,122 140,145 115,122" fill="none" stroke="#6050a0" stroke-width="2"/>
+<polygon points="140,85 158,122 140,136 122,122" fill="#c0b0e0" opacity=".4"/>
+<!-- flanking chevrons -->
+<polyline points="90,90 75,120 90,148" fill="none" stroke="#8070b0" stroke-width="2"/>
+<polyline points="100,90 85,120 100,148" fill="none" stroke="#8070b0" stroke-width="1.5" opacity=".6"/>
+<polyline points="190,90 205,120 190,148" fill="none" stroke="#8070b0" stroke-width="2"/>
+<polyline points="180,90 195,120 180,148" fill="none" stroke="#8070b0" stroke-width="1.5" opacity=".6"/>
+<!-- horizontal lines -->
+<line x1="45" y1="110" x2="235" y2="110" stroke="#8070b0" stroke-width="1.5" opacity=".4"/>
+<line x1="45" y1="120" x2="235" y2="120" stroke="#8070b0" stroke-width="1" opacity=".3"/>
+<line x1="45" y1="130" x2="235" y2="130" stroke="#8070b0" stroke-width="1.5" opacity=".4"/>
+<!-- layer lines -->
+${Array.from({length:12},(_,i)=>`<line x1="44" y1="${82+i*9}" x2="236" y2="${82+i*9}" stroke="rgba(0,0,0,.06)" stroke-width="1"/>`).join('')}
+<!-- opening gap -->
+<rect x="122" y="180" width="36" height="18" rx="4" fill="#080810"/>
+<text x="140" y="230" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">Resin · Art Deco Cuff Bracelet</text>`);
+
+// 3: Custom name necklace
+const J3 = SVG(280,240,'#0a0a0a',`
+<!-- chain -->
+${Array.from({length:22},(_,i)=>`<ellipse cx="${30+i*10}" cy="${50+Math.sin(i*0.5)*8}" rx="5" ry="3" fill="none" stroke="#d4af37" stroke-width="1.5" transform="rotate(${i%2*45},${30+i*10},${50+Math.sin(i*0.5)*8})"/>`).join('')}
+<!-- pendant backing -->
+<rect x="72" y="90" width="136" height="64" rx="8" fill="#1a1a1a" stroke="#d4af37" stroke-width="1.5"/>
+<!-- name text rendered as relief -->
+<text x="140" y="132" font-family="Georgia,serif" font-size="32" font-weight="bold" fill="#d4af37" text-anchor="middle" letter-spacing="2">ALEX</text>
+<!-- raised letter effect (shadow) -->
+<text x="142" y="134" font-family="Georgia,serif" font-size="32" font-weight="bold" fill="#8a7020" text-anchor="middle" letter-spacing="2" opacity=".4">ALEX</text>
+<!-- layer lines on pendant -->
+${Array.from({length:7},(_,i)=>`<line x1="74" y1="${95+i*9}" x2="206" y2="${95+i*9}" stroke="rgba(255,255,255,.04)" stroke-width="1"/>`).join('')}
+<!-- pendant bail -->
+<rect x="132" y="80" width="16" height="14" rx="3" fill="none" stroke="#d4af37" stroke-width="2"/>
+<text x="140" y="230" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">Resin · Gold · Custom Name Necklace</text>`);
+
+// ── COSPLAY ──
+// 0: Iron Man helmet front view
+const C0 = SVG(280,270,'#0a0a14',`<defs><linearGradient id="cg0" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c0c8d8"/><stop offset="100%" stop-color="#606878"/></linearGradient><linearGradient id="cg0r" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#cc2200"/><stop offset="100%" stop-color="#881100"/></linearGradient></defs>
+<!-- helmet base shape -->
+<path d="M70,240 L60,170 Q58,120 70,90 Q90,50 140,40 Q190,50 210,90 Q222,120 220,170 L210,240 Z" fill="url(#cg0)"/>
+<!-- layer lines -->
+${Array.from({length:20},(_,i)=>`<line x1="${62+i*0.5}" y1="${55+i*9.5}" x2="${218-i*0.5}" y2="${55+i*9.5}" stroke="rgba(0,0,0,.07)" stroke-width="1"/>`).join('')}
+<!-- faceplate division -->
+<line x1="80" y1="145" x2="200" y2="145" stroke="#888" stroke-width="2"/>
+<!-- eye slits - glowing gold -->
+<path d="M82,120 Q100,108 120,112 Q105,124 85,128 Z" fill="#ffd700"/>
+<path d="M198,120 Q180,108 160,112 Q175,124 195,128 Z" fill="#ffd700"/>
+<!-- eye glow -->
+<path d="M84,122 Q100,112 118,115 Q105,122 87,126 Z" fill="#fff8aa" opacity=".6"/>
+<path d="M196,122 Q180,112 162,115 Q175,122 193,126 Z" fill="#fff8aa" opacity=".6"/>
+<!-- nose section -->
+<rect x="128" y="138" width="24" height="20" rx="4" fill="#707888"/>
+<!-- chin -->
+<path d="M80,195 Q90,240 140,245 Q190,240 200,195 L192,188 L88,188 Z" fill="#606878"/>
+<!-- panel lines (armour segments) -->
+<line x1="140" y1="45" x2="140" y2="138" stroke="rgba(0,0,0,.15)" stroke-width="1.5"/>
+<path d="M70,90 Q90,82 120,86" stroke="rgba(0,0,0,.1)" stroke-width="1.5" fill="none"/>
+<path d="M210,90 Q190,82 160,86" stroke="rgba(0,0,0,.1)" stroke-width="1.5" fill="none"/>
+<!-- cheek panels red -->
+<path d="M63,155 Q65,130 80,115 L88,130 L75,165 Z" fill="url(#cg0r)" opacity=".7"/>
+<path d="M217,155 Q215,130 200,115 L192,130 L205,165 Z" fill="url(#cg0r)" opacity=".7"/>
+<text x="140" y="262" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA Silver/Red · Iron Man MK7</text>`);
+
+// 1: Mandalorian helmet
+const C1 = SVG(280,270,'#0e0e0e',`<defs><linearGradient id="cg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#b0a890"/><stop offset="100%" stop-color="#706858"/></linearGradient></defs>
+<!-- dome -->
+<ellipse cx="140" cy="100" rx="90" ry="78" fill="url(#cg1)"/>
+<!-- T-visor (iconic Mando shape) -->
+<path d="M82,118 L82,100 Q84,90 96,88 L184,88 Q196,90 198,100 L198,118 Q196,128 184,130 L96,130 Q84,128 82,118 Z" fill="#111"/>
+<rect x="120" y="130" width="40" height="16" rx="2" fill="#111"/>
+<!-- visor shine -->
+<path d="M86,108 Q95,96 110,94 L155,94" stroke="rgba(255,255,255,.15)" stroke-width="2" fill="none"/>
+<!-- dents and battle damage -->
+<ellipse cx="105" cy="80" rx="8" ry="5" fill="#888" opacity=".3" transform="rotate(-20,105,80)"/>
+<path d="M160,70 L168,82 L158,85" stroke="#888" stroke-width="2" fill="none" opacity=".4"/>
+<!-- rangefinder stalk -->
+<rect x="190" y="50" width="6" height="40" rx="2" fill="#909080"/>
+<rect x="184" y="45" width="18" height="12" rx="3" fill="#a0a090"/>
+<!-- layer lines on dome -->
+${Array.from({length:14},(_,i)=>`<ellipse cx="140" cy="${48+i*12}" rx="${35+i*8}" ry="4" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="1.2"/>`).join('')}
+<!-- chin section -->
+<path d="M82,155 Q90,195 140,205 Q190,195 198,155 L190,148 L90,148 Z" fill="#908878"/>
+<!-- neck seal rings -->
+<ellipse cx="140" cy="205" rx="55" ry="12" fill="#605848" opacity=".8"/>
+<ellipse cx="140" cy="212" rx="52" ry="10" fill="#504838" opacity=".8"/>
+<text x="140" y="262" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA Grey · Mandalorian Helmet</text>`);
+
+// 2: Thor Mjolnir hammer
+const C2 = SVG(280,270,'#100a18',`<defs><linearGradient id="cg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#d0c8d8"/><stop offset="100%" stop-color="#706878"/></linearGradient></defs>
+<!-- handle -->
+<rect x="124" y="160" width="32" height="90" rx="6" fill="#8a6040"/>
+${Array.from({length:10},(_,i)=>`<line x1="124" y1="${165+i*9}" x2="156" y2="${165+i*9}" stroke="rgba(0,0,0,.12)" stroke-width="1"/>`).join('')}
+<!-- leather wrapping -->
+${Array.from({length:8},(_,i)=>`<path d="M${124+i*4},${168+i*2} L${130+i*4},${175+i*2}" stroke="#6a4020" stroke-width="3" opacity=".6"/>`).join('')}
+<!-- pommel -->
+<rect x="118" y="242" width="44" height="16" rx="6" fill="#b0a0b8"/>
+<!-- hammer head front -->
+<rect x="62" y="60" width="156" height="108" rx="8" fill="url(#cg2)"/>
+<!-- layer lines on head -->
+${Array.from({length:12},(_,i)=>`<line x1="64" y1="${66+i*9}" x2="216" y2="${66+i*9}" stroke="rgba(0,0,0,.08)" stroke-width="1"/>`).join('')}
+<!-- rune carvings -->
+<path d="M95,85 L95,145 M85,100 L105,100 M85,130 L105,130" stroke="rgba(255,200,50,.4)" stroke-width="2.5" fill="none"/>
+<path d="M185,85 L185,145 M175,100 L195,100" stroke="rgba(255,200,50,.4)" stroke-width="2.5" fill="none"/>
+<!-- top face -->
+<ellipse cx="140" cy="60" rx="78" ry="14" fill="#c8c0d0"/>
+<!-- strap -->
+<path d="M156,248 Q175,255 178,265" stroke="#6a4020" stroke-width="4" fill="none" stroke-linecap="round"/>
+<ellipse cx="178" cy="265" rx="10" ry="6" fill="#5a3010"/>
+<text x="140" y="262" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA Silver · Mjolnir 40cm</text>`);
+
+// 3: Cosplay shoulder armour (dragon scale)
+const C3 = SVG(280,270,'#0a0a10',`<defs><linearGradient id="cg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1a4a2a"/><stop offset="100%" stop-color="#0a2a16"/></linearGradient></defs>
+<!-- pauldron base -->
+<path d="M50,240 Q40,180 55,120 Q70,60 140,40 Q210,60 225,120 Q240,180 230,240 Z" fill="url(#cg3)"/>
+<!-- dragonscale pattern -->
+${Array.from({length:8},(_,r)=>Array.from({length:6+r%2},(_,c)=>{
+  const x = 60 + c*26 - (r%2)*13;
+  const y = 60 + r*24;
+  if(x<50||x>230||y<40||y>240) return '';
+  return `<ellipse cx="${x}" cy="${y}" rx="14" ry="10" fill="#0a3a1a" stroke="#1a6a3a" stroke-width="1.2"/>
+<ellipse cx="${x}" cy="${y-2}" rx="10" ry="5" fill="#2a6a3a" opacity=".4"/>`;
+}).join('')).join('')}
+<!-- shoulder ridge spikes -->
+<polygon points="140,42 130,22 148,18 156,36" fill="#0a5a2a" stroke="#1a8a4a" stroke-width="1"/>
+<polygon points="165,55 158,30 174,28 178,48" fill="#0a5a2a" stroke="#1a8a4a" stroke-width="1"/>
+<polygon points="115,55 108,30 124,28 122,48" fill="#0a5a2a" stroke="#1a8a4a" stroke-width="1"/>
+<!-- strap mounts -->
+<rect x="55" y="180" width="30" height="16" rx="4" fill="#2a4a2a"/>
+<rect x="195" y="180" width="30" height="16" rx="4" fill="#2a4a2a"/>
+<circle cx="65" cy="188" r="5" fill="#0a0a10"/>
+<circle cx="215" cy="188" r="5" fill="#0a0a10"/>
+<text x="140" y="262" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · Green PLA · Dragonscale Pauldron</text>`);
+
+// ── TECH ──
+// 0: Raspberry Pi 5 case with vents
+const TE0 = SVG(280,230,'#0a1020',`<defs>${LAYERS('rgba(255,255,255,0.04)')}</defs>
+<!-- case body -->
+<rect x="45" y="40" width="190" height="140" rx="8" fill="#1a2535"/>
+<rect x="45" y="40" width="190" height="140" fill="url(#ll)"/>
+<!-- lid -->
+<rect x="45" y="40" width="190" height="18" rx="8" fill="#253045"/>
+<!-- vent holes grid top -->
+${Array.from({length:4},(_,r)=>Array.from({length:8},(_,c)=>`<rect x="${60+c*22}" y="${48+r*4}" width="10" height="2" rx="1" fill="#0a1020" opacity=".7"/>`).join('')).join('')}
+<!-- ports on right side -->
+<rect x="232" y="65" width="8" height="14" rx="2" fill="#0a1020"/>
+<rect x="232" y="85" width="8" height="14" rx="2" fill="#0a1020"/>
+<rect x="232" y="108" width="8" height="22" rx="2" fill="#0a1020"/>
+<rect x="232" y="135" width="8" height="14" rx="2" fill="#0a1020"/>
+<!-- USB-C port left -->
+<rect x="40" y="82" width="8" height="12" rx="2" fill="#0a1020"/>
+<!-- SD slot -->
+<rect x="40" y="108" width="8" fill="#0a1020" height="8" rx="1"/>
+<!-- camera connector slot front -->
+<rect x="88" y="175" width="30" height="6" rx="1" fill="#0a1020"/>
+<!-- Raspberry Pi logo/text on lid -->
+<circle cx="140" cy="49" r="6" fill="#cc0000" opacity=".7"/>
+<!-- fan grille on top -->
+<circle cx="210" cy="100" r="18" fill="none" stroke="#2a3545" stroke-width="3"/>
+${Array.from({length:6},(_,i)=>{const a=i*Math.PI/3; return `<line x1="210" y1="100" x2="${210+18*Math.cos(a)}" y2="${100+18*Math.sin(a)}" stroke="#2a3545" stroke-width="2"/>`}).join('')}
+<circle cx="210" cy="100" r="4" fill="#2a3545"/>
+<text x="140" y="220" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA Black · Raspberry Pi 5 Case</text>`);
+
+// 1: Keyboard wrist rest
+const TE1 = SVG(280,230,'#111418',`<defs>${LAYERS('rgba(255,255,255,0.04)')}</defs>
+<!-- rest body - long low wedge -->
+<path d="M25,160 Q25,80 50,72 L230,72 Q255,80 255,160 Z" fill="#2a2a32"/>
+<path d="M25,160 Q25,80 50,72 L230,72 Q255,80 255,160 Z" fill="url(#ll)" opacity=".5"/>
+<!-- ergonomic curve on top surface -->
+<path d="M30,105 Q140,68 250,105" stroke="rgba(255,255,255,.08)" stroke-width="2" fill="none"/>
+<path d="M30,115 Q140,78 250,115" stroke="rgba(255,255,255,.06)" stroke-width="1" fill="none"/>
+<path d="M30,125 Q140,90 250,125" stroke="rgba(255,255,255,.05)" stroke-width="1" fill="none"/>
+<!-- infill honeycomb pattern (visible on sides) -->
+${Array.from({length:8},(_,i)=>`<path d="M${30+i*30},158 L${44+i*30},140 L${58+i*30},158 L${44+i*30},176" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>`).join('')}
+<!-- rubber feet -->
+<rect x="45" y="157" width="20" height="6" rx="3" fill="#111"/>
+<rect x="215" y="157" width="20" height="6" rx="3" fill="#111"/>
+<rect x="130" y="157" width="20" height="6" rx="3" fill="#111"/>
+<!-- TKL label -->
+<text x="140" y="142" font-family="monospace" font-size="12" fill="rgba(255,255,255,.12)" text-anchor="middle">TKL WRIST REST</text>
+<text x="140" y="220" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA Dark · Keyboard Wrist Rest</text>`);
+
+// 2: Steam Deck kickstand
+const TE2 = SVG(280,230,'#0a0a14',`<defs>${LAYERS('rgba(255,255,255,0.05)')}</defs>
+<!-- Steam Deck body outline -->
+<rect x="30" y="45" width="220" height="140" rx="22" fill="#1c1c28"/>
+<!-- screen -->
+<rect x="70" y="58" width="140" height="90" rx="6" fill="#0a0a18"/>
+<!-- screen content (game) -->
+<rect x="74" y="62" width="132" height="82" rx="4" fill="#1a2a3a"/>
+<rect x="80" y="70" width="50" height="50" rx="3" fill="#2a3a8a" opacity=".7"/>
+<rect x="82" y="72" width="46" height="46" rx="2" fill="#1a2a6a" opacity=".5"/>
+<!-- d-pad left -->
+<rect x="45" y="100" width="22" height="8" rx="3" fill="#333"/>
+<rect x="51" y="94" width="8" height="22" rx="3" fill="#333"/>
+<!-- thumbstick circles -->
+<circle cx="55" cy="80" r="12" fill="#252530" stroke="#333" stroke-width="1.5"/>
+<circle cx="55" cy="80" r="6" fill="#1a1a25"/>
+<circle cx="210" cy="105" r="12" fill="#252530" stroke="#333" stroke-width="1.5"/>
+<circle cx="210" cy="105" r="6" fill="#1a1a25"/>
+<!-- kickstand (the printed part!) -->
+<rect x="118" y="182" width="44" height="6" rx="2" fill="#3a5a8a"/>
+<rect x="130" y="188" width="20" height="26" rx="3" fill="#4a6a9a"/>
+<rect x="130" y="188" width="20" height="26" fill="url(#ll)" opacity=".4"/>
+<!-- kickstand hinge dots -->
+<circle cx="134" cy="190" r="2" fill="#2a3a6a"/>
+<circle cx="146" cy="190" r="2" fill="#2a3a6a"/>
+<text x="140" y="225" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA Blue · Steam Deck Kickstand</text>`);
+
+// 3: Switch cartridge tower
+const TE3 = SVG(280,230,'#0e0810',`<defs>${LAYERS('rgba(255,255,255,0.04)')}</defs>
+<!-- tower body -->
+<rect x="85" y="25" width="110" height="180" rx="8" fill="#1a1220"/>
+<rect x="85" y="25" width="110" height="180" fill="url(#ll)"/>
+<!-- cartridge slots (5 rows x 4 cols) -->
+${Array.from({length:8},(_,r)=>Array.from({length:2},(_,c)=>{
+  const x = 96 + c*52;
+  const y = 38 + r*20;
+  const hasCart = (r+c)%3 !== 2;
+  return `<rect x="${x}" y="${y}" width="42" height="16" rx="3" fill="${hasCart?'#c8c0d8':'#0e0810'}" opacity="${hasCart?1:.8}"/>
+${hasCart?`<rect x="${x+4}" y="${y+3}" width="34" height="8" rx="1" fill="#a8a0c0" opacity=".5"/>`:
+`<rect x="${x+8}" y="${y+4}" width="26" height="8" rx="2" fill="#1a1220"/>`}`;
+}).join('')).join('')}
+<!-- Nintendo logo on top -->
+<rect x="100" y="30" width="80" height="5" rx="2" fill="#e4000f" opacity=".6"/>
+<!-- base -->
+<rect x="78" y="200" width="124" height="12" rx="5" fill="#111018"/>
+<!-- wall mount holes -->
+<circle cx="93" cy="32" r="4" fill="#0e0810"/>
+<circle cx="187" cy="32" r="4" fill="#0e0810"/>
+<text x="140" y="225" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA Black · Switch Card Tower</text>`);
+
+// ── ART ──
+// 0: Voronoi twisted tower sculpture
+const A0 = SVG(280,270,'#050514',`<defs><linearGradient id="ag0" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6040c0"/><stop offset="100%" stop-color="#2010a0"/></linearGradient></defs>
+<!-- tower body - twisted polygon -->
+<polygon points="140,20 165,40 175,80 170,130 160,175 150,210 140,230 130,210 120,175 110,130 105,80 115,40" fill="url(#ag0)" opacity=".9"/>
+<!-- voronoi cells overlay -->
+<path d="M128,35 L148,42 L155,68 L138,75 L122,65 Z" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+<path d="M148,42 L168,55 L165,85 L155,68 Z" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+<path d="M138,75 L155,68 L158,100 L143,108 L125,95 Z" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+<path d="M125,95 L143,108 L140,135 L120,130 L112,108 Z" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+<path d="M143,108 L158,100 L162,128 L148,138 L140,135 Z" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+<path d="M120,130 L140,135 L138,162 L118,158 Z" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+<path d="M140,135 L148,138 L152,165 L138,162 Z" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+<path d="M118,158 L138,162 L135,188 L115,180 Z" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="1"/>
+<path d="M138,162 L152,165 L148,192 L135,188 Z" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+<!-- highlight edge -->
+<polyline points="165,40 175,80 170,130 160,175 150,210 140,230" stroke="rgba(180,160,255,.5)" stroke-width="2" fill="none"/>
+<!-- base platform -->
+<ellipse cx="140" cy="230" rx="35" ry="10" fill="#3020a0" opacity=".7"/>
+<!-- ambient light glow -->
+<ellipse cx="140" cy="135" rx="50" ry="90" fill="#6040c0" opacity=".08"/>
+<text x="140" y="262" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">Resin · Voronoi Twisted Tower</text>`);
+
+// 1: City skyline relief (Toronto)
+const A1 = SVG(280,230,'#0a0a18',`<defs><linearGradient id="ag1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8d0e8"/><stop offset="100%" stop-color="#8090b8"/></linearGradient></defs>
+<!-- backing plate -->
+<rect x="15" y="30" width="250" height="170" rx="6" fill="#1a1a28"/>
+<!-- skyline silhouette - Toronto -->
+<!-- CN Tower -->
+<rect x="122" y="55" width="8" height="115" rx="2" fill="url(#ag1)"/>
+<ellipse cx="126" cy="90" rx="18" ry="8" fill="url(#ag1)"/>
+<rect x="122" y="55" width="8" height="20" rx="1" fill="#e0e8ff"/>
+<circle cx="126" cy="53" r="5" fill="#e0e8ff"/>
+<!-- buildings left -->
+<rect x="25" y="130" width="28" height="40" rx="2" fill="#9098b8"/>
+<rect x="55" y="110" width="22" height="60" rx="2" fill="#a0a8c0"/>
+<rect x="79" y="120" width="30" height="50" rx="2" fill="#9098b8"/>
+<!-- buildings right -->
+<rect x="150" y="125" width="25" height="45" rx="2" fill="#9098b8"/>
+<rect x="177" y="115" width="18" height="55" rx="2" fill="#a0a8c0"/>
+<rect x="197" y="130" width="30" height="40" rx="2" fill="#9098b8"/>
+<rect x="229" y="110" width="22" height="60" rx="2" fill="#a0a8c0"/>
+<!-- layer lines across whole piece -->
+${Array.from({length:14},(_,i)=>`<line x1="17" y1="${40+i*12}" x2="263" y2="${40+i*12}" stroke="rgba(255,255,255,.04)" stroke-width="1"/>`).join('')}
+<!-- water line -->
+<rect x="15" y="170" width="250" height="28" rx="0" fill="#1a2040" opacity=".6"/>
+<!-- reflection -->
+<rect x="118" y="172" width="16" height="25" rx="1" fill="#606890" opacity=".3"/>
+<text x="140" y="220" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA · Toronto Skyline Relief</text>`);
+
+// 2: Gyroid parametric vase
+const A2 = SVG(280,260,'#050e14',`<defs><linearGradient id="ag2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00c8c8"/><stop offset="100%" stop-color="#006888"/></linearGradient></defs>
+<!-- vase outline -->
+<path d="M108,240 Q88,220 84,180 Q80,150 92,120 Q98,105 95,82 Q92,60 105,45 L175,45 Q188,60 185,82 Q182,105 188,120 Q200,150 196,180 Q192,220 172,240 Z" fill="url(#ag2)" opacity=".85"/>
+<!-- gyroid surface pattern (sinusoidal mesh) -->
+${Array.from({length:20},(_,i)=>{
+  const y = 50 + i*10;
+  const freq = 0.12;
+  const amp = 12;
+  let d = `M 100,${y}`;
+  for(let x=100;x<=180;x+=4){
+    const wave = amp*Math.sin(freq*x + i*0.8);
+    d += ` L ${x},${y+wave}`;
+  }
+  return `<path d="${d}" stroke="rgba(255,255,255,.12)" stroke-width="1" fill="none"/>`;
+}).join('')}
+${Array.from({length:15},(_,i)=>{
+  const x = 100 + i*5.5;
+  let d = `M ${x},50`;
+  for(let y=50;y<=240;y+=4){
+    const wave = 10*Math.sin(0.15*y + i*0.7);
+    d += ` L ${x+wave},${y}`;
+  }
+  return `<path d="${d}" stroke="rgba(255,255,255,.08)" stroke-width="1" fill="none"/>`;
+}).join('')}
+<!-- rim -->
+<ellipse cx="140" cy="46" rx="37" ry="9" fill="#00a0b0"/>
+<!-- base -->
+<ellipse cx="140" cy="240" rx="36" ry="8" fill="#005870"/>
+<ellipse cx="140" cy="240" rx="36" ry="8" fill="none" stroke="#00c8c8" stroke-width="1.5"/>
+<text x="140" y="256" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">Resin · Teal · Gyroid Parametric Vase</text>`);
+
+// 3: Fractal tree lamp
+const A3 = SVG(280,270,'#08060e',`<defs><radialGradient id="ag3" cx="50%" cy="80%"><stop offset="0%" stop-color="#ffaa20"/><stop offset="100%" stop-color="#4a2800"/></radialGradient></defs>
+<!-- lamp glow -->
+<ellipse cx="140" cy="200" rx="90" ry="50" fill="#ffaa20" opacity=".08"/>
+<!-- trunk -->
+<rect x="132" y="200" width="16" height="55" rx="6" fill="#3a2818"/>
+${Array.from({length:6},(_,i)=>`<line x1="132" y1="${205+i*9}" x2="148" y2="${205+i*9}" stroke="rgba(255,200,100,.08)" stroke-width="1"/>`).join('')}
+<!-- base -->
+<ellipse cx="140" cy="255" rx="38" ry="10" fill="#2a1a0a"/>
+<!-- fractal branches - drawn recursively by hand -->
+<!-- level 1 branches -->
+<line x1="140" y1="200" x2="110" y2="160" stroke="#4a3828" stroke-width="5" stroke-linecap="round"/>
+<line x1="140" y1="200" x2="170" y2="158" stroke="#4a3828" stroke-width="5" stroke-linecap="round"/>
+<!-- level 2 -->
+<line x1="110" y1="160" x2="88" y2="128" stroke="#5a4838" stroke-width="3.5" stroke-linecap="round"/>
+<line x1="110" y1="160" x2="128" y2="125" stroke="#5a4838" stroke-width="3.5" stroke-linecap="round"/>
+<line x1="170" y1="158" x2="152" y2="125" stroke="#5a4838" stroke-width="3.5" stroke-linecap="round"/>
+<line x1="170" y1="158" x2="192" y2="126" stroke="#5a4838" stroke-width="3.5" stroke-linecap="round"/>
+<!-- level 3 -->
+<line x1="88" y1="128" x2="72" y2="105" stroke="#6a5848" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="88" y1="128" x2="98" y2="100" stroke="#6a5848" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="128" y1="125" x2="116" y2="100" stroke="#6a5848" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="128" y1="125" x2="138" y2="97" stroke="#6a5848" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="152" y1="125" x2="142" y2="97" stroke="#6a5848" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="152" y1="125" x2="164" y2="100" stroke="#6a5848" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="192" y1="126" x2="182" y2="100" stroke="#6a5848" stroke-width="2.5" stroke-linecap="round"/>
+<line x1="192" y1="126" x2="206" y2="103" stroke="#6a5848" stroke-width="2.5" stroke-linecap="round"/>
+<!-- level 4 tips (glowing) -->
+${[[72,105],[80,88],[98,100],[90,83],[98,82],[116,100],[108,82],[116,80],[138,97],[130,80],[140,77],[142,97],[150,78],[144,80],[164,100],[156,82],[162,80],[182,100],[174,82],[180,80],[206,103],[198,85],[208,86]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="5" fill="#ffcc44" opacity=".9"/><circle cx="${x}" cy="${y}" r="8" fill="#ffaa20" opacity=".2"/>`).join('')}
+<text x="140" y="266" font-family="sans-serif" font-size="11" fill="rgba(255,255,255,.35)" text-anchor="middle">FDM · PLA · Fractal Tree Lamp 35cm</text>`);
+
+// ── ASSEMBLE POOLS ──
 const IMGS = {
-  functional:[
-    'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1565803974975-dcdc2f9e7d23?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=480&h=340&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1562774053-701939374585?w=480&h=420&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1510751007277-36932aac9ebd?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1597484661973-ee6cd0b6482c?w=480&h=350&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=480&h=390&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1537462715879-360eeb61a0ad?w=480&h=370&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=480&h=410&fit=crop&q=80',
-  ],
-  miniatures:[
-    'https://images.unsplash.com/photo-1608889825205-eebdb9fc5806?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1612404730960-5c71577fca11?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1604480132736-44c188fe4d20?w=480&h=420&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1563207153-f403bf289096?w=480&h=440&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1586449480537-3a72f2a9e2f0?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1541963463532-d68292c34b19?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=480&h=420&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1518791841217-8f162f1912da?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1527150122806-f682d2fd8b09?w=480&h=400&fit=crop&q=80',
-  ],
-  decor:[
-    'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1493663284031-b7e3aaa4a949?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=480&h=420&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=480&h=440&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1523413651479-597eb2da0ad6?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1493663284031-b7e3aaa4a949?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=480&h=420&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1501139083538-0139583c060f?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1611048661702-7b55eed346b4?w=480&h=360&fit=crop&q=80',
-  ],
-  toys:[
-    'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1603732551658-5fabbafa84eb?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1530325553241-4f5ded3c6e7b?w=480&h=420&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1535572290543-960a8046f5af?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1516627145497-ae6968895b74?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=480&h=440&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1533139502658-0198f920d8e8?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1581235720704-06d3acfcb36f?w=480&h=400&fit=crop&q=80',
-  ],
-  jewellery:[
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1573408301185-9519bf4a4669?w=480&h=420&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1506630448388-4e683c67ddb0?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1588444837495-c6cfeb53f32d?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=480&h=440&fit=crop&q=80',
-  ],
-  cosplay:[
-    'https://images.unsplash.com/photo-1533294455009-a77b7557d2d1?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1608889175638-9322300c46e8?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=480&h=420&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1569388330292-79197e8b75fb?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1596390011966-0ee2a0ce5adc?w=480&h=440&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1607462109225-6b64ae2dd3cb?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1618498082410-b4aa22193b38?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1516912481808-3406841bd33c?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1608889453729-5aa5e0d0cd21?w=480&h=420&fit=crop&q=80',
-  ],
-  tech:[
-    'https://images.unsplash.com/photo-1518770660439-4636190af475?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=480&h=420&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1555664374-6743b8d82b27?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1619138887101-90fd8ca31aee?w=480&h=440&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1625842268584-8f3296236761?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1592659762303-90081d34b277?w=480&h=360&fit=crop&q=80',
-  ],
-  art:[
-    'https://images.unsplash.com/photo-1561839561-b13bcfe95249?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=480&h=420&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1582738411706-bfc8e691d1c2?w=480&h=360&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1608501357990-8db8e40bc97e?w=480&h=440&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1561049501-e1f96bdd98fd?w=480&h=380&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1520209759809-a9bcb6cb3241?w=480&h=400&fit=crop&q=80',
-    'https://images.unsplash.com/photo-1549289524-06cf8837ace8?w=480&h=360&fit=crop&q=80',
-  ],
+  functional: [F0, F1, F2, F3],
+  miniatures: [M0, M1, M2, M3],
+  decor:      [D0, D1, D2, D3],
+  toys:       [T0, T1, T2, T3],
+  jewellery:  [J0, J1, J2, J3],
+  cosplay:    [C0, C1, C2, C3],
+  tech:       [TE0, TE1, TE2, TE3],
+  art:        [A0, A1, A2, A3],
 };
 
 // ─────────────────────────────────────────
@@ -511,9 +1277,9 @@ function render() {
   const CAT_LABELS = {functional:'Functional',miniatures:'Miniatures',decor:'Décor',toys:'Toys',jewellery:'Jewellery',cosplay:'Cosplay',tech:'Tech',art:'Art'};
 
   grid.innerHTML = items.map((l, idx) => {
-    const imgPool = IMGS[l.cat];
-    const imgUrl  = imgPool[l.img % imgPool.length];
-    const delay   = Math.min(idx * 30, 800); // stagger up to 800ms
+    const svgPool = IMGS[l.cat];
+    const svg     = svgPool[l.img % svgPool.length];
+    const delay   = Math.min(idx * 30, 800);
     // Vary image heights for masonry feel
     const heights = [220,260,240,280,230,270,250,290,235,265];
     const h = heights[l.id % heights.length];
@@ -523,8 +1289,8 @@ function render() {
 
     return `
     <div class="lc" style="animation-delay:${delay}ms" onclick="window.location.href='index.html'">
-      <div class="lc-img" style="height:${h}px">
-        <img src="${imgUrl}" alt="${l.title}" loading="lazy" style="height:${h}px"/>
+      <div class="lc-img" style="height:${h}px;overflow:hidden">
+        ${svg}
         <div class="lc-badges">
           ${activeCat==='all' ? `<span class="badge badge-cat">${CAT_LABELS[l.cat]}</span>` : ''}
           ${l.pickup ? '<span class="badge badge-pickup">📍 Pickup</span>' : ''}
