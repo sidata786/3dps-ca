@@ -135,8 +135,8 @@ footer{background:#051a0e;padding:32px 24px 20px}
   <div class="ni">
     <a href="index.html" class="logo">3DPS<span>.ca</span></a>
     <div class="sb">
-      <input type="text" placeholder="Search 3D prints, sellers, cities…" onclick="window.location.href='browse.html'" style="cursor:pointer" readonly/>
-      <button onclick="window.location.href='browse.html'">🔍</button>
+      <input id="q" type="text" placeholder="Search 3D prints, sellers, cities…" oninput="render()"/>
+      <button onclick="render()">🔍</button>
     </div>
     <div class="nl">
       <a href="browse.html" class="nl-a on">Browse All</a>
