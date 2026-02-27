@@ -1076,7 +1076,7 @@ function Footer({store}) {
         </div>
         {[
           {h:'Shop',links:[
-            {label:'Browse All Items', action:()=>{store.setActiveCat('all');store.setPage('home')}},
+            {label:'Browse All Items', action:()=>window.location.href='browse.html'},
             {label:'Local Sellers', action:()=>window.location.href='local-sellers.html'},
             {label:'Custom Requests', action:()=>store.setPage('messages')},
             {label:'Categories', action:()=>window.location.href='categories.html'},
