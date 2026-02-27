@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Listing — 3DPS.ca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --g:#0A7A4B;--g2:#12A868;--gp:#E8F7F1;
+  --dk:#0A1A12;--mid:#1A3D2B;--mut:#6B8C7A;
+  --cr:#F0FAF5;--wh:#FFFFFF;
+  --bd:#C8E8D8;--bd2:#D8F0E4;
+  --sh:0 2px 16px rgba(10,26,18,.09);
+  --shl:0 8px 40px rgba(10,26,18,.16);
+  --r:12px;--rs:8px;--rl:20px;--rp:999px;
+  --fd:'Outfit',sans-serif;--fb:'Plus Jakarta Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--cr);color:var(--dk);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--fb);cursor:pointer;border:none;background:none}
+
+/* NAV */
+nav{background:var(--wh);border-bottom:1.5px solid var(--bd);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.ni{max-width:1200px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;height:64px}
+.logo{font-family:var(--fd);font-size:25px;font-weight:800;color:var(--g);letter-spacing:-.04em;white-space:nowrap}
+.logo span{color:var(--dk)}
+.sb{flex:1;max-width:420px;display:flex;border:2px solid var(--dk);border-radius:var(--rp);overflow:hidden}
+.sb input{flex:1;border:none;outline:none;padding:9px 16px;font-size:13px;font-family:var(--fb)}
+.sb button{background:var(--dk);padding:9px 14px;color:#fff;font-size:14px}
+.nl{display:flex;gap:2px;margin-left:4px}
+.nl a{font-size:13px;font-weight:500;color:var(--mut);padding:7px 11px;border-radius:var(--rs);transition:background .15s,color .15s;white-space:nowrap}
+.nl a:hover{background:var(--cr);color:var(--g)}
+.btn-sell{background:var(--g);color:#fff;border:none;padding:9px 18px;border-radius:var(--rp);font-size:13px;font-weight:700;cursor:pointer;margin-left:auto;white-space:nowrap}
+
+/* BREADCRUMB */
+.breadcrumb{max-width:1200px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut)}
+.breadcrumb a{color:var(--mut);transition:color .15s}
+.breadcrumb a:hover{color:var(--g)}
+.breadcrumb span{color:var(--bd)}
+
+/* MAIN LAYOUT */
+.listing-wrap{max-width:1200px;margin:0 auto;padding:0 24px 80px;display:grid;grid-template-columns:1fr 420px;gap:40px;align-items:start}
+@media(max-width:900px){.listing-wrap{grid-template-columns:1fr}}
+
+/* GALLERY */
+.gallery{}
+.gallery-main{border-radius:var(--r);overflow:hidden;background:var(--dk);aspect-ratio:1/1;position:relative;cursor:zoom-in}
+.gallery-main .gm-img{width:100%;height:100%;object-fit:contain;display:block;transition:opacity .2s}
+.gallery-main .gm-svg{width:100%;height:100%;display:block}
+.gallery-thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.thumb{width:70px;height:70px;border-radius:var(--rs);overflow:hidden;border:2px solid transparent;cursor:pointer;transition:border-color .15s;flex-shrink:0;background:var(--dk)}
+.thumb.active{border-color:var(--g)}
+.thumb img,.thumb svg{width:100%;height:100%;object-fit:cover;display:block}
+
+/* STICKY SIDEBAR */
+.sidebar{position:sticky;top:84px}
+.price-card{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--rl);padding:28px;margin-bottom:16px}
+.price-main{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.price-val{font-family:var(--fd);font-size:36px;font-weight:900;color:var(--g);letter-spacing:-.02em}
+.price-old{font-size:18px;color:var(--mut);text-decoration:line-through}
+.price-badge{background:#FEF3C7;color:#92400E;font-size:11px;font-weight:700;padding:3px 9px;border-radius:var(--rp)}
+.price-note{font-size:13px;color:var(--mut);margin-bottom:20px}
+
+.btn-buy{width:100%;background:var(--g);color:#fff;border:none;padding:16px;border-radius:var(--rp);font-size:16px;font-weight:700;cursor:pointer;transition:background .15s,transform .1s;margin-bottom:10px}
+.btn-buy:hover{background:var(--g2);transform:translateY(-1px)}
+.btn-contact{width:100%;background:var(--wh);color:var(--g);border:2px solid var(--g);padding:15px;border-radius:var(--rp);font-size:15px;font-weight:700;cursor:pointer;transition:background .15s;margin-bottom:20px}
+.btn-contact:hover{background:var(--gp)}
+
+.detail-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--bd2);font-size:13px}
+.detail-row:last-child{border-bottom:none}
+.dr-label{color:var(--mut);font-weight:500}
+.dr-val{font-weight:600;color:var(--dk);text-align:right}
+.dr-val.green{color:var(--g)}
+
+.seller-card{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--rl);padding:20px}
+.seller-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.seller-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--g2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.seller-name{font-family:var(--fd);font-size:16px;font-weight:800;color:var(--dk)}
+.seller-meta{font-size:12px;color:var(--mut);margin-top:2px}
+.seller-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.ss-item{text-align:center;background:var(--cr);border-radius:var(--rs);padding:10px 6px}
+.ss-val{font-family:var(--fd);font-size:16px;font-weight:800;color:var(--dk)}
+.ss-lbl{font-size:10px;color:var(--mut);margin-top:1px}
+.btn-view-shop{width:100%;background:var(--cr);color:var(--g);border:1.5px solid var(--bd2);padding:11px;border-radius:var(--rp);font-size:13px;font-weight:700;cursor:pointer;transition:background .15s}
+.btn-view-shop:hover{background:var(--gp)}
+
+/* LISTING BODY */
+.listing-body{}
+.listing-title{font-family:var(--fd);font-size:28px;font-weight:900;letter-spacing:-.02em;margin-bottom:10px;line-height:1.2}
+.listing-meta-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.stars{display:flex;align-items:center;gap:4px;font-size:13px}
+.stars span{color:#F59E0B;font-size:15px}
+.badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--rp);letter-spacing:.03em}
+.badge-cat{background:var(--gp);color:var(--g);border:1px solid var(--bd2)}
+.badge-pickup{background:rgba(10,122,75,.1);color:var(--g)}
+.badge-new{background:#FEF3C7;color:#92400E}
+.badge-sale{background:#FEE2E2;color:#DC2626}
+
+.section-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-bottom:10px}
+.description{font-size:15px;color:var(--mid);line-height:1.8;margin-bottom:28px}
+
+.specs-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.spec-item{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--rs);padding:12px 14px;display:flex;align-items:center;gap:10px}
+.spec-icon{font-size:18px;flex-shrink:0}
+.spec-label{font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.spec-val{font-size:13px;font-weight:700;color:var(--dk);margin-top:1px}
+
+.tags-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
+.tag-pill{background:var(--cr);border:1px solid var(--bd);color:var(--mut);font-size:12px;font-weight:600;padding:4px 12px;border-radius:var(--rp);cursor:pointer;transition:all .15s}
+.tag-pill:hover{background:var(--gp);color:var(--g);border-color:var(--bd2)}
+
+/* REVIEWS */
+.reviews-section{margin-bottom:28px}
+.review-card{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--r);padding:18px;margin-bottom:10px}
+.rc-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.rc-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#C8E8D8,#0A7A4B);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--g);flex-shrink:0}
+.rc-name{font-size:13px;font-weight:700;color:var(--dk)}
+.rc-date{font-size:11px;color:var(--mut)}
+.rc-stars{color:#F59E0B;font-size:12px}
+.rc-text{font-size:13px;color:var(--mid);line-height:1.7}
+
+/* MORE FROM SELLER */
+.more-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:700px){.more-grid{grid-template-columns:repeat(2,1fr)}}
+.more-card{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .2s,transform .2s}
+.more-card:hover{border-color:var(--g);transform:translateY(-3px)}
+.more-img{aspect-ratio:1/1;overflow:hidden;background:var(--dk)}
+.more-img svg,.more-img img{width:100%;height:100%;display:block;object-fit:cover}
+.more-body{padding:10px 12px}
+.more-title{font-size:12px;font-weight:700;color:var(--dk);line-height:1.3;margin-bottom:4px}
+.more-price{font-family:var(--fd);font-size:14px;font-weight:800;color:var(--g)}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--wh);border-radius:var(--rl);padding:28px;max-width:480px;width:100%;box-shadow:var(--shl);animation:fadeUp .25s ease}
+.modal h3{font-family:var(--fd);font-size:20px;font-weight:800;margin-bottom:6px}
+.modal p{font-size:14px;color:var(--mut);margin-bottom:20px;line-height:1.6}
+.modal textarea{width:100%;padding:12px;border:1.5px solid var(--bd);border-radius:var(--rs);font-size:14px;font-family:var(--fb);resize:none;outline:none;min-height:100px;transition:border-color .15s}
+.modal textarea:focus{border-color:var(--g)}
+.modal-btns{display:flex;gap:10px;margin-top:16px}
+.modal-send{background:var(--g);color:#fff;border:none;padding:12px 24px;border-radius:var(--rp);font-size:14px;font-weight:700;cursor:pointer;flex:1;transition:background .15s}
+.modal-send:hover{background:var(--g2)}
+.modal-close{background:none;border:1.5px solid var(--bd);padding:12px 20px;border-radius:var(--rp);font-size:14px;font-weight:600;color:var(--mut);cursor:pointer}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="ni">
+    <a href="index.html" class="logo">3DPS<span>.ca</span></a>
+    <div class="sb">
+      <input type="text" placeholder="Search 3D prints, sellers, cities…"/>
+      <button onclick="window.location.href='browse.html'">🔍</button>
+    </div>
+    <div class="nl">
+      <a href="browse.html">Browse All</a>
+      <a href="categories.html">Categories</a>
+      <a href="local-sellers.html">Local Sellers</a>
+    </div>
+    <button class="btn-sell" onclick="window.location.href='seller-onboarding.html'">Sell on 3DPS</button>
+  </div>
+</nav>
+
+<div class="breadcrumb" id="breadcrumb">
+  <a href="index.html">Home</a><span>/</span>
+  <a href="browse.html">Browse</a><span>/</span>
+  <a href="browse.html" id="bc-cat">Functional</a><span>/</span>
+  <span id="bc-title" style="color:var(--dk);font-weight:600">Loading…</span>
+</div>
+
+<div class="listing-wrap">
+
+  <!-- LEFT: GALLERY + DETAILS -->
+  <div class="listing-body">
+
+    <div class="gallery">
+      <div class="gallery-main" id="gallery-main"></div>
+      <div class="gallery-thumbs" id="gallery-thumbs"></div>
+    </div>
+
+    <div style="margin-top:28px">
+      <div class="listing-title" id="listing-title">Loading…</div>
+      <div class="listing-meta-row" id="listing-meta"></div>
+
+      <div class="section-label">Description</div>
+      <div class="description" id="listing-desc"></div>
+
+      <div class="section-label">Specs</div>
+      <div class="specs-grid" id="specs-grid"></div>
+
+      <div class="section-label" style="margin-bottom:10px">Tags</div>
+      <div class="tags-row" id="tags-row"></div>
+
+      <!-- REVIEWS -->
+      <div class="reviews-section">
+        <div class="section-label">Reviews (<span id="rev-count">0</span>)</div>
+        <div id="reviews-list"></div>
+      </div>
+
+      <!-- MORE FROM SELLER -->
+      <div>
+        <div class="section-label">More from <span id="more-seller-name">this seller</span></div>
+        <div class="more-grid" id="more-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: SIDEBAR -->
+  <div class="sidebar">
+    <div class="price-card">
+      <div class="price-main">
+        <span class="price-val" id="price-val">$0.00</span>
+        <span class="price-old" id="price-old" style="display:none"></span>
+        <span class="price-badge" id="price-badge" style="display:none">SALE</span>
+      </div>
+      <div class="price-note" id="price-note">+ shipping or free local pickup</div>
+
+      <button class="btn-buy" onclick="showModal()">💬 Message Seller</button>
+      <button class="btn-contact" onclick="showModal()">Request Custom Order</button>
+
+      <div id="details-rows"></div>
+    </div>
+
+    <div class="seller-card">
+      <div class="seller-top">
+        <div class="seller-avatar" id="s-avatar">🖨️</div>
+        <div>
+          <div class="seller-name" id="s-name">Seller</div>
+          <div class="seller-meta" id="s-meta">📍 City, Province</div>
+        </div>
+      </div>
+      <div class="seller-stats">
+        <div class="ss-item">
+          <div class="ss-val" id="ss-sales">—</div>
+          <div class="ss-lbl">Sales</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-val" id="ss-rating">—</div>
+          <div class="ss-lbl">Rating</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-val" id="ss-reviews">—</div>
+          <div class="ss-lbl">Reviews</div>
+        </div>
+      </div>
+      <button class="btn-view-shop" onclick="window.location.href='browse.html'">View Shop →</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3>Message Seller</h3>
+    <p id="modal-sub">Send a message to <strong id="modal-seller"></strong> about this listing.</p>
+    <textarea placeholder="Hi! I'm interested in this item. Can you tell me more about…" id="modal-msg"></textarea>
+    <div class="modal-btns">
+      <button class="modal-send" onclick="sendMessage()">Send Message</button>
+      <button class="modal-close" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── LISTINGS DATA (same as browse.html) ──
+const LISTINGS = [
+{id:1,cat:'functional',title:'Gridfinity Mega Storage Bin 4×2',seller:'SteelCityPrint',city:'Hamilton',prov:'ON',price:14.00,rating:4.8,reviews:214,printer:'FDM',pickup:true,custom:true,isNew:false,isSale:false,
+ desc:'Keep your workshop or desk perfectly organised with this Gridfinity-compatible 4×2 storage bin. Printed in tough PLA with 0.2mm layer lines for a smooth finish. Fits the standard Gridfinity baseplate — just snap and go. Perfect for screws, small tools, cables, or anything that tends to go missing.',
+ tags:['gridfinity','storage','functional','desk','organiser','PLA','FDM'],
+ specs:{Material:'PLA',Process:'FDM · 0.2mm',Dimensions:'4×2 Gridfinity units',Finish:'Matte','Lead time':'Ready to ship','Custom colours':'Yes'}},
+{id:2,cat:'functional',title:'Wall-Mount Cable Organiser System',seller:'CapitalCraft3D',city:'Ottawa',prov:'ON',price:18.00,rating:4.7,reviews:187,printer:'FDM',pickup:true,custom:true,isNew:false,isSale:false,
+ desc:'Say goodbye to cable chaos. This 3-port wall-mount clip organises charging cables, USB-C, and HDMI right at your desk. Comes with two M3 screws for wall mounting. Available in black, white, or green.',
+ tags:['cable','organiser','wall','mount','desk','PLA','FDM'],
+ specs:{Material:'PLA White',Process:'FDM · 0.2mm',Ports:'3 channels',Mount:'M3 screws','Lead time':'1–2 days','Custom colours':'Yes'}},
+{id:3,cat:'functional',title:'Parametric Drawer Divider Set (6pc)',seller:'ToroMakersLab',city:'Toronto',prov:'ON',price:22.00,rating:4.9,reviews:341,printer:'FDM',pickup:true,custom:true,isNew:false,isSale:false,
+ desc:'Six interlocking drawer dividers that snap to any width. Perfect for kitchen utensils, office supplies, or bedroom drawers. Made from food-safe PLA. Specify your drawer dimensions in the custom order notes.',
+ tags:['drawer','divider','kitchen','office','IKEA','organiser','PLA'],
+ specs:{Material:'PLA (food-safe)',Process:'FDM · 0.2mm',Set:'6 pieces',Fit:'Adjustable','Lead time':'3–5 days','Custom':'Dimensions available'}},
+{id:4,cat:'functional',title:'Monitor Stand with Hidden Cable Channel',seller:'NorthYorkBuilds',city:'Toronto',prov:'ON',price:38.00,rating:4.6,reviews:98,printer:'FDM',pickup:false,custom:true,isNew:true,isSale:false,
+ desc:'Elevate your monitor 10cm with a hidden cable tray underneath. Wide enough for a 27" monitor. Printed in durable black PETG which handles heat better than PLA — safe for electronics setups.',
+ tags:['monitor','stand','desk','cable','tray','PETG','FDM'],
+ specs:{Material:'PETG Black',Process:'FDM · 0.2mm',Height:'10 cm',Capacity:'Up to 27" monitor','Lead time':'1–2 weeks','Colour options':'Black'}},
+{id:5,cat:'functional',title:'Modular Spice Rack — 8 Jars',seller:'PlateauMakers',city:'Montréal',prov:'QC',price:26.00,rating:4.8,reviews:156,printer:'FDM',pickup:false,custom:true,isNew:false,isSale:false,
+ desc:'A rotating 8-jar spice rack with a Lazy Susan base. Jars fit standard 40mm diameter spice jars. Add extra tiers as needed — each tier snaps onto the one below. Printed in food-safe PLA.',
+ tags:['spice','rack','kitchen','modular','lazy susan','PLA'],
+ specs:{Material:'PLA (food-safe)',Process:'FDM · 0.2mm',Capacity:'8 jars per tier',Jar:'40mm diameter','Lead time':'1 week','Custom':'Tier count available'}},
+{id:6,cat:'functional',title:'Under-Desk Headphone Hanger',seller:'PrairiePrints',city:'Calgary',prov:'AB',price:16.00,rating:4.7,reviews:203,printer:'FDM',pickup:true,custom:false,isNew:false,isSale:true,
+ desc:'Clamp this hanger to any desk up to 35mm thick — no screws needed. Padded with a soft TPU contact point so it won\'t scratch your desk or headphones. Works with any headphone size.',
+ tags:['headphone','hanger','desk','clamp','TPU','FDM'],
+ specs:{Material:'PLA + TPU pad',Process:'FDM',Clamp:'Up to 35mm','Headphone size':'Universal','Lead time':'Ready to ship','On sale':'20% off'}},
+{id:14,cat:'miniatures',title:'Articulated Dragon — 35cm Wingspan',seller:'FoxForge3D',city:'Hamilton',prov:'ON',price:52.00,rating:4.9,reviews:312,printer:'Resin',pickup:true,custom:true,isNew:false,isSale:false,
+ desc:'This fully articulated print-in-place dragon requires zero assembly — every joint moves straight off the printer. Printed in high-detail resin at 0.05mm layers. Makes a stunning display piece or tabletop RPG companion.',
+ tags:['dragon','articulated','flexi','miniature','resin','tabletop','RPG'],
+ specs:{Material:'Resin (grey)',Process:'MSLA · 0.05mm',Size:'35cm wingspan',Joints:'Fully articulated','Lead time':'3–5 days','Custom':'Colour tints available'}},
+{id:20,cat:'miniatures',title:'Space Marine Display Statue — 35cm',seller:'ToroMakersLab',city:'Toronto',prov:'ON',price:78.00,rating:4.9,reviews:621,printer:'Resin',pickup:true,custom:false,isNew:false,isSale:false,
+ desc:'A highly detailed 35cm Space Marine statue, primed and ready for painting. Printed in grey resin at 0.05mm resolution. Each layer is sanded and primed by hand. Ships in protective foam.',
+ tags:['space marine','warhammer','miniature','resin','display','statue','40K'],
+ specs:{Material:'Resin (grey)',Process:'MSLA · 0.05mm',Height:'35 cm',Finish:'Primed','Lead time':'1 week','Paintable':'Yes'}},
+{id:27,cat:'decor',title:'Low-Poly Geometric Planter — 15cm',seller:'ByWardBuilds',city:'Ottawa',prov:'ON',price:28.00,rating:4.9,reviews:201,printer:'FDM',pickup:true,custom:false,isNew:false,isSale:false,
+ desc:'A modern low-poly planter that looks stunning with succulents or small trailing plants. The geometric facets catch light beautifully. Printed in matte green PLA. Drainage hole included. Inner coco coir pot keeps soil contained.',
+ tags:['planter','geometric','low-poly','succulent','decor','PLA','FDM'],
+ specs:{Material:'PLA Matte Green',Process:'FDM · 0.2mm',Size:'15cm tall',Drainage:'Yes','Lead time':'Ready to ship','Indoor use':'Yes'}},
+{id:51,cat:'jewellery',title:'Geometric Tetrahedron Earrings (pair)',seller:'KitsilanoCraft',city:'Vancouver',prov:'BC',price:24.00,rating:4.8,reviews:198,printer:'Resin',pickup:true,custom:true,isNew:false,isSale:false,
+ desc:'Lightweight geometric earrings printed in high-detail resin and hand-finished with UV-resistant coating. Sterling silver hooks included. Available in multiple colours — choose at checkout. Each pair is unique and made to order.',
+ tags:['earrings','geometric','jewellery','resin','tetrahedron','handmade'],
+ specs:{Material:'Resin + UV coat',Process:'MSLA · 0.05mm',Hooks:'Sterling silver',Weight:'2g per earring','Lead time':'3–5 days','Custom colours':'Yes'}},
+{id:60,cat:'cosplay',title:'Iron Man MK7 Helmet — Wearable',seller:'ToroMakersLab',city:'Toronto',prov:'ON',price:145.00,rating:4.9,reviews:312,printer:'FDM',pickup:true,custom:true,isNew:false,isSale:false,
+ desc:'Screen-accurate Iron Man MK7 helmet, scaled for adult heads (58–60cm circumference). Printed in matte red and gold PLA, sanded to 400 grit and primed. LED eye inserts can be added as an upgrade. Ships fully assembled.',
+ tags:['iron man','MK7','helmet','cosplay','wearable','FDM','LED'],
+ specs:{Material:'PLA (red + gold)',Process:'FDM · 0.1mm',Size:'Adult 58–60cm',Finish:'Sanded + primed','Lead time':'2 weeks','LED upgrade':'Available +$20'}},
+];
+
+// ── SVG POOL (same lightweight SVGs from browse) ──
+const LAYERS = (col='rgba(0,0,0,0.06)') =>
+  `<pattern id="ll" width="1" height="3" patternUnits="userSpaceOnUse"><rect width="1" height="1.2" fill="${col}"/></pattern>`;
+const SVG = (w,h,bg,content) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" width="100%" height="100%" style="display:block;background:${bg}">${content}</svg>`;
+
+const FALLBACK_SVG = SVG(400,400,'#1a2e1a',`<defs>${LAYERS('rgba(255,255,255,0.04)')}</defs>
+<rect x="80" y="100" width="240" height="200" rx="10" fill="#2d5a2d"/>
+<rect x="80" y="100" width="240" height="200" fill="url(#ll)"/>
+<text x="200" y="215" font-family="monospace" font-size="14" fill="rgba(255,255,255,.3)" text-anchor="middle">3DPS.ca</text>`);
+
+// ── FAKE REVIEWS ──
+const FAKE_REVIEWS = [
+  {name:'M. Lefebvre',city:'Ottawa, ON',stars:5,date:'Jan 2025',text:'Absolutely perfect quality. Arrived well-packaged and looks exactly like the photos. Will order again!'},
+  {name:'J. Williams',city:'Toronto, ON',stars:5,date:'Dec 2024',text:'Fast shipping, great communication. The finish quality is impressive for the price.'},
+  {name:'A. Singh',city:'Calgary, AB',stars:4,date:'Nov 2024',text:'Really happy with this. Minor stringing on one edge but nothing that affects the function. Seller was super responsive.'},
+  {name:'C. Tremblay',city:'Montréal, QC',stars:5,date:'Oct 2024',text:'Picked up locally — seller was friendly and the product was exactly as described. 10/10.'},
+];
+
+// ── LOAD LISTING FROM URL PARAM ──
+const params  = new URLSearchParams(window.location.search);
+const id      = parseInt(params.get('id')) || 1;
+const listing = LISTINGS.find(l => l.id === id) || LISTINGS[0];
+
+function init() {
+  const l = listing;
+
+  // Page title
+  document.title = `${l.title} — 3DPS.ca`;
+
+  // Breadcrumb
+  const catLabels = {functional:'Functional',miniatures:'Miniatures',decor:'Home Décor',toys:'Toys & Kids',jewellery:'Jewellery',cosplay:'Cosplay',tech:'Tech',art:'Art'};
+  document.getElementById('bc-cat').textContent = catLabels[l.cat] || l.cat;
+  document.getElementById('bc-cat').href = `browse.html`;
+  document.getElementById('bc-title').textContent = l.title;
+
+  // Gallery — main + 4 thumbs (all show same SVG for demo)
+  const mainEl = document.getElementById('gallery-main');
+  mainEl.innerHTML = FALLBACK_SVG;
+  const thumbsEl = document.getElementById('gallery-thumbs');
+  for (let i = 0; i < 4; i++) {
+    const t = document.createElement('div');
+    t.className = 'thumb' + (i===0?' active':'');
+    t.innerHTML = FALLBACK_SVG;
+    t.onclick = () => {
+      document.querySelectorAll('.thumb').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+    };
+    thumbsEl.appendChild(t);
+  }
+
+  // Title + meta
+  document.getElementById('listing-title').textContent = l.title;
+  const starsHtml = '★'.repeat(Math.floor(l.rating)) + (l.rating%1>=0.5?'½':'');
+  document.getElementById('listing-meta').innerHTML = `
+    <div class="stars"><span>${starsHtml}</span> <strong>${l.rating}</strong> · ${l.reviews} reviews</div>
+    <span class="badge badge-cat">${catLabels[l.cat]}</span>
+    ${l.pickup ? '<span class="badge badge-pickup">📍 Pickup available</span>' : ''}
+    ${l.isNew  ? '<span class="badge badge-new">NEW</span>' : ''}
+    ${l.isSale ? '<span class="badge badge-sale">SALE</span>' : ''}`;
+
+  // Description
+  document.getElementById('listing-desc').textContent = l.desc || 'No description provided.';
+
+  // Specs
+  const specs = l.specs || {Material:l.printer,Process:'FDM · 0.2mm'};
+  const specIcons = {Material:'🧱',Process:'⚙️',Dimensions:'📐',Size:'📐',Height:'📐',Finish:'✨',Colour:'🎨','Lead time':'⏱',Custom:'✏️','Custom colours':'🎨',Ports:'🔌',Mount:'🔩',Set:'📦',Fit:'📐',Capacity:'🫙',Jar:'🫙','On sale':'🏷️',Joints:'🔗',Hooks:'💎',Weight:'⚖️','LED upgrade':'💡',Paintable:'🖌️','Indoor use':'🌱',Drainage:'💧'};
+  document.getElementById('specs-grid').innerHTML = Object.entries(specs).map(([k,v]) =>
+    `<div class="spec-item"><span class="spec-icon">${specIcons[k]||'▪️'}</span><div><div class="spec-label">${k}</div><div class="spec-val">${v}</div></div></div>`
+  ).join('');
+
+  // Tags
+  document.getElementById('tags-row').innerHTML = (l.tags||[]).map(t =>
+    `<span class="tag-pill" onclick="window.location.href='browse.html'">#${t}</span>`
+  ).join('');
+
+  // Price sidebar
+  document.getElementById('price-val').textContent = `$${l.price.toFixed(2)}`;
+  if (l.isSale) {
+    const old = (l.price * 1.25).toFixed(2);
+    document.getElementById('price-old').textContent = `$${old}`;
+    document.getElementById('price-old').style.display = 'inline';
+    document.getElementById('price-badge').style.display = 'inline';
+  }
+  document.getElementById('price-note').textContent =
+    l.pickup ? '+ free local pickup available in ' + l.city : '+ shipping across Canada';
+
+  // Detail rows in sidebar
+  const rows = [
+    ['Printer type', l.printer],
+    ['Location', `${l.city}, ${l.prov}`],
+    ['Pickup', l.pickup ? '✅ Available' : '❌ Not available'],
+    ['Custom orders', l.custom ? '✅ Available' : '❌ Not available'],
+  ];
+  document.getElementById('details-rows').innerHTML = rows.map(([lbl,val]) =>
+    `<div class="detail-row"><span class="dr-label">${lbl}</span><span class="dr-val">${val}</span></div>`
+  ).join('');
+
+  // Seller card
+  const avatarEmojis = {functional:'⚙️',miniatures:'🐉',decor:'🏺',toys:'🧸',jewellery:'💍',cosplay:'🎭',tech:'💻',art:'🎨'};
+  document.getElementById('s-avatar').textContent = avatarEmojis[l.cat] || '🖨️';
+  document.getElementById('s-name').textContent = l.seller;
+  document.getElementById('s-meta').textContent = `📍 ${l.city}, ${l.prov}`;
+  document.getElementById('ss-rating').textContent = l.rating;
+  document.getElementById('ss-reviews').textContent = l.reviews;
+  document.getElementById('ss-sales').textContent = Math.floor(l.reviews * 3.2);
+
+  // Modal seller name
+  document.getElementById('modal-seller').textContent = l.seller;
+
+  // Reviews
+  const revCount = Math.min(FAKE_REVIEWS.length, Math.floor(l.reviews / 50) + 2);
+  document.getElementById('rev-count').textContent = l.reviews;
+  document.getElementById('reviews-list').innerHTML = FAKE_REVIEWS.slice(0, revCount).map(r => {
+    const initials = r.name.split(' ').map(x=>x[0]).join('');
+    const stars = '★'.repeat(r.stars);
+    return `<div class="review-card">
+      <div class="rc-head">
+        <div class="rc-avatar">${initials}</div>
+        <div>
+          <div class="rc-name">${r.name} · <span style="color:var(--mut);font-weight:400">${r.city}</span></div>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
+            <span class="rc-stars">${stars}</span>
+            <span class="rc-date" style="font-size:11px;color:var(--mut)">${r.date}</span>
+          </div>
+        </div>
+      </div>
+      <div class="rc-text">${r.text}</div>
+    </div>`;
+  }).join('');
+
+  // More from this seller
+  document.getElementById('more-seller-name').textContent = l.seller;
+  const more = LISTINGS.filter(x => x.seller === l.seller && x.id !== l.id).slice(0,4);
+  const fallbacks = LISTINGS.filter(x => x.cat === l.cat && x.id !== l.id).slice(0,4);
+  const moreItems = more.length >= 2 ? more : fallbacks;
+  document.getElementById('more-grid').innerHTML = moreItems.slice(0,4).map(m =>
+    `<div class="more-card" onclick="window.location.href='listing.html?id=${m.id}'">
+      <div class="more-img">${FALLBACK_SVG}</div>
+      <div class="more-body">
+        <div class="more-title">${m.title}</div>
+        <div class="more-price">$${m.price.toFixed(2)}</div>
+      </div>
+    </div>`
+  ).join('');
+}
+
+// ── MODAL ──
+function showModal() {
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+}
+function sendMessage() {
+  const msg = document.getElementById('modal-msg').value.trim();
+  if (!msg) return;
+  document.getElementById('modal').innerHTML = `
+    <div class="modal" style="text-align:center;padding:40px 28px">
+      <div style="font-size:48px;margin-bottom:14px">✅</div>
+      <h3 style="margin-bottom:8px">Message sent!</h3>
+      <p style="margin-bottom:0">Your message has been sent to <strong>${listing.seller}</strong>. They'll reply to your email address within 24 hours.</p>
+    </div>`;
+  setTimeout(() => closeModal(), 3000);
+}
+
+init();
+</script>
+</body>
+</html>

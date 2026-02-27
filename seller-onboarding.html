@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Open Your Shop — 3DPS.ca</title>
+<meta name="description" content="Start selling your 3D printed items on 3DPS.ca — Canada's marketplace for makers."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --g:#0A7A4B;--g2:#12A868;--gp:#E8F7F1;
+  --dk:#0A1A12;--mid:#1A3D2B;--mut:#6B8C7A;
+  --cr:#F0FAF5;--wh:#FFFFFF;
+  --bd:#C8E8D8;--bd2:#D8F0E4;
+  --sh:0 2px 16px rgba(10,26,18,.09);
+  --shl:0 8px 40px rgba(10,26,18,.16);
+  --r:12px;--rs:8px;--rl:20px;--rp:999px;
+  --fd:'Outfit',sans-serif;--fb:'Plus Jakarta Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--cr);color:var(--dk);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--fb);cursor:pointer}
+input,select,textarea{font-family:var(--fb)}
+
+/* NAV */
+nav{background:var(--wh);border-bottom:1.5px solid var(--bd);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.ni{max-width:1100px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;height:64px}
+.logo{font-family:var(--fd);font-size:25px;font-weight:800;color:var(--g);letter-spacing:-.04em;white-space:nowrap}
+.logo span{color:var(--dk)}
+.nl{display:flex;gap:2px;margin-left:auto}
+.nl a{font-size:13px;font-weight:500;color:var(--mut);padding:7px 11px;border-radius:var(--rs);transition:background .15s,color .15s;white-space:nowrap}
+.nl a:hover{background:var(--cr);color:var(--g)}
+
+/* PROGRESS BAR */
+.progress-wrap{background:var(--wh);border-bottom:1.5px solid var(--bd);padding:20px 24px}
+.progress-inner{max-width:680px;margin:0 auto}
+.steps-row{display:flex;align-items:center;gap:0;margin-bottom:12px}
+.step-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--bd);background:var(--wh);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--mut);flex-shrink:0;transition:all .3s;position:relative;z-index:1}
+.step-dot.active{border-color:var(--g);background:var(--g);color:#fff}
+.step-dot.done{border-color:var(--g);background:var(--g);color:#fff}
+.step-dot.done::after{content:'✓';font-size:13px}
+.step-dot.done .dot-num{display:none}
+.step-line{flex:1;height:2px;background:var(--bd);transition:background .3s}
+.step-line.done{background:var(--g)}
+.steps-labels{display:flex;justify-content:space-between}
+.step-label{font-size:11px;font-weight:600;color:var(--mut);width:80px;text-align:center;transition:color .3s}
+.step-label.active{color:var(--g)}
+.step-label:first-child{text-align:left}
+.step-label:last-child{text-align:right}
+
+/* MAIN LAYOUT */
+.main{max-width:680px;margin:0 auto;padding:40px 24px 80px}
+
+/* STEP PANELS */
+.panel{display:none;animation:fadeUp .35s ease forwards}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.panel-head{margin-bottom:32px}
+.panel-step-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--g);margin-bottom:6px}
+.panel-title{font-family:var(--fd);font-size:28px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.panel-sub{font-size:15px;color:var(--mut);line-height:1.6}
+
+/* FORM ELEMENTS */
+.card{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--r);padding:28px;margin-bottom:20px}
+.card-title{font-family:var(--fd);font-size:15px;font-weight:700;margin-bottom:18px;color:var(--dk)}
+
+.field{margin-bottom:20px}
+.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--mid);margin-bottom:6px}
+.field label .req{color:var(--g);margin-left:2px}
+.field label .hint{font-weight:400;color:var(--mut);font-size:12px;margin-left:6px}
+.field input,.field select,.field textarea{
+  width:100%;padding:11px 14px;border:1.5px solid var(--bd);border-radius:var(--rs);
+  font-size:14px;color:var(--dk);background:var(--wh);outline:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--g);box-shadow:0 0 0 3px rgba(10,122,75,.08);
+}
+.field input.err,.field select.err,.field textarea.err{border-color:#e53e3e}
+.field textarea{resize:vertical;min-height:90px;line-height:1.6}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:500px){.field-row{grid-template-columns:1fr}}
+.err-msg{font-size:12px;color:#e53e3e;margin-top:4px;display:none}
+.err-msg.show{display:block}
+.char-count{font-size:11px;color:var(--mut);text-align:right;margin-top:3px}
+
+/* RADIO CARDS */
+.radio-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.radio-grid{grid-template-columns:1fr}}
+.radio-card{border:1.5px solid var(--bd);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:border-color .15s,background .15s;display:flex;align-items:flex-start;gap:12px;position:relative}
+.radio-card:hover{border-color:var(--g2);background:var(--gp)}
+.radio-card.selected{border-color:var(--g);background:var(--gp)}
+.radio-card input[type=radio]{position:absolute;opacity:0;pointer-events:none}
+.rc-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+.rc-body{}
+.rc-label{font-size:13px;font-weight:700;color:var(--dk);margin-bottom:2px}
+.rc-desc{font-size:12px;color:var(--mut);line-height:1.4}
+.rc-check{position:absolute;top:10px;right:12px;width:18px;height:18px;border-radius:50%;border:2px solid var(--bd);background:var(--wh);transition:all .15s;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff}
+.radio-card.selected .rc-check{background:var(--g);border-color:var(--g);content:'✓'}
+.radio-card.selected .rc-check::after{content:'✓'}
+
+/* CHECKBOX */
+.check-group{display:flex;flex-direction:column;gap:10px}
+.check-item{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--g);cursor:pointer;flex-shrink:0}
+
+/* TAG INPUT */
+.tags-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:8px 10px;border:1.5px solid var(--bd);border-radius:var(--rs);background:var(--wh);min-height:44px;cursor:text;transition:border-color .15s}
+.tags-wrap:focus-within{border-color:var(--g);box-shadow:0 0 0 3px rgba(10,122,75,.08)}
+.tag{background:var(--gp);border:1px solid var(--bd2);color:var(--g);font-size:12px;font-weight:600;padding:3px 10px 3px 10px;border-radius:var(--rp);display:flex;align-items:center;gap:5px}
+.tag-x{cursor:pointer;color:var(--mut);font-size:14px;line-height:1;transition:color .1s}
+.tag-x:hover{color:#e53e3e}
+.tags-input{border:none;outline:none;font-size:13px;font-family:var(--fb);min-width:120px;flex:1;background:transparent;padding:2px 4px}
+
+/* PHOTO UPLOAD */
+.upload-zone{border:2px dashed var(--bd);border-radius:var(--r);padding:36px 24px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s;background:var(--cr)}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--g);background:var(--gp)}
+.upload-icon{font-size:36px;margin-bottom:10px}
+.upload-title{font-size:14px;font-weight:700;color:var(--dk);margin-bottom:4px}
+.upload-sub{font-size:12px;color:var(--mut)}
+.upload-zone input{display:none}
+.upload-previews{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.preview-thumb{width:72px;height:72px;border-radius:var(--rs);object-fit:cover;border:1.5px solid var(--bd)}
+
+/* PRICING GRID */
+.pricing-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:500px){.pricing-row{grid-template-columns:1fr 1fr}}
+.price-input-wrap{position:relative}
+.price-input-wrap .prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--mut);font-weight:600;pointer-events:none}
+.price-input-wrap input{padding-left:24px}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:12px;margin-top:32px;align-items:center}
+.btn-primary{background:var(--g);color:#fff;border:none;padding:14px 32px;border-radius:var(--rp);font-size:15px;font-weight:700;cursor:pointer;transition:background .15s,transform .1s}
+.btn-primary:hover{background:var(--g2);transform:translateY(-1px)}
+.btn-secondary{background:var(--wh);color:var(--mid);border:1.5px solid var(--bd);padding:13px 24px;border-radius:var(--rp);font-size:14px;font-weight:600;cursor:pointer;transition:border-color .15s,color .15s}
+.btn-secondary:hover{border-color:var(--g);color:var(--g)}
+.btn-skip{font-size:13px;color:var(--mut);background:none;border:none;cursor:pointer;margin-left:auto;padding:8px}
+.btn-skip:hover{color:var(--g);text-decoration:underline}
+
+/* PREVIEW CARD */
+.preview-card{background:var(--wh);border:1.5px solid var(--g);border-radius:var(--r);padding:20px;display:flex;gap:16px;align-items:center;margin-bottom:20px}
+.preview-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--g2));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.preview-info{}
+.preview-name{font-family:var(--fd);font-size:17px;font-weight:800;color:var(--dk)}
+.preview-city{font-size:13px;color:var(--mut);margin-top:2px}
+.preview-badge{display:inline-flex;align-items:center;gap:4px;background:var(--gp);border:1px solid var(--bd2);color:var(--g);font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--rp);margin-top:6px}
+
+/* SUCCESS */
+.success-wrap{text-align:center;padding:40px 24px}
+.success-icon{font-size:72px;margin-bottom:20px;display:block}
+.success-title{font-family:var(--fd);font-size:32px;font-weight:900;letter-spacing:-.03em;margin-bottom:12px}
+.success-sub{font-size:16px;color:var(--mut);line-height:1.7;max-width:480px;margin:0 auto 32px}
+.success-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.success-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:420px;margin:0 auto 36px;background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--r);padding:20px}
+.stat-val{font-family:var(--fd);font-size:22px;font-weight:800;color:var(--g)}
+.stat-label{font-size:12px;color:var(--mut);margin-top:2px}
+
+/* INFO BOX */
+.info-box{background:var(--gp);border:1px solid var(--bd2);border-radius:var(--rs);padding:14px 16px;font-size:13px;color:var(--mid);line-height:1.6;margin-bottom:20px;display:flex;gap:10px}
+.info-box-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="ni">
+    <a href="index.html" class="logo">3DPS<span>.ca</span></a>
+    <div class="nl">
+      <a href="browse.html">Browse</a>
+      <a href="open-shop.html">Why Sell?</a>
+      <a href="fees.html">Fees</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-inner">
+    <div class="steps-row">
+      <div class="step-dot active" id="dot-1"><span class="dot-num">1</span></div>
+      <div class="step-line" id="line-1"></div>
+      <div class="step-dot" id="dot-2"><span class="dot-num">2</span></div>
+      <div class="step-line" id="line-2"></div>
+      <div class="step-dot" id="dot-3"><span class="dot-num">3</span></div>
+      <div class="step-line" id="line-3"></div>
+      <div class="step-dot" id="dot-4"><span class="dot-num">4</span></div>
+    </div>
+    <div class="steps-labels">
+      <span class="step-label active" id="lbl-1">Account</span>
+      <span class="step-label" id="lbl-2">Your Shop</span>
+      <span class="step-label" id="lbl-3">First Listing</span>
+      <span class="step-label" id="lbl-4">Done</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ── STEP 1: ACCOUNT ── -->
+  <div class="panel active" id="step-1">
+    <div class="panel-head">
+      <div class="panel-step-label">Step 1 of 3</div>
+      <div class="panel-title">Create your account</div>
+      <div class="panel-sub">Takes 2 minutes. No credit card required to start.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Personal info</div>
+      <div class="field-row">
+        <div class="field">
+          <label>First name <span class="req">*</span></label>
+          <input type="text" id="f-first" placeholder="Jordan"/>
+          <div class="err-msg" id="e-first">Please enter your first name</div>
+        </div>
+        <div class="field">
+          <label>Last name <span class="req">*</span></label>
+          <input type="text" id="f-last" placeholder="Smith"/>
+          <div class="err-msg" id="e-last">Please enter your last name</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Email address <span class="req">*</span></label>
+        <input type="email" id="f-email" placeholder="jordan@example.com"/>
+        <div class="err-msg" id="e-email">Please enter a valid email address</div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Password <span class="req">*</span></label>
+          <input type="password" id="f-pass" placeholder="Min. 8 characters"/>
+          <div class="err-msg" id="e-pass">Password must be at least 8 characters</div>
+        </div>
+        <div class="field">
+          <label>Confirm password <span class="req">*</span></label>
+          <input type="password" id="f-pass2" placeholder="Repeat password"/>
+          <div class="err-msg" id="e-pass2">Passwords don't match</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Your city</div>
+      <div class="info-box">
+        <span class="info-box-icon">📍</span>
+        Your city is shown on your listings so nearby buyers can arrange local pickup — often the most popular option.
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>City <span class="req">*</span></label>
+          <input type="text" id="f-city" placeholder="Hamilton"/>
+          <div class="err-msg" id="e-city">Please enter your city</div>
+        </div>
+        <div class="field">
+          <label>Province <span class="req">*</span></label>
+          <select id="f-prov">
+            <option value="">Select…</option>
+            <option>AB</option><option>BC</option><option>MB</option><option>NB</option>
+            <option>NL</option><option>NS</option><option>ON</option><option>PE</option>
+            <option>QC</option><option>SK</option><option>NT</option><option>NU</option><option>YT</option>
+          </select>
+          <div class="err-msg" id="e-prov">Please select your province</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="goStep(2)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 2: SHOP DETAILS ── -->
+  <div class="panel" id="step-2">
+    <div class="panel-head">
+      <div class="panel-step-label">Step 2 of 3</div>
+      <div class="panel-title">Set up your shop</div>
+      <div class="panel-sub">This is what buyers see when they visit your seller profile.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Shop identity</div>
+      <div class="field">
+        <label>Shop name <span class="req">*</span> <span class="hint">— shown on all your listings</span></label>
+        <input type="text" id="f-shopname" placeholder="e.g. SteelCityPrint" maxlength="40" oninput="updateShopPreview()"/>
+        <div class="char-count"><span id="sn-count">0</span>/40</div>
+        <div class="err-msg" id="e-shopname">Please enter a shop name</div>
+      </div>
+      <div class="field">
+        <label>Shop tagline <span class="hint">— one line that describes you</span></label>
+        <input type="text" id="f-tagline" placeholder="e.g. Functional FDM prints from Hamilton, ON" maxlength="80" oninput="updateShopPreview()"/>
+        <div class="char-count"><span id="tl-count">0</span>/80</div>
+      </div>
+      <div class="field">
+        <label>About your shop</label>
+        <textarea id="f-about" placeholder="Tell buyers a bit about yourself — your printer setup, how long you've been printing, what you specialize in…" maxlength="400" oninput="document.getElementById('ab-count').textContent=this.value.length"></textarea>
+        <div class="char-count"><span id="ab-count">0</span>/400</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Your printers</div>
+      <div class="check-group" id="printer-checks">
+        <label class="check-item"><input type="checkbox" value="FDM"/> FDM / FFF (filament — PLA, PETG, ABS, etc.)</label>
+        <label class="check-item"><input type="checkbox" value="Resin"/> Resin / MSLA / DLP</label>
+        <label class="check-item"><input type="checkbox" value="SLS"/> SLS / Nylon powder</label>
+        <label class="check-item"><input type="checkbox" value="Multi-material"/> Multi-material (e.g. Bambu AMS, Prusa MMU)</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Fulfilment options</div>
+      <div class="radio-grid">
+        <div class="radio-card selected" onclick="selectRadio(this,'fulfil','pickup')">
+          <input type="radio" name="fulfil" value="pickup"/>
+          <div class="rc-icon">📍</div>
+          <div class="rc-body">
+            <div class="rc-label">Local pickup only</div>
+            <div class="rc-desc">Buyers collect in person. Most popular in Canada.</div>
+          </div>
+          <div class="rc-check"></div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'fulfil','ship')">
+          <input type="radio" name="fulfil" value="ship"/>
+          <div class="rc-icon">📦</div>
+          <div class="rc-body">
+            <div class="rc-label">Shipping + pickup</div>
+            <div class="rc-desc">Ship Canada-wide and offer local pickup.</div>
+          </div>
+          <div class="rc-check"></div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'fulfil','ship-only')">
+          <input type="radio" name="fulfil" value="ship-only"/>
+          <div class="rc-icon">✈️</div>
+          <div class="rc-body">
+            <div class="rc-label">Shipping only</div>
+            <div class="rc-desc">No local pickup — ship all orders.</div>
+          </div>
+          <div class="rc-check"></div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'fulfil','custom')">
+          <input type="radio" name="fulfil" value="custom"/>
+          <div class="rc-icon">💬</div>
+          <div class="rc-body">
+            <div class="rc-label">Custom orders only</div>
+            <div class="rc-desc">All work is made-to-order, discussed with buyer first.</div>
+          </div>
+          <div class="rc-check"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Payout preference</div>
+      <div class="radio-grid">
+        <div class="radio-card selected" onclick="selectRadio(this,'payout','etransfer')">
+          <input type="radio" name="payout" value="etransfer"/>
+          <div class="rc-icon">🏦</div>
+          <div class="rc-body">
+            <div class="rc-label">Interac e-Transfer</div>
+            <div class="rc-desc">Weekly payouts. Most popular in Canada.</div>
+          </div>
+          <div class="rc-check"></div>
+        </div>
+        <div class="radio-card" onclick="selectRadio(this,'payout','stripe')">
+          <input type="radio" name="payout" value="stripe"/>
+          <div class="rc-icon">💳</div>
+          <div class="rc-body">
+            <div class="rc-label">Direct deposit</div>
+            <div class="rc-desc">Via Stripe. Requires bank account linkup.</div>
+          </div>
+          <div class="rc-check"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE PREVIEW -->
+    <div class="preview-card" id="shop-preview">
+      <div class="preview-avatar" id="prev-avatar">🖨️</div>
+      <div class="preview-info">
+        <div class="preview-name" id="prev-name">Your Shop Name</div>
+        <div class="preview-city" id="prev-city">Your City, Province</div>
+        <div class="preview-badge">⭐ New seller · 3DPS.ca verified</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goStep(1)">← Back</button>
+      <button class="btn-primary" onclick="goStep(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 3: FIRST LISTING ── -->
+  <div class="panel" id="step-3">
+    <div class="panel-head">
+      <div class="panel-step-label">Step 3 of 3</div>
+      <div class="panel-title">Add your first listing</div>
+      <div class="panel-sub">You can add more later from your dashboard. Start with your best seller.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Listing details</div>
+      <div class="field">
+        <label>Title <span class="req">*</span></label>
+        <input type="text" id="f-title" placeholder="e.g. Gridfinity Mega Storage Bin 4×2" maxlength="80" oninput="document.getElementById('lt-count').textContent=this.value.length"/>
+        <div class="char-count"><span id="lt-count">0</span>/80</div>
+        <div class="err-msg" id="e-title">Please enter a listing title</div>
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea id="f-desc" placeholder="What is it? What material? What size? Any assembly required? Custom options?" maxlength="800" rows="4" oninput="document.getElementById('ld-count').textContent=this.value.length"></textarea>
+        <div class="char-count"><span id="ld-count">0</span>/800</div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Category <span class="req">*</span></label>
+          <select id="f-cat">
+            <option value="">Select…</option>
+            <option value="functional">Functional</option>
+            <option value="miniatures">Miniatures</option>
+            <option value="decor">Home Décor</option>
+            <option value="toys">Toys & Kids</option>
+            <option value="jewellery">Jewellery</option>
+            <option value="cosplay">Cosplay</option>
+            <option value="tech">Tech</option>
+            <option value="art">Art</option>
+          </select>
+          <div class="err-msg" id="e-cat">Please select a category</div>
+        </div>
+        <div class="field">
+          <label>Material / Print type</label>
+          <select id="f-material">
+            <option value="">Select…</option>
+            <option>PLA</option><option>PETG</option><option>ABS</option>
+            <option>TPU / Flexible</option><option>Resin</option>
+            <option>Nylon</option><option>Wood-fill</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Photos <span style="font-weight:400;font-size:13px;color:var(--mut)">— up to 8 images</span></div>
+      <div class="upload-zone" id="upload-zone" onclick="document.getElementById('photo-input').click()"
+           ondragover="event.preventDefault();this.classList.add('drag')"
+           ondragleave="this.classList.remove('drag')"
+           ondrop="handleDrop(event)">
+        <div class="upload-icon">📷</div>
+        <div class="upload-title">Click to upload or drag & drop</div>
+        <div class="upload-sub">JPG, PNG, WEBP · Max 10 MB each · First photo is your cover</div>
+        <input type="file" id="photo-input" accept="image/*" multiple onchange="handleFiles(this.files)"/>
+        <div class="upload-previews" id="upload-previews"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Pricing</div>
+      <div class="pricing-row">
+        <div class="field">
+          <label>Price (CAD) <span class="req">*</span></label>
+          <div class="price-input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="f-price" placeholder="0.00" min="1" step="0.50"/>
+          </div>
+          <div class="err-msg" id="e-price">Please enter a price</div>
+        </div>
+        <div class="field">
+          <label>Compare-at price</label>
+          <div class="price-input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="f-compare" placeholder="Optional" min="1" step="0.50"/>
+          </div>
+        </div>
+        <div class="field">
+          <label>Lead time</label>
+          <select id="f-lead">
+            <option>Ready to ship</option>
+            <option>1–2 days</option>
+            <option>3–5 days</option>
+            <option>1–2 weeks</option>
+            <option>Custom — ask me</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Tags <span style="font-weight:400;font-size:13px;color:var(--mut)">— help buyers find your item</span></div>
+      <div class="tags-wrap" id="tags-wrap" onclick="document.getElementById('tags-input').focus()">
+        <input class="tags-input" id="tags-input" placeholder="Type a tag and press Enter…" onkeydown="handleTag(event)"/>
+      </div>
+      <div style="font-size:12px;color:var(--mut);margin-top:6px">e.g. gridfinity, storage, PLA, desk organiser</div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-secondary" onclick="goStep(2)">← Back</button>
+      <button class="btn-primary" onclick="submitForm()">Launch My Shop 🚀</button>
+      <button class="btn-skip" onclick="goStep(4)">Skip listing for now</button>
+    </div>
+  </div>
+
+  <!-- ── STEP 4: SUCCESS ── -->
+  <div class="panel" id="step-4">
+    <div class="success-wrap">
+      <span class="success-icon">🎉</span>
+      <div class="success-title">Your shop is live!</div>
+      <div class="success-sub">Welcome to 3DPS.ca, <strong id="succ-name">maker</strong>. Your shop <strong id="succ-shop">is now live</strong> and visible to buyers across Canada.</div>
+
+      <div class="success-stats">
+        <div>
+          <div class="stat-val">0</div>
+          <div class="stat-label">Sales</div>
+        </div>
+        <div>
+          <div class="stat-val">0</div>
+          <div class="stat-label">Views</div>
+        </div>
+        <div>
+          <div class="stat-val" id="succ-listings">1</div>
+          <div class="stat-label">Listings</div>
+        </div>
+      </div>
+
+      <div class="success-actions">
+        <a href="browse.html" class="btn-primary" style="padding:14px 28px;border-radius:999px;font-size:15px;font-weight:700;display:inline-flex;align-items:center;gap:8px">Browse the marketplace →</a>
+        <a href="#" class="btn-secondary" style="padding:13px 24px;border-radius:999px;font-size:14px;font-weight:600;display:inline-flex">Add another listing</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ── STEP NAVIGATION ──
+let currentStep = 1;
+
+function goStep(n) {
+  if (n > currentStep && !validateStep(currentStep)) return;
+
+  document.getElementById(`step-${currentStep}`).classList.remove('active');
+  document.getElementById(`step-${n}`).classList.add('active');
+
+  // Update progress dots
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById(`dot-${i}`);
+    const lbl = document.getElementById(`lbl-${i}`);
+    dot.classList.remove('active','done');
+    lbl.classList.remove('active');
+    if (i < n) { dot.classList.add('done'); }
+    else if (i === n) { dot.classList.add('active'); lbl.classList.add('active'); }
+  }
+  for (let i = 1; i <= 3; i++) {
+    const line = document.getElementById(`line-${i}`);
+    line.classList.toggle('done', i < n);
+  }
+
+  // Populate success screen
+  if (n === 4) {
+    const first = document.getElementById('f-first').value || 'maker';
+    const shop  = document.getElementById('f-shopname').value || 'Your Shop';
+    const title = document.getElementById('f-title').value;
+    document.getElementById('succ-name').textContent = first;
+    document.getElementById('succ-shop').textContent = `"${shop}"`;
+    document.getElementById('succ-listings').textContent = title ? '1' : '0';
+  }
+
+  currentStep = n;
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── VALIDATION ──
+function validateStep(s) {
+  let ok = true;
+  const show = (id, fieldId) => {
+    document.getElementById(id).classList.add('show');
+    document.getElementById(fieldId).classList.add('err');
+    ok = false;
+  };
+  const hide = (id, fieldId) => {
+    document.getElementById(id).classList.remove('show');
+    document.getElementById(fieldId).classList.remove('err');
+  };
+
+  if (s === 1) {
+    const first = document.getElementById('f-first').value.trim();
+    const last  = document.getElementById('f-last').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const pass  = document.getElementById('f-pass').value;
+    const pass2 = document.getElementById('f-pass2').value;
+    const city  = document.getElementById('f-city').value.trim();
+    const prov  = document.getElementById('f-prov').value;
+
+    first  ? hide('e-first','f-first')   : show('e-first','f-first');
+    last   ? hide('e-last','f-last')     : show('e-last','f-last');
+    email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? hide('e-email','f-email') : show('e-email','f-email');
+    pass.length >= 8 ? hide('e-pass','f-pass') : show('e-pass','f-pass');
+    pass === pass2 && pass2.length > 0 ? hide('e-pass2','f-pass2') : show('e-pass2','f-pass2');
+    city  ? hide('e-city','f-city')     : show('e-city','f-city');
+    prov  ? hide('e-prov','f-prov')     : show('e-prov','f-prov');
+  }
+
+  if (s === 2) {
+    const shopname = document.getElementById('f-shopname').value.trim();
+    shopname ? hide('e-shopname','f-shopname') : show('e-shopname','f-shopname');
+  }
+
+  if (s === 3) {
+    const title = document.getElementById('f-title').value.trim();
+    const cat   = document.getElementById('f-cat').value;
+    const price = document.getElementById('f-price').value;
+    title ? hide('e-title','f-title') : show('e-title','f-title');
+    cat   ? hide('e-cat','f-cat')     : show('e-cat','f-cat');
+    price ? hide('e-price','f-price') : show('e-price','f-price');
+  }
+
+  return ok;
+}
+
+function submitForm() {
+  if (!validateStep(3)) return;
+  goStep(4);
+}
+
+// ── RADIO CARDS ──
+function selectRadio(el, name, val) {
+  document.querySelectorAll(`[onclick*="'${name}'"]`).forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ── SHOP PREVIEW ──
+function updateShopPreview() {
+  const name = document.getElementById('f-shopname').value || 'Your Shop Name';
+  const city = document.getElementById('f-city') ? document.getElementById('f-city').value || 'Your City' : 'Your City';
+  const prov = document.getElementById('f-prov') ? document.getElementById('f-prov').value || 'Province' : '';
+  document.getElementById('prev-name').textContent = name;
+  document.getElementById('prev-city').textContent = city + (prov ? ', ' + prov : '');
+  document.getElementById('sn-count').textContent = document.getElementById('f-shopname').value.length;
+  if (document.getElementById('f-tagline'))
+    document.getElementById('tl-count').textContent = document.getElementById('f-tagline').value.length;
+}
+
+// ── TAG INPUT ──
+const tags = [];
+function handleTag(e) {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    const val = e.target.value.trim().replace(/,$/,'');
+    if (val && tags.length < 13 && !tags.includes(val)) {
+      tags.push(val);
+      renderTags();
+    }
+    e.target.value = '';
+  } else if (e.key === 'Backspace' && e.target.value === '' && tags.length) {
+    tags.pop();
+    renderTags();
+  }
+}
+function removeTag(i) {
+  tags.splice(i,1);
+  renderTags();
+}
+function renderTags() {
+  const wrap = document.getElementById('tags-wrap');
+  const input = document.getElementById('tags-input');
+  wrap.querySelectorAll('.tag').forEach(t => t.remove());
+  tags.forEach((t,i) => {
+    const el = document.createElement('div');
+    el.className = 'tag';
+    el.innerHTML = `${t}<span class="tag-x" onclick="removeTag(${i})">×</span>`;
+    wrap.insertBefore(el, input);
+  });
+}
+
+// ── PHOTO UPLOAD ──
+function handleFiles(files) {
+  const prev = document.getElementById('upload-previews');
+  Array.from(files).slice(0,8).forEach(f => {
+    const url = URL.createObjectURL(f);
+    const img = document.createElement('img');
+    img.src = url;
+    img.className = 'preview-thumb';
+    prev.appendChild(img);
+  });
+}
+function handleDrop(e) {
+  e.preventDefault();
+  document.getElementById('upload-zone').classList.remove('drag');
+  handleFiles(e.dataTransfer.files);
+}
+</script>
+</body>
+</html>

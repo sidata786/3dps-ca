@@ -1297,7 +1297,7 @@ function render() {
     const stars = '★'.repeat(Math.floor(l.rating)) + (l.rating%1>=0.5?'½':'');
 
     return `
-    <div class="lc" style="animation-delay:${delay}ms" onclick="window.location.href='index.html'">
+    <div class="lc" style="animation-delay:${delay}ms" onclick="window.location.href='listing.html?id=${l.id}'">
       <div class="lc-img" style="height:${h}px;overflow:hidden">
         ${imgHtml}
         <div class="lc-badges">
