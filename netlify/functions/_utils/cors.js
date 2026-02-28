@@ -5,11 +5,13 @@ const CORS_HEADERS = {
   'Content-Type':                 'application/json',
 };
 
+// Netlify Functions v1 expect plain objects, not `new Response()`
 function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
-    status,
+  return {
+    statusCode: status,
     headers: CORS_HEADERS,
-  });
+    body: JSON.stringify(data),
+  };
 }
 
 function error(message, status = 400) {
@@ -17,7 +19,11 @@ function error(message, status = 400) {
 }
 
 function preflight() {
-  return new Response(null, { status: 204, headers: CORS_HEADERS });
+  return {
+    statusCode: 204,
+    headers: CORS_HEADERS,
+    body: '',
+  };
 }
 
 module.exports = { CORS_HEADERS, json, error, preflight };
