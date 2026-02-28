@@ -1326,7 +1326,7 @@ async function fetchListings() {
       <div class="lc-img" style="height:${h}px;overflow:hidden">
         ${imgHtml}
         <div class="lc-badges">
-          ${activeCat==='all' ? `<span class="badge badge-cat">${CAT_LABELS[l.cat]}</span>` : ''}
+          ${activeCat==='all' ? `<span class="badge badge-cat">${CAT_LABELS[l.category||l.cat]}</span>` : ''}
           ${l.pickup_available ? '<span class="badge badge-pickup">📍 Pickup</span>' : ''}
           ${l.is_new  ? '<span class="badge badge-new">NEW</span>'   : ''}
           ${l.is_on_sale ? '<span class="badge badge-sale">SALE</span>' : ''}
