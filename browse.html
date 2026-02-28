@@ -1307,14 +1307,18 @@ async function fetchListings() {
     const heights = [220,260,240,280,230,270,250,290,235,265];
     const h = heights[l.id % heights.length];
 
-    // Image: use URL from API if available, otherwise SVG
+    // Image: layer SVG as background, real photo on top (onerror falls through to SVG)
+    const svgPool = IMGS[l.category] || IMGS.functional;
+    const svgBg   = svgPool[l.id % svgPool.length];
     let imgHtml;
     if (l.featured_image_url) {
-      imgHtml = `<img src="${l.featured_image_url}" alt="${l.title}" loading="lazy"
-        style="width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s"/>`;
+      imgHtml = `<div style="position:relative;width:100%;height:100%">
+        <div style="position:absolute;inset:0">${svgBg}</div>
+        <img src="${l.featured_image_url}" alt="${l.title}" loading="lazy"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s"/>
+      </div>`;
     } else {
-      const svgPool = IMGS[l.category] || IMGS.functional;
-      imgHtml = svgPool[l.id % svgPool.length];
+      imgHtml = svgBg;
     }
 
     const oldPrice = l.is_on_sale ? (l.price * 1.25).toFixed(2) : null;
