@@ -33,18 +33,14 @@ exports.handler = async (event) => {
 
     if (listErr) throw listErr;
 
-    // ── 3. Recent reviews across all seller listings ───────────
-    const listingIds = (listings || []).map(l => l.id);
-    let reviews = [];
-    if (listingIds.length > 0) {
-      const { data: rev, error: revErr } = await supabase
-        .from('reviews')
-        .select('*')
-        .in('listing_id', listingIds)
-        .order('created_at', { ascending: false })
-        .limit(30);
-      if (!revErr) reviews = rev || [];
-    }
+    // ── 3. Recent reviews — query directly by seller_id ────────
+    const { data: rev, error: revErr } = await supabase
+      .from('reviews')
+      .select('*')
+      .eq('seller_id', id)
+      .order('created_at', { ascending: false })
+      .limit(30);
+    let reviews = revErr ? [] : (rev || []);
 
     // ── 4. Attach listing title to each review ─────────────────
     const titleMap = {};
