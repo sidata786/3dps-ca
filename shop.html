@@ -358,6 +358,10 @@ nav{background:var(--wh);border-bottom:1.5px solid var(--bd);position:sticky;top
   <div style="background:#fff;border-radius:20px;padding:28px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:fadeUp .2s ease">
     <h3 style="font-family:var(--fd);font-size:20px;font-weight:800;margin-bottom:6px" id="modal-title">Message Shop</h3>
     <p style="font-size:14px;color:var(--mut);margin-bottom:16px;line-height:1.6" id="modal-sub">Send a message to this seller.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <input id="modal-name" placeholder="Your name" style="width:100%;padding:11px 12px;border:1.5px solid var(--bd);border-radius:10px;font-size:14px;font-family:var(--fb);outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bd)'"/>
+      <input id="modal-email" type="email" placeholder="Your email" style="width:100%;padding:11px 12px;border:1.5px solid var(--bd);border-radius:10px;font-size:14px;font-family:var(--fb);outline:none;transition:border-color .15s" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bd)'"/>
+    </div>
     <textarea id="modal-msg" placeholder="Hi! I'm interested in your products…" style="width:100%;padding:12px;border:1.5px solid var(--bd);border-radius:10px;font-size:14px;font-family:var(--fb);resize:none;outline:none;min-height:100px;transition:border-color .15s" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bd)'"></textarea>
     <div style="display:flex;gap:10px;margin-top:14px">
       <button onclick="closeMsgModal()" style="flex:1;background:none;border:1.5px solid var(--bd);padding:12px;border-radius:var(--rp);font-size:14px;font-weight:600;color:var(--mut);cursor:pointer">Cancel</button>
@@ -721,11 +725,31 @@ function closeMsgModal() {
   document.getElementById('msg-modal').style.display = 'none';
   document.getElementById('modal-msg').value = '';
 }
-function sendMsg() {
-  const msg = document.getElementById('modal-msg').value.trim();
-  if (!msg) { alert('Please type a message first.'); return; }
-  // In production: POST to /api/messages
+async function sendMsg() {
+  const name  = (document.getElementById('modal-name').value  || '').trim();
+  const email = (document.getElementById('modal-email').value || '').trim();
+  const msg   = document.getElementById('modal-msg').value.trim();
+  if (!name)  { alert('Please enter your name.');    return; }
+  if (!email) { alert('Please enter your email.');   return; }
+  if (!msg)   { alert('Please type a message.');     return; }
+
+  try {
+    await fetch('/api/messages', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        seller_id:   SELLER.id,
+        buyer_name:  name,
+        buyer_email: email,
+        subject:     `Enquiry from ${name} via shop page`,
+        body:        msg,
+      }),
+    });
+  } catch(_) { /* best-effort */ }
+
   closeMsgModal();
+  document.getElementById('modal-name').value  = '';
+  document.getElementById('modal-email').value = '';
   const toast = document.createElement('div');
   toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:var(--g);color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:700;z-index:1000;animation:fadeUp .3s ease;box-shadow:0 8px 24px rgba(0,0,0,.2)';
   toast.textContent = '✅ Message sent!';
