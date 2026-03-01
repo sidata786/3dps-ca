@@ -1338,7 +1338,7 @@ async function fetchListings() {
         <button class="lc-fav" onclick="event.stopPropagation();this.classList.toggle('loved');this.textContent=this.classList.contains('loved')?'❤️':'🤍'" title="Save">🤍</button>
       </div>
       <div class="lc-body">
-        <div class="lc-seller"><div class="seller-dot"></div>${l.shop_name}</div>
+        <div class="lc-seller"><div class="seller-dot"></div><a href="shop.html?id=${l.seller_id}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:none;font-weight:700">${l.shop_name}</a></div>
         <div class="lc-title">${l.title}</div>
         <div class="lc-city">📍 ${l.city}, ${l.province}</div>
         <div class="lc-bottom">

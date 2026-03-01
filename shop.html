@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Shop — 3DPS.ca</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --g:#0A7A4B;--g2:#12A868;--gp:#E8F7F1;
+  --dk:#0A1A12;--mid:#1A3D2B;--mut:#6B8C7A;
+  --cr:#F0FAF5;--wh:#FFFFFF;
+  --bd:#C8E8D8;--bd2:#D8F0E4;
+  --sh:0 2px 16px rgba(10,26,18,.09);
+  --shl:0 8px 40px rgba(10,26,18,.16);
+  --r:12px;--rs:8px;--rl:20px;--rp:999px;
+  --fd:'Outfit',sans-serif;--fb:'Plus Jakarta Sans',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--cr);color:var(--dk);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--fb);cursor:pointer;border:none;background:none}
+
+/* ── NAV ── */
+nav{background:var(--wh);border-bottom:1.5px solid var(--bd);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.ni{max-width:1300px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:14px;height:64px}
+.logo{font-family:var(--fd);font-size:25px;font-weight:800;color:var(--g);letter-spacing:-.04em;white-space:nowrap}
+.logo span{color:var(--dk)}
+.sb{flex:1;max-width:400px;display:flex;border:2px solid var(--dk);border-radius:var(--rp);overflow:hidden}
+.sb input{flex:1;border:none;outline:none;padding:9px 16px;font-size:13px;font-family:var(--fb)}
+.sb button{background:var(--dk);padding:9px 14px;color:#fff;font-size:14px}
+.nl{display:flex;gap:2px;margin-left:4px}
+.nl a{font-size:13px;font-weight:500;color:var(--mut);padding:7px 11px;border-radius:var(--rs);transition:background .15s,color .15s;white-space:nowrap}
+.nl a:hover{background:var(--cr);color:var(--g)}
+.btn-sell{background:var(--g);color:#fff;border:none;padding:9px 18px;border-radius:var(--rp);font-size:13px;font-weight:700;cursor:pointer;margin-left:auto;white-space:nowrap}
+
+/* ── HERO BANNER ── */
+.shop-hero{
+  background:linear-gradient(135deg,#061a0e 0%,#0d3320 40%,#0a5c32 100%);
+  position:relative;overflow:hidden;
+}
+/* subtle dot-grid texture */
+.shop-hero::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:28px 28px;pointer-events:none;
+}
+.hero-inner{max-width:1300px;margin:0 auto;padding:48px 24px 36px;position:relative;z-index:1}
+.hero-top{display:flex;align-items:flex-start;gap:28px;flex-wrap:wrap}
+.shop-avatar-lg{
+  width:96px;height:96px;border-radius:50%;
+  background:linear-gradient(135deg,var(--g2),#0a5c32);
+  border:3px solid rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--fd);font-size:36px;font-weight:900;color:#fff;
+  flex-shrink:0;text-transform:uppercase;
+}
+.hero-info{flex:1;min-width:0}
+.hero-badges{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.badge-verified{background:rgba(18,168,104,.3);color:#4ade80;font-size:11px;font-weight:700;padding:3px 10px;border-radius:var(--rp);letter-spacing:.04em;border:1px solid rgba(74,222,128,.3)}
+.badge-city{background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);font-size:11px;font-weight:600;padding:3px 10px;border-radius:var(--rp)}
+.hero-name{font-family:var(--fd);font-size:38px;font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.1;margin-bottom:6px}
+.hero-tagline{font-size:15px;color:rgba(255,255,255,.7);line-height:1.6;max-width:600px;margin-bottom:0}
+.hero-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.btn-msg-shop{background:var(--g2);color:#fff;padding:11px 22px;border-radius:var(--rp);font-size:14px;font-weight:700;transition:background .15s,transform .1s}
+.btn-msg-shop:hover{background:#15c47d;transform:translateY(-1px)}
+.btn-browse-back{background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.25);padding:10px 20px;border-radius:var(--rp);font-size:14px;font-weight:600;transition:background .15s}
+.btn-browse-back:hover{background:rgba(255,255,255,.18)}
+
+/* Stats bar */
+.hero-stats{
+  max-width:1300px;margin:0 auto;padding:0 24px 0;
+  display:flex;gap:0;border-top:1px solid rgba(255,255,255,.1);
+  position:relative;z-index:1;
+}
+.hs-item{padding:16px 32px 18px 0;text-align:left}
+.hs-item:not(:last-child){margin-right:32px;border-right:1px solid rgba(255,255,255,.12)}
+.hs-val{font-family:var(--fd);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.02em}
+.hs-lbl{font-size:11px;color:rgba(255,255,255,.5);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+
+/* ── PAGE BODY ── */
+.page-body{max-width:1300px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:280px 1fr;gap:32px;align-items:start}
+@media(max-width:960px){.page-body{grid-template-columns:1fr}}
+
+/* ── SIDEBAR ── */
+.shop-sidebar{position:sticky;top:84px;display:flex;flex-direction:column;gap:16px}
+.sidebar-card{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--rl);padding:22px}
+.sc-title{font-family:var(--fd);font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin-bottom:14px}
+.about-text{font-size:13px;color:var(--mid);line-height:1.8}
+.about-text.clamped{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.btn-more{background:none;border:none;color:var(--g);font-size:12px;font-weight:700;cursor:pointer;margin-top:6px;padding:0}
+
+/* Printer badges */
+.printer-list{display:flex;flex-direction:column;gap:8px}
+.printer-badge{background:var(--cr);border:1.5px solid var(--bd);border-radius:var(--rs);padding:10px 12px;display:flex;align-items:center;gap:10px}
+.pb-icon{font-size:18px;flex-shrink:0}
+.pb-model{font-size:13px;font-weight:700;color:var(--dk)}
+.pb-brand{font-size:11px;color:var(--mut);margin-top:1px}
+.pb-count{background:var(--g);color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:var(--rp);margin-left:auto;flex-shrink:0}
+
+/* Fulfil / payout badges */
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd2);font-size:12px}
+.info-row:last-child{border-bottom:none;padding-bottom:0}
+.ir-label{color:var(--mut);font-weight:500}
+.ir-val{font-weight:700;color:var(--dk)}
+
+/* ── MAIN AREA ── */
+.shop-main{}
+
+/* Category filter tabs */
+.cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.cat-tab{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--rp);padding:7px 16px;font-size:13px;font-weight:600;color:var(--mut);cursor:pointer;transition:all .15s;white-space:nowrap}
+.cat-tab.active{background:var(--g);color:#fff;border-color:var(--g)}
+.cat-tab:hover:not(.active){background:var(--cr);color:var(--dk);border-color:var(--bd2)}
+
+/* Toolbar */
+.shop-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px}
+.listing-count{font-size:13px;color:var(--mut);font-weight:600}
+.sort-sel{border:1.5px solid var(--bd);border-radius:var(--rs);padding:7px 12px;font-size:13px;font-family:var(--fb);outline:none;color:var(--mid);background:var(--wh);cursor:pointer}
+
+/* Product grid */
+.shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:40px}
+@media(max-width:1100px){.shop-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.shop-grid{grid-template-columns:1fr}}
+
+/* Product card */
+.pc{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .2s,transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+.pc:hover{border-color:var(--g);transform:translateY(-4px);box-shadow:var(--shl)}
+.pc-img{position:relative;overflow:hidden;background:var(--dk);aspect-ratio:4/3}
+.pc-img-inner{position:relative;width:100%;height:100%}
+.pc-img-inner > div{position:absolute;inset:0}/* SVG bg layer */
+.pc-img-inner img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.pc:hover .pc-img-inner img{transform:scale(1.06)}
+.pc-badges{position:absolute;top:10px;left:10px;display:flex;gap:5px;z-index:2;flex-wrap:wrap}
+.badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:var(--rp);letter-spacing:.03em}
+.badge-cat{background:rgba(10,26,18,.65);color:#fff;backdrop-filter:blur(4px)}
+.badge-new{background:#FEF3C7;color:#92400E}
+.badge-sale{background:#FEE2E2;color:#DC2626}
+.badge-pickup{background:rgba(10,122,75,.85);color:#fff;backdrop-filter:blur(4px)}
+.pc-fav{position:absolute;top:10px;right:10px;z-index:2;background:rgba(255,255,255,.9);border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:background .15s;backdrop-filter:blur(4px)}
+.pc-fav:hover{background:#fff}
+.pc-body{padding:14px 14px 12px;flex:1;display:flex;flex-direction:column;gap:0}
+.pc-title{font-family:var(--fd);font-size:14px;font-weight:800;color:var(--dk);line-height:1.3;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pc-price-row{display:flex;align-items:baseline;gap:6px;margin-bottom:10px}
+.pc-price{font-family:var(--fd);font-size:20px;font-weight:900;color:var(--g)}
+.pc-price-old{font-size:13px;color:var(--mut);text-decoration:line-through}
+.pc-material{font-size:11px;font-weight:700;background:var(--cr);color:var(--g);padding:2px 8px;border-radius:var(--rp);border:1px solid var(--bd2);display:inline-block;margin-bottom:10px;align-self:flex-start}
+.pc-rating{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--mut);margin-bottom:10px}
+.pc-stars{color:#F59E0B;font-size:12px}
+
+/* Colour swatches */
+.colour-row{display:flex;align-items:center;gap:0;flex-wrap:nowrap;overflow:hidden}
+.colour-label{font-size:10px;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.05em;margin-right:8px;white-space:nowrap;flex-shrink:0}
+.swatches{display:flex;gap:5px;flex-wrap:wrap}
+.swatch{width:18px;height:18px;border-radius:50%;border:2px solid var(--wh);box-shadow:0 0 0 1.5px rgba(0,0,0,.18);cursor:pointer;transition:transform .15s,box-shadow .15s;flex-shrink:0;position:relative}
+.swatch:hover{transform:scale(1.3);box-shadow:0 0 0 2px var(--g),0 2px 6px rgba(0,0,0,.25);z-index:1}
+.swatch.selected{box-shadow:0 0 0 2.5px var(--g);transform:scale(1.15)}
+.swatch-more{width:18px;height:18px;border-radius:50%;background:var(--cr);border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--mut);flex-shrink:0}
+
+/* Colour tooltip */
+.swatch-wrap{position:relative}
+.swatch-wrap:hover .swatch-tip{display:block}
+.swatch-tip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--dk);color:#fff;font-size:10px;font-weight:600;padding:4px 8px;border-radius:6px;white-space:nowrap;z-index:10;pointer-events:none}
+.swatch-tip::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:4px solid transparent;border-top-color:var(--dk)}
+
+/* Selected colour display */
+.selected-colour{font-size:11px;color:var(--mut);margin-left:8px;font-style:italic;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Empty state */
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 24px;color:var(--mut)}
+.empty-state h3{font-family:var(--fd);font-size:20px;font-weight:800;color:var(--dk);margin-bottom:8px}
+
+/* ── REVIEWS ── */
+.reviews-section{margin-top:8px}
+.rs-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.rs-title{font-family:var(--fd);font-size:22px;font-weight:900;color:var(--dk)}
+.rs-overall{display:flex;align-items:center;gap:12px}
+.rs-big-num{font-family:var(--fd);font-size:42px;font-weight:900;color:var(--dk);line-height:1}
+.rs-stars-big{color:#F59E0B;font-size:22px;display:block;margin-bottom:2px}
+.rs-count{font-size:12px;color:var(--mut)}
+
+/* Rating bars */
+.rating-bars{display:flex;flex-direction:column;gap:5px;min-width:200px}
+.rb-row{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--mut)}
+.rb-label{width:28px;text-align:right;flex-shrink:0;font-weight:700;color:var(--dk)}
+.rb-track{flex:1;height:6px;background:var(--bd);border-radius:var(--rp);overflow:hidden}
+.rb-fill{height:100%;background:#F59E0B;border-radius:var(--rp);transition:width .6s ease}
+.rb-num{width:24px;flex-shrink:0;text-align:left}
+
+.review-list{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+.review-card{background:var(--wh);border:1.5px solid var(--bd);border-radius:var(--r);padding:18px}
+.rc-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px}
+.rc-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--bd),var(--g));display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:var(--g);flex-shrink:0;text-transform:uppercase}
+.rc-info{flex:1}
+.rc-name{font-size:13px;font-weight:700;color:var(--dk)}
+.rc-meta{font-size:11px;color:var(--mut);margin-top:2px}
+.rc-stars{color:#F59E0B;font-size:13px;margin-left:auto;flex-shrink:0}
+.rc-listing{font-size:11px;color:var(--g);font-weight:600;margin-bottom:6px;font-style:italic}
+.rc-text{font-size:13px;color:var(--mid);line-height:1.7}
+
+/* ── SKELETON LOADING ── */
+.skel{background:linear-gradient(90deg,var(--bd) 25%,var(--bd2) 50%,var(--bd) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:var(--rs)}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .hero-name{font-size:28px}
+  .shop-avatar-lg{width:72px;height:72px;font-size:26px}
+  .hs-item{padding:12px 20px 14px 0}
+  .hs-val{font-size:20px}
+  .shop-sidebar{position:static}
+}
+@media(max-width:600px){
+  .cat-tabs{gap:4px}
+  .cat-tab{font-size:12px;padding:6px 12px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="ni">
+    <a href="index.html" class="logo">3DPS<span>.ca</span></a>
+    <div class="sb">
+      <input type="text" placeholder="Search 3D prints, sellers, cities…" onkeydown="if(event.key==='Enter')window.location.href='browse.html'"/>
+      <button onclick="window.location.href='browse.html'">🔍</button>
+    </div>
+    <div class="nl">
+      <a href="browse.html">Browse All</a>
+      <a href="categories.html">Categories</a>
+      <a href="local-sellers.html">Local Sellers</a>
+    </div>
+    <button class="btn-sell" onclick="window.location.href='seller-onboarding.html'">Sell on 3DPS</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="shop-hero">
+  <div class="hero-inner">
+    <div class="hero-top">
+      <div class="shop-avatar-lg" id="hero-avatar">?</div>
+      <div class="hero-info">
+        <div class="hero-badges">
+          <span class="badge-verified" id="hero-verified" style="display:none">✅ Verified Seller</span>
+          <span class="badge-city" id="hero-city">📍 Loading…</span>
+        </div>
+        <h1 class="hero-name" id="hero-name">Loading shop…</h1>
+        <p class="hero-tagline" id="hero-tagline"></p>
+        <div class="hero-actions">
+          <button class="btn-msg-shop" onclick="openMessageModal()">💬 Message Shop</button>
+          <a href="browse.html" class="btn-browse-back">← Back to Browse</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="hs-item">
+      <div class="hs-val" id="stat-sales">—</div>
+      <div class="hs-lbl">Sales</div>
+    </div>
+    <div class="hs-item">
+      <div class="hs-val" id="stat-rating">—</div>
+      <div class="hs-lbl">Avg Rating</div>
+    </div>
+    <div class="hs-item">
+      <div class="hs-val" id="stat-reviews">—</div>
+      <div class="hs-lbl">Reviews</div>
+    </div>
+    <div class="hs-item">
+      <div class="hs-val" id="stat-listings">—</div>
+      <div class="hs-lbl">Listings</div>
+    </div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="page-body">
+
+  <!-- SIDEBAR -->
+  <aside class="shop-sidebar">
+
+    <div class="sidebar-card">
+      <div class="sc-title">About this shop</div>
+      <div class="about-text clamped" id="about-text">Loading…</div>
+      <button class="btn-more" id="btn-more" onclick="toggleAbout()">Read more ↓</button>
+    </div>
+
+    <div class="sidebar-card" id="printers-card" style="display:none">
+      <div class="sc-title">Printer setup</div>
+      <div class="printer-list" id="printer-list"></div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sc-title">Shop info</div>
+      <div class="info-row">
+        <span class="ir-label">Fulfilment</span>
+        <span class="ir-val" id="info-fulfil">—</span>
+      </div>
+      <div class="info-row">
+        <span class="ir-label">Payout</span>
+        <span class="ir-val" id="info-payout">—</span>
+      </div>
+      <div class="info-row">
+        <span class="ir-label">Member since</span>
+        <span class="ir-val" id="info-since">—</span>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN -->
+  <main class="shop-main">
+
+    <!-- Category tabs -->
+    <div class="cat-tabs" id="cat-tabs">
+      <button class="cat-tab active" data-cat="all" onclick="filterCat(this)">All Listings</button>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="shop-toolbar">
+      <div class="listing-count" id="listing-count"></div>
+      <select class="sort-sel" id="sort-sel" onchange="renderGrid()">
+        <option value="rating">Top Rated</option>
+        <option value="newest">Newest</option>
+        <option value="price-asc">Price: Low → High</option>
+        <option value="price-desc">Price: High → Low</option>
+      </select>
+    </div>
+
+    <!-- Product grid -->
+    <div class="shop-grid" id="shop-grid">
+      <!-- cards injected by JS -->
+    </div>
+
+    <!-- Reviews -->
+    <div class="reviews-section" id="reviews-section" style="display:none">
+      <div class="rs-header">
+        <h2 class="rs-title">Customer Reviews</h2>
+        <div class="rs-overall">
+          <div>
+            <div class="rs-big-num" id="rv-num">0</div>
+            <span class="rs-stars-big" id="rv-stars">☆☆☆☆☆</span>
+            <div class="rs-count" id="rv-count">0 reviews</div>
+          </div>
+          <div class="rating-bars" id="rating-bars"></div>
+        </div>
+      </div>
+      <div class="review-list" id="review-list"></div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MESSAGE MODAL -->
+<div id="msg-modal" onclick="if(event.target===this)closeMsgModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center;padding:24px">
+  <div style="background:#fff;border-radius:20px;padding:28px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:fadeUp .2s ease">
+    <h3 style="font-family:var(--fd);font-size:20px;font-weight:800;margin-bottom:6px" id="modal-title">Message Shop</h3>
+    <p style="font-size:14px;color:var(--mut);margin-bottom:16px;line-height:1.6" id="modal-sub">Send a message to this seller.</p>
+    <textarea id="modal-msg" placeholder="Hi! I'm interested in your products…" style="width:100%;padding:12px;border:1.5px solid var(--bd);border-radius:10px;font-size:14px;font-family:var(--fb);resize:none;outline:none;min-height:100px;transition:border-color .15s" onfocus="this.style.borderColor='var(--g)'" onblur="this.style.borderColor='var(--bd)'"></textarea>
+    <div style="display:flex;gap:10px;margin-top:14px">
+      <button onclick="closeMsgModal()" style="flex:1;background:none;border:1.5px solid var(--bd);padding:12px;border-radius:var(--rp);font-size:14px;font-weight:600;color:var(--mut);cursor:pointer">Cancel</button>
+      <button onclick="sendMsg()" style="flex:2;background:var(--g);color:#fff;border:none;padding:12px;border-radius:var(--rp);font-size:14px;font-weight:700;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--g2)'" onmouseout="this.style.background='var(--g)'">Send Message</button>
+    </div>
+  </div>
+</div>
+
+<style>@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}</style>
+
+<script>
+// ══════════════════════════════════════════════
+//  COLOUR SYSTEM
+// ══════════════════════════════════════════════
+const COLOUR_NAMES = {
+  '#1c1c1c':'Matte Black','#111111':'Jet Black','#0a0a0a':'Carbon Black',
+  '#f5f5f5':'Arctic White','#ffffff':'Pure White','#f5f0e8':'Natural Cream',
+  '#6b7280':'Cool Grey','#9ca3af':'Light Grey','#374151':'Charcoal',
+  '#c2410c':'Signal Orange','#ea580c':'Burnt Orange','#f97316':'Bright Orange',
+  '#991b1b':'Deep Red','#ef4444':'Bright Red','#b91c1c':'Crimson',
+  '#1e3a5f':'Midnight Blue','#1d4ed8':'Royal Blue','#3b82f6':'Sky Blue','#38bdf8':'Light Blue',
+  '#2d6a4f':'Forest Green','#064e3b':'Dark Green','#15803d':'Emerald',
+  '#84cc16':'Lime Green','#22c55e':'Fresh Green',
+  '#7c3aed':'Deep Purple','#a855f7':'Violet','#6d28d9':'Indigo',
+  '#ec4899':'Hot Pink','#e8a598':'Blush Rose','#f9a8d4':'Light Pink',
+  '#fbbf24':'Sunshine Yellow','#d97706':'Amber','#92400e':'Dark Amber',
+  '#b87333':'Copper','#d4af37':'Silk Gold','#c9a84c':'Aged Gold',
+  '#b76e79':'Rose Gold','#c0c0c0':'Silver','#8c8c8c':'Pewter',
+  '#1a1a2e':'Galaxy Black','#c1440e':'Terracotta','#a16207':'Harvest',
+  '#7d9b76':'Sage Green','#e8d5c4':'Warm Sand','#4a7c59':'Moss',
+  '#8b0000':'Dragon Red','#5b21b6':'Midnight Purple',
+};
+
+const MATERIAL_PALETTES = {
+  'PLA':    ['#1c1c1c','#f5f5f5','#6b7280','#c2410c','#1e3a5f','#2d6a4f','#7c3aed'],
+  'PLA+':   ['#1c1c1c','#f5f5f5','#374151','#991b1b','#1d4ed8','#c2410c','#064e3b','#ec4899'],
+  'PETG':   ['#0a0a0a','#f5f5f5','#3b82f6','#ef4444','#d97706','#374151'],
+  'ABS':    ['#111111','#f5f5f5','#6b7280','#c2410c'],
+  'ASA':    ['#111111','#f5f5f5','#6b7280','#1d4ed8','#c2410c'],
+  'TPU':    ['#1c1c1c','#f5f5f5','#3b82f6','#ef4444','#a855f7','#22c55e'],
+  'TPU+PLA':['#1c1c1c','#f5f5f5','#ec4899','#22c55e','#3b82f6','#f97316'],
+  'Resin':  ['#9ca3af','#1c1c1c','#f5f5f5','#1e3a5f','#d97706','#e8a598'],
+  'SLA':    ['#f5f0e8','#1c1c1c','#d97706','#1e3a5f','#e8a598','#9ca3af'],
+  'MSLA':   ['#9ca3af','#1c1c1c','#f5f5f5','#1e3a5f'],
+  'Silk PLA':['#d4af37','#b76e79','#b87333','#c0c0c0','#1a1a2e','#ef4444','#3b82f6'],
+  'FDM':    ['#1c1c1c','#f5f5f5','#6b7280','#c2410c','#1e3a5f','#2d6a4f'],
+};
+
+const CATEGORY_EXTRAS = {
+  'decor':      ['#c1440e','#7d9b76','#e8a598','#e8d5c4','#f5f0e8'],
+  'toys':       ['#ef4444','#fbbf24','#38bdf8','#84cc16','#a855f7','#ec4899'],
+  'jewellery':  ['#f5f0e8','#111111','#d97706','#e8a598','#1e3a5f','#c9a84c'],
+  'cosplay':    ['#c0c0c0','#c9a84c','#111111','#8b0000','#1a1a2e'],
+  'miniatures': ['#9ca3af','#111111','#f5f5f5','#d97706'],
+  'functional': ['#1c1c1c','#f5f5f5','#6b7280','#1d4ed8','#c2410c'],
+  'tech':       ['#111111','#f5f5f5','#374151','#1d4ed8','#3b82f6'],
+  'art':        ['#d4af37','#b76e79','#1a1a2e','#c1440e','#7d9b76'],
+};
+
+function getColours(material, category) {
+  const base = MATERIAL_PALETTES[material] || MATERIAL_PALETTES['PLA'];
+  const extras = CATEGORY_EXTRAS[category] || [];
+  const combined = [...new Set([...base, ...extras])];
+  return combined.slice(0, 8).map(hex => ({
+    hex,
+    name: COLOUR_NAMES[hex] || hex,
+  }));
+}
+
+// ══════════════════════════════════════════════
+//  SVG PLACEHOLDERS (per category)
+// ══════════════════════════════════════════════
+const CAT_SVG = {
+  functional: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" style="width:100%;height:100%"><rect width="400" height="300" fill="#1a2e1a"/><rect x="60" y="60" width="280" height="180" rx="12" fill="#243324" stroke="#3a5c3a" stroke-width="2"/><rect x="80" y="80" width="60" height="60" rx="6" fill="#1a2e1a"/><rect x="160" y="80" width="60" height="60" rx="6" fill="#1a2e1a"/><rect x="240" y="80" width="60" height="60" rx="6" fill="#1a2e1a"/><rect x="80" y="160" width="140" height="40" rx="6" fill="#1a2e1a"/><rect x="240" y="160" width="60" height="40" rx="6" fill="#2d6a4f" opacity=".7"/><circle cx="110" cy="110" r="8" fill="#3a7a4a" opacity=".8"/><circle cx="190" cy="110" r="8" fill="#3a7a4a" opacity=".8"/><circle cx="270" cy="110" r="8" fill="#3a7a4a" opacity=".8"/></svg>`,
+  miniatures: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" style="width:100%;height:100%"><rect width="400" height="300" fill="#1a1a2e"/><ellipse cx="200" cy="260" rx="120" ry="20" fill="#12122a" opacity=".8"/><polygon points="200,60 160,200 240,200" fill="#3a3a6a"/><polygon points="200,60 155,205 165,205" fill="#4a4a8a"/><rect x="160" y="200" width="80" height="12" rx="3" fill="#3a3a6a"/><circle cx="200" cy="55" r="12" fill="#6a6ab0"/><rect x="175" y="220" width="50" height="8" rx="2" fill="#5a5a9a" opacity=".6"/></svg>`,
+  decor: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" style="width:100%;height:100%"><rect width="400" height="300" fill="#1a1a18"/><ellipse cx="200" cy="270" rx="60" ry="10" fill="#111110"/><path d="M170 270 Q160 200 175 150 Q185 120 200 110 Q215 120 225 150 Q240 200 230 270 Z" fill="#2a2a28" stroke="#4a4a44" stroke-width="1.5"/><path d="M175 150 Q200 100 225 150" fill="none" stroke="#6a6a5a" stroke-width="2"/><ellipse cx="200" cy="110" rx="25" ry="8" fill="#3a3a30"/></svg>`,
+  toys: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" style="width:100%;height:100%"><rect width="400" height="300" fill="#1a2a1a"/><rect x="100" y="120" width="200" height="80" rx="20" fill="#2a4a2a"/><circle cx="140" cy="220" r="25" fill="#1a3a1a" stroke="#3a6a3a" stroke-width="3"/><circle cx="260" cy="220" r="25" fill="#1a3a1a" stroke="#3a6a3a" stroke-width="3"/><rect x="160" y="100" width="80" height="30" rx="8" fill="#2a4a2a"/><circle cx="170" cy="145" r="8" fill="#0A7A4B"/><circle cx="200" cy="145" r="8" fill="#d97706"/><circle cx="230" cy="145" r="8" fill="#1d4ed8"/></svg>`,
+  jewellery: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" style="width:100%;height:100%"><rect width="400" height="300" fill="#1a1520"/><circle cx="200" cy="150" r="60" fill="none" stroke="#4a3060" stroke-width="3"/><circle cx="200" cy="150" r="45" fill="none" stroke="#6a4a80" stroke-width="1.5"/><polygon points="200,100 215,140 260,140 225,163 238,205 200,180 162,205 175,163 140,140 185,140" fill="#2a1a38" stroke="#8a6ab0" stroke-width="1.5"/><circle cx="200" cy="150" r="12" fill="#6a4a80"/></svg>`,
+  tech: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" style="width:100%;height:100%"><rect width="400" height="300" fill="#0f1a0f"/><rect x="60" y="80" width="280" height="140" rx="8" fill="#1a2e1a" stroke="#2d5a2d" stroke-width="1.5"/><rect x="80" y="100" width="16" height="16" rx="3" fill="#0A7A4B"/><rect x="106" y="100" width="16" height="16" rx="3" fill="#1a3a1a"/><rect x="132" y="100" width="16" height="16" rx="3" fill="#1a3a1a"/><rect x="80" y="126" width="16" height="16" rx="3" fill="#1a3a1a"/><rect x="106" y="126" width="42" height="16" rx="3" fill="#0A7A4B" opacity=".6"/><rect x="80" y="152" width="70" height="16" rx="3" fill="#1a3a1a"/><rect x="200" y="95" width="120" height="90" rx="6" fill="#0f1a0f" stroke="#2d5a2d" stroke-width="1"/><circle cx="260" cy="140" r="20" fill="#0A7A4B" opacity=".3"/><circle cx="260" cy="140" r="10" fill="#0A7A4B" opacity=".6"/></svg>`,
+  cosplay: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" style="width:100%;height:100%"><rect width="400" height="300" fill="#1a1a1a"/><ellipse cx="200" cy="130" rx="70" ry="75" fill="#2a2a2a" stroke="#4a4a4a" stroke-width="2"/><rect x="170" y="145" width="60" height="30" rx="4" fill="#1a1a1a"/><ellipse cx="200" cy="130" rx="70" ry="30" fill="none" stroke="#6a6a6a" stroke-width="1" opacity=".5"/><circle cx="175" cy="130" r="12" fill="#1a1a1a" stroke="#5a5a5a" stroke-width="2"/><circle cx="225" cy="130" r="12" fill="#1a1a1a" stroke="#5a5a5a" stroke-width="2"/><path d="M130 90 Q200 60 270 90" fill="none" stroke="#8a8a8a" stroke-width="3"/></svg>`,
+  art: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" style="width:100%;height:100%"><rect width="400" height="300" fill="#1a1a18"/><polygon points="200,50 260,200 140,200" fill="#2a2a28" stroke="#5a5a4a" stroke-width="2"/><polygon points="200,50 260,200 290,120" fill="#1e1e1c" stroke="#4a4a3a" stroke-width="1.5" opacity=".8"/><polygon points="200,50 140,200 110,120" fill="#1e1e1c" stroke="#4a4a3a" stroke-width="1.5" opacity=".8"/><ellipse cx="200" cy="205" rx="80" ry="12" fill="#111110"/></svg>`,
+};
+function getSvg(cat){ return CAT_SVG[cat] || CAT_SVG.functional; }
+
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+let SELLER   = null;
+let LISTINGS = [];
+let REVIEWS  = [];
+let activeCat = 'all';
+let aboutExpanded = false;
+const selectedColours = {}; // listingId → hex
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+(async function init() {
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id) { document.getElementById('hero-name').textContent = 'Shop not found'; return; }
+
+  try {
+    const res  = await fetch(`/api/shop?id=${id}`);
+    if (!res.ok) throw new Error('Shop not found');
+    const data = await res.json();
+    SELLER   = data.seller;
+    LISTINGS = data.listings || [];
+    REVIEWS  = data.reviews  || [];
+
+    renderHero();
+    renderSidebar();
+    buildCatTabs();
+    renderGrid();
+    renderReviews();
+  } catch(e) {
+    document.getElementById('hero-name').textContent = 'Shop not found';
+    document.getElementById('hero-tagline').textContent = 'This shop may have been removed or the link is invalid.';
+  }
+})();
+
+// ══════════════════════════════════════════════
+//  RENDER HERO
+// ══════════════════════════════════════════════
+function renderHero() {
+  const s = SELLER;
+  const initials = s.shop_name.split(/(?=[A-Z])|[\s_-]/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  document.getElementById('hero-avatar').textContent   = initials;
+  document.getElementById('hero-name').textContent     = s.shop_name;
+  document.getElementById('hero-tagline').textContent  = s.tagline || '';
+  document.getElementById('hero-city').textContent     = `📍 ${s.city}, ${s.province}`;
+  document.title = `${s.shop_name} — 3DPS.ca`;
+
+  if (s.is_verified) document.getElementById('hero-verified').style.display = 'inline';
+
+  document.getElementById('stat-sales').textContent    = s.total_sales.toLocaleString();
+  document.getElementById('stat-rating').textContent   = s.avg_rating > 0 ? Number(s.avg_rating).toFixed(1) + ' ★' : '—';
+  document.getElementById('stat-reviews').textContent  = s.total_reviews.toLocaleString();
+  document.getElementById('stat-listings').textContent = LISTINGS.length;
+}
+
+// ══════════════════════════════════════════════
+//  SIDEBAR
+// ══════════════════════════════════════════════
+function renderSidebar() {
+  const s = SELLER;
+  document.getElementById('about-text').textContent = s.about || 'No description available.';
+
+  // Printers
+  const printers = Array.isArray(s.printers) ? s.printers : (typeof s.printers === 'string' ? JSON.parse(s.printers) : []);
+  if (printers.length > 0) {
+    document.getElementById('printers-card').style.display = '';
+    document.getElementById('printer-list').innerHTML = printers.map(p => `
+      <div class="printer-badge">
+        <div class="pb-icon">🖨️</div>
+        <div>
+          <div class="pb-model">${p.model || 'Printer'}</div>
+          <div class="pb-brand">${p.brand || ''}</div>
+        </div>
+        ${p.count > 1 ? `<span class="pb-count">×${p.count}</span>` : ''}
+      </div>
+    `).join('');
+  }
+
+  // Info rows
+  const fulfilMap = { pickup:'Pickup only', shipping:'Shipping only', both:'Pickup + shipping' };
+  const payoutMap = { etransfer:'Interac e-Transfer', stripe:'Direct deposit' };
+  document.getElementById('info-fulfil').textContent = fulfilMap[s.fulfil_option] || s.fulfil_option;
+  document.getElementById('info-payout').textContent = payoutMap[s.payout_method] || s.payout_method;
+  document.getElementById('info-since').textContent = new Date(s.created_at).toLocaleDateString('en-CA', { year:'numeric', month:'short' });
+}
+
+function toggleAbout() {
+  aboutExpanded = !aboutExpanded;
+  const el = document.getElementById('about-text');
+  const btn = document.getElementById('btn-more');
+  el.classList.toggle('clamped', !aboutExpanded);
+  btn.textContent = aboutExpanded ? 'Show less ↑' : 'Read more ↓';
+}
+
+// ══════════════════════════════════════════════
+//  CATEGORY TABS
+// ══════════════════════════════════════════════
+const CAT_LABELS = {
+  functional:'🔧 Functional', miniatures:'🎲 Miniatures',
+  decor:'🏠 Home Décor', toys:'🧸 Toys & Kids',
+  jewellery:'💍 Jewellery', cosplay:'🎭 Cosplay',
+  tech:'🖥️ Tech', art:'🎨 Art',
+};
+function buildCatTabs() {
+  const cats = [...new Set(LISTINGS.map(l=>l.category))].filter(Boolean);
+  const tabs  = document.getElementById('cat-tabs');
+  cats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-tab';
+    btn.dataset.cat = cat;
+    btn.textContent = CAT_LABELS[cat] || cat;
+    btn.onclick = function(){ filterCat(this); };
+    tabs.appendChild(btn);
+  });
+}
+function filterCat(btn) {
+  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCat = btn.dataset.cat;
+  renderGrid();
+}
+
+// ══════════════════════════════════════════════
+//  PRODUCT GRID
+// ══════════════════════════════════════════════
+function renderGrid() {
+  const sort  = document.getElementById('sort-sel').value;
+  let items = activeCat === 'all'
+    ? [...LISTINGS]
+    : LISTINGS.filter(l => l.category === activeCat);
+
+  // Sort
+  if (sort === 'newest')     items.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+  else if (sort === 'price-asc')  items.sort((a,b) => a.price - b.price);
+  else if (sort === 'price-desc') items.sort((a,b) => b.price - a.price);
+  else items.sort((a,b) => (b.avg_rating||0) - (a.avg_rating||0));
+
+  document.getElementById('listing-count').textContent =
+    `${items.length} listing${items.length!==1?'s':''}`;
+
+  const grid = document.getElementById('shop-grid');
+
+  if (items.length === 0) {
+    grid.innerHTML = `<div class="empty-state"><div style="font-size:40px;margin-bottom:12px">🔍</div><h3>No listings in this category</h3><p>Check back soon or browse all listings.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map(l => productCard(l)).join('');
+}
+
+function productCard(l) {
+  const colours   = getColours(l.material || l.printer_type || 'PLA', l.category);
+  const displayC  = colours.slice(0, 5);
+  const extraC    = colours.length - 5;
+  const selHex    = selectedColours[l.id] || displayC[0]?.hex || '#1c1c1c';
+  const selName   = COLOUR_NAMES[selHex] || selHex;
+  const rating    = Number(l.avg_rating) || 0;
+  const stars     = rating > 0 ? '★'.repeat(Math.floor(rating)) + (rating%1>=0.5?'½':'') : '';
+  const svg       = getSvg(l.category);
+
+  const swatchHtml = `
+    <div class="colour-row">
+      <span class="colour-label">Colour</span>
+      <div class="swatches" id="sw-${l.id}">
+        ${displayC.map(c => `
+          <div class="swatch-wrap">
+            <div class="swatch-tip">${c.name}</div>
+            <div class="swatch${c.hex===selHex?' selected':''}"
+              style="background:${c.hex}"
+              data-hex="${c.hex}" data-name="${c.name}" data-lid="${l.id}"
+              onclick="selectColour(event,${l.id},'${c.hex}','${c.name}')"></div>
+          </div>
+        `).join('')}
+        ${extraC > 0 ? `<div class="swatch-more">+${extraC}</div>` : ''}
+        <span class="selected-colour" id="sc-${l.id}">${selName}</span>
+      </div>
+    </div>`;
+
+  return `
+  <div class="pc" onclick="goListing(${l.id})">
+    <div class="pc-img">
+      <div class="pc-img-inner">
+        <div>${svg}</div>
+        ${l.featured_image_url ? `<img src="${l.featured_image_url}" alt="${l.title}" loading="lazy"/>` : ''}
+      </div>
+      <div class="pc-badges">
+        ${l.is_new  ? '<span class="badge badge-new">NEW</span>'  : ''}
+        ${l.is_on_sale ? '<span class="badge badge-sale">SALE</span>' : ''}
+        ${l.pickup_available ? '<span class="badge badge-pickup">📍 Pickup</span>' : ''}
+      </div>
+      <button class="pc-fav" onclick="event.stopPropagation();this.textContent=this.textContent==='🤍'?'❤️':'🤍'">🤍</button>
+    </div>
+    <div class="pc-body">
+      <div class="pc-title">${l.title}</div>
+      <div class="pc-price-row">
+        <span class="pc-price">$${Number(l.price).toFixed(2)}</span>
+        ${l.compare_price ? `<span class="pc-price-old">$${Number(l.compare_price).toFixed(2)}</span>` : ''}
+      </div>
+      <span class="pc-material">${l.material || l.printer_type || 'FDM'}</span>
+      ${rating > 0 ? `<div class="pc-rating"><span class="pc-stars">${stars}</span>${rating.toFixed(1)} · ${l.total_reviews} review${l.total_reviews!==1?'s':''}</div>` : '<div class="pc-rating" style="color:var(--bd)">No reviews yet</div>'}
+      ${swatchHtml}
+    </div>
+  </div>`;
+}
+
+function selectColour(e, lid, hex, name) {
+  e.stopPropagation();
+  selectedColours[lid] = hex;
+  // Update swatches
+  document.querySelectorAll(`#sw-${lid} .swatch`).forEach(s => {
+    s.classList.toggle('selected', s.dataset.hex === hex);
+  });
+  const sc = document.getElementById(`sc-${lid}`);
+  if (sc) sc.textContent = name;
+}
+function goListing(id) {
+  window.location.href = `listing.html?id=${id}`;
+}
+
+// ══════════════════════════════════════════════
+//  REVIEWS
+// ══════════════════════════════════════════════
+function renderReviews() {
+  if (!REVIEWS.length) return;
+
+  document.getElementById('reviews-section').style.display = '';
+  const avgR = REVIEWS.reduce((s,r) => s + r.rating, 0) / REVIEWS.length;
+
+  document.getElementById('rv-num').textContent  = avgR.toFixed(1);
+  document.getElementById('rv-stars').textContent= '★'.repeat(Math.round(avgR)) + '☆'.repeat(5-Math.round(avgR));
+  document.getElementById('rv-count').textContent= `${REVIEWS.length} review${REVIEWS.length!==1?'s':''}`;
+
+  // Rating distribution bars
+  const dist = {5:0,4:0,3:0,2:0,1:0};
+  REVIEWS.forEach(r => { dist[r.rating] = (dist[r.rating]||0)+1; });
+  document.getElementById('rating-bars').innerHTML = [5,4,3,2,1].map(n => {
+    const pct = Math.round((dist[n]||0) / REVIEWS.length * 100);
+    return `<div class="rb-row">
+      <span class="rb-label">${n}★</span>
+      <div class="rb-track"><div class="rb-fill" style="width:${pct}%"></div></div>
+      <span class="rb-num">${dist[n]||0}</span>
+    </div>`;
+  }).join('');
+
+  // Review cards
+  document.getElementById('review-list').innerHTML = REVIEWS.map(r => {
+    const initials = (r.buyer_name||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    const stars    = '★'.repeat(r.rating) + '☆'.repeat(5-r.rating);
+    const date     = new Date(r.created_at).toLocaleDateString('en-CA',{year:'numeric',month:'short'});
+    return `
+    <div class="review-card">
+      <div class="rc-head">
+        <div class="rc-avatar">${initials}</div>
+        <div class="rc-info">
+          <div class="rc-name">${r.buyer_name}</div>
+          <div class="rc-meta">${r.buyer_city || ''} · ${date}</div>
+        </div>
+        <div class="rc-stars">${stars}</div>
+      </div>
+      ${r.listing_title ? `<div class="rc-listing">Re: ${r.listing_title}</div>` : ''}
+      <div class="rc-text">${r.comment || ''}</div>
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+//  MESSAGE MODAL
+// ══════════════════════════════════════════════
+function openMessageModal() {
+  if (!SELLER) return;
+  document.getElementById('modal-title').textContent = `Message ${SELLER.shop_name}`;
+  document.getElementById('modal-sub').textContent   = `Send a message directly to ${SELLER.shop_name}.`;
+  document.getElementById('msg-modal').style.display = 'flex';
+}
+function closeMsgModal() {
+  document.getElementById('msg-modal').style.display = 'none';
+  document.getElementById('modal-msg').value = '';
+}
+function sendMsg() {
+  const msg = document.getElementById('modal-msg').value.trim();
+  if (!msg) { alert('Please type a message first.'); return; }
+  // In production: POST to /api/messages
+  closeMsgModal();
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:24px;right:24px;background:var(--g);color:#fff;padding:14px 22px;border-radius:12px;font-size:14px;font-weight:700;z-index:1000;animation:fadeUp .3s ease;box-shadow:0 8px 24px rgba(0,0,0,.2)';
+  toast.textContent = '✅ Message sent!';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
+</script>
+
+</body>
+</html>

@@ -250,7 +250,7 @@ nav{background:var(--wh);border-bottom:1.5px solid var(--bd);position:sticky;top
           <div class="ss-lbl">Reviews</div>
         </div>
       </div>
-      <button class="btn-view-shop" onclick="window.location.href='browse.html'">View Shop →</button>
+      <button class="btn-view-shop" id="btn-view-shop" onclick="window.location.href='shop.html?id='+(window._sellerId||'')">View Shop →</button>
     </div>
   </div>
 
@@ -388,6 +388,7 @@ async function init() {
   }
 
   activeListing = l;
+  window._sellerId = l.seller_id || '';
   render(l, apiReviews, apiRelated);
 }
 
